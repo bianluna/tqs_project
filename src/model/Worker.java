@@ -10,6 +10,16 @@ public class Worker {
   private String contract;
   private String category;
 
+    public Worker() {
+        this.name = "";
+        this.civilStatus = "";
+        this.children = 0;
+        this.totalIncome = 0;
+        this.payments = 0;
+        this.contract = "";
+        this.category = "";
+    }
+
   public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, String category) {
     this.name = name;
     this.civilStatus = civilStatus;
@@ -28,5 +38,9 @@ public class Worker {
   public int getPayments() {return payments;}
   public String getContract() {return contract;}
   public String getCategory() {return category;}
+
+  public void setPayments(int payments) { this.payments = payments; }
+
+
 
 }
