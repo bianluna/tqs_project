@@ -20,7 +20,7 @@ public class workerTest {
   }
 
   @Test
-  void testValidPayments(){
+  void testValidPayments12(){
       Worker worker12 = new Worker();
       worker12.setPayments(12);
       assertEquals(12, worker12.getPayments());
