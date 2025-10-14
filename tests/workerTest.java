@@ -19,6 +19,13 @@ public class workerTest {
     assertNotSame("Julio", worker.getName());
   }
 
+  @Test
+  void testValidPayments(){
+      Worker worker12 = new Worker();
+      worker12.setPayments(12);
+      assertEquals(12, worker12.getPayments());
+  }
+
 
 
 }
