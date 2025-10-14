@@ -6,11 +6,6 @@ import org.junit.jupiter.api.Test;
 public class workerTest {
 
   @Test
-  void test(){
-    fail("Not yet implemented");
-  }
-
-  @Test
   void testConstructor() {
     Worker worker = new Worker("Pepito", "casado", 3, 35000, 12, "indefinido", "7" );
 
