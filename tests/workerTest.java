@@ -26,6 +26,15 @@ public class workerTest {
       assertEquals(12, worker12.getPayments());
   }
 
+  @Test
+  void testInvalidPaymentsThrowsException() {
+    Worker worker = new Worker();
+    assertThrows(IllegalArgumentException.class, () -> {
+      worker.setPayments(15);
+    }, "Debe lanzar una excepción si el número de pagos no es 12 o 14");
+  }
+
+
 
 
 }
