@@ -65,4 +65,12 @@ public class workerTest {
       worker.setTotalIncome(0);
     },"Debe lanzar una excepción si el salario neto bruto es cero." );
   }
+
+  @Test
+  void testValidChildren() {
+    Worker worker = new Worker();
+    assertThrows(IllegalArgumentException.class, () -> {
+      worker.setChildren(-3);
+    },"Debe lanzar una excepción si el numero de hijos es negativo." );
+  }
 }
