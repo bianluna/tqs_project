@@ -34,6 +34,14 @@ public class workerTest {
   }
 
   @Test
+  void testInvalidPaymentsBelow12() {
+    Worker worker = new Worker();
+    assertThrows(IllegalArgumentException.class, () -> {
+      worker.setPayments(11);
+    }, "Debe lanzar excepción si el número de pagos es menor que 12");
+  }
+
+  @Test
   void testInvalidPaymentsThrowsException() {
     Worker worker = new Worker();
     assertThrows(IllegalArgumentException.class, () -> {
