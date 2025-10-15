@@ -73,4 +73,16 @@ public class workerTest {
       worker.setChildren(-3);
     },"Debe lanzar una excepción si el numero de hijos es negativo." );
   }
+
+  @Test
+  void testValidCategory() {
+    Worker worker = new Worker();
+    worker = new Worker("Ana", "soltera", 0, 28000, 14, "temporal", "3");
+    assertTrue(worker.getCategory()=="3");
+    worker.setCategory("20");
+    assertFalse(worker.getCategory()=="20");
+  }
+
+
 }
+
