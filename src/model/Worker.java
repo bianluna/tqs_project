@@ -47,7 +47,7 @@ public class Worker {
   }
 
   public boolean isValidIncome(float income) {
-    return income >= 0;
+    return income > 0;
   }
 
   public void setTotalIncome(float totalIncome) {
@@ -56,6 +56,7 @@ public class Worker {
     }
     this.totalIncome = totalIncome;
   }
+
 
 
 }
