@@ -57,6 +57,15 @@ public class Worker {
     this.totalIncome = totalIncome;
   }
 
+  public boolean isValidChildren(int children){
+      return children >= 0;
+  }
 
+  public void setChildren(int children) {
+      if (!isValidChildren(children)) {
+          throw new IllegalArgumentException("El número de hijos no puede ser negativo");
+      }
+      this.children = children;
+  }
 
 }
