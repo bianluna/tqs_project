@@ -8,7 +8,7 @@ public class Worker {
   private float totalIncome;
   private int payments;
   private String contract;
-  private String category;
+  private int category;
 
     public Worker() {
         this.name = "";
@@ -17,10 +17,10 @@ public class Worker {
         this.totalIncome = 0;
         this.payments = 0;
         this.contract = "";
-        this.category = "";
+        this.category = 0;
     }
 
-  public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, String category) {
+  public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, int category) {
     this.name = name;
     this.civilStatus = civilStatus;
     this.children = children;
@@ -37,7 +37,7 @@ public class Worker {
   public float getTotalIncome() {return totalIncome;}
   public int getPayments() {return payments;}
   public String getContract() {return contract;}
-  public String getCategory() {return category;}
+  public int getCategory() {return category;}
 
   public void setPayments(int payments) {
     if (payments != 12 && payments != 14) {
@@ -72,10 +72,9 @@ public class Worker {
       return category>=0 && category<=10;
   }
 
-  public void setCategory(String category){
-      Integer cat = Integer.valueOf(category);
-      if (!isValidCategory(cat)) {
-          category="0";
+  public void setCategory(int category){
+      if (!isValidCategory(category)) {
+          category=0;
       }
       this.category = category;
   }
