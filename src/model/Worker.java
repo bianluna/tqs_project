@@ -68,4 +68,15 @@ public class Worker {
       this.children = children;
   }
 
+  public boolean isValidCategory(int category) {
+      return category>=0 && category<=10;
+  }
+
+  public void setCategory(String category){
+      Integer cat = Integer.valueOf(category);
+      if (!isValidCategory(cat)) {
+          category="0";
+      }
+      this.category = category;
+  }
 }
