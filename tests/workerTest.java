@@ -58,4 +58,11 @@ public class workerTest {
     },"Debe lanzar una excepción si el salario neto bruto es negativo." );
   }
 
+  @Test
+  void testTotalIncomeNotZero() {
+    Worker worker = new Worker();
+    assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(0);
+    },"Debe lanzar una excepción si el salario neto bruto es cero." );
+  }
 }
