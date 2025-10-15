@@ -46,10 +46,16 @@ public class workerTest {
     Worker worker = new Worker();
     assertThrows(IllegalArgumentException.class, () -> {
       worker.setPayments(15);
-    }, "Debe lanzar una excepción si el número de pagos no es 12 o 14");
+    }, "Debe lanzar una excepción si el número de pagos no es 12 o 14.");
   }
 
 
-
+  @Test
+  void testNegativeTotalIncome() {
+    Worker worker = new Worker();
+    assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(-20000);
+    },"Debe lanzar una excepción si el salario neto bruto es negativo." );
+  }
 
 }
