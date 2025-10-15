@@ -27,6 +27,13 @@ public class workerTest {
   }
 
   @Test
+  void testValidPayments14() {
+    Worker worker = new Worker();
+    worker.setPayments(14);
+    assertEquals(14, worker.getPayments());
+  }
+
+  @Test
   void testInvalidPaymentsThrowsException() {
     Worker worker = new Worker();
     assertThrows(IllegalArgumentException.class, () -> {
