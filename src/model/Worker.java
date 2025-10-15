@@ -39,7 +39,12 @@ public class Worker {
   public String getContract() {return contract;}
   public String getCategory() {return category;}
 
-  public void setPayments(int payments) { this.payments = payments; }
+  public void setPayments(int payments) {
+    if (payments != 12 && payments != 14) {
+      throw new IllegalArgumentException("El número de pagos debe ser 12 o 14");
+    }
+    this.payments = payments;
+  }
 
 
 
