@@ -46,6 +46,16 @@ public class Worker {
     this.payments = payments;
   }
 
+  public boolean isValidIncome(float income) {
+    return income >= 0;
+  }
+
+  public void setTotalIncome(float totalIncome) {
+    if (!isValidIncome(totalIncome)) {
+      throw new IllegalArgumentException("El salario neto bruto no puede ser negativo");
+    }
+    this.totalIncome = totalIncome;
+  }
 
 
 }
