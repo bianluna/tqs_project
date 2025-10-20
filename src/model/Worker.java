@@ -61,10 +61,9 @@ public class Worker {
   }
 
   public void setChildren(int children) {
-      if (!isValidChildren(children)) {
-          throw new IllegalArgumentException("El número de hijos no puede ser negativo");
+      if (isValidChildren(children)) {
+        this.children = children;
       }
-      this.children = children;
   }
 
   public boolean isValidCategory(int category) {
