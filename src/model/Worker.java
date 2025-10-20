@@ -76,4 +76,14 @@ public class Worker {
       }
       this.category = category;
   }
+
+  public boolean isValidContract(String contract) {
+    return contract.equals("indefinido") || contract.equals("temporal") || contract.equals("prácticas");
+  }
+
+  public void setContract(String contract) {
+    if (isValidContract(contract)) {
+      this.contract = contract;
+    }
+  }
 }
