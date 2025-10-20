@@ -81,6 +81,27 @@ public class workerTest {
     assertFalse(worker.getCategory()==20);
   }
 
+  @Test void testContract() {
+    Worker worker = new Worker();
+
+    // Set contract type temporal
+    worker.setContract("temporal");
+    assertEquals("temporal", worker.getContract());
+
+    // Set contract type indefinido
+    worker.setContract("indefinido");
+    assertEquals("indefinido", worker.getContract());
+
+    // Set contract type prácticas
+    worker.setContract("prácticas");
+    assertEquals("prácticas", worker.getContract());
+
+    // Attempt to set invalid contract type
+    worker.setContract("indefinido-invalid");
+    assertFalse(worker.getContract().equals("indefinido-invalid"));
+    assertEquals("prácticas", worker.getContract());
+
+  }
 
 }
 
