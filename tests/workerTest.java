@@ -31,9 +31,11 @@ public class workerTest {
     worker.setPayments(14);
     assertTrue(worker.getPayments() == 14);
 
-    // Invalid payment should be ignored (value stays unchanged)
-    worker.setPayments(15);
-    assertFalse(worker.getPayments() == 15);
+    // Invalid payment should be ignored (value stays unchanged, in this case it stays as default 0)
+    Worker invalidWorker = new Worker();
+    invalidWorker.setPayments(15);
+    assertFalse(invalidWorker.getPayments() == 15);
+    assertTrue(invalidWorker.getPayments() == 0);
   }
 
   @Test
