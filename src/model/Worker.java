@@ -40,10 +40,9 @@ public class Worker {
   public int getCategory() {return category;}
 
   public void setPayments(int payments) {
-    if (payments != 12 && payments != 14) {
-      throw new IllegalArgumentException("El número de pagos debe ser 12 o 14");
+    if (payments == 12 || payments == 14) {
+      this.payments = payments;
     }
-    this.payments = payments;
   }
 
   public boolean isValidIncome(float income) {
