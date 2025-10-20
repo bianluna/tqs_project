@@ -55,11 +55,21 @@ public class workerTest {
   }
 
   @Test
-  void testValidChildren() {
+  void testChildren() {
     Worker worker = new Worker();
-    assertThrows(IllegalArgumentException.class, () -> {
-      worker.setChildren(-3);
-    },"Debe lanzar una excepción si el numero de hijos es negativo." );
+
+    // Valid number of children
+    worker.setChildren(2);
+    assertEquals(2, worker.getChildren());
+
+    // Attempt to set negative children should not change value
+    worker.setChildren(-3);
+    assertFalse(worker.getChildren() == -3);
+    assertTrue(worker.getChildren() == 2);
+
+    // Setting zero children
+    worker.setChildren(0);
+    assertEquals(0, worker.getChildren());
   }
 
   @Test
