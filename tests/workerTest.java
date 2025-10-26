@@ -107,9 +107,9 @@ public class workerTest {
   @Test
   void testCivilStatus() {
     Worker worker = new Worker();
-    worker.setCivilStatus("indefinido-invalid");
+    worker.setCivilStatus("soltero");
     assertEquals("soltero", worker.getCivilStatus());
-    assertNotSame("casado", worker.getCivilStatus());
+    assertNotSame("hijo", worker.getCivilStatus());
   }
 
 

@@ -87,7 +87,13 @@ public class Worker {
     }
   }
 
+  public boolean isCivilStatusValid(String civilStatus) {
+      return civilStatus.equals("soltero") || civilStatus.equals("casado") || civilStatus.equals("divorciado") || civilStatus.equals("viudo");
+  }
   public void setCivilStatus(String civilStatus) {
-    this.civilStatus = civilStatus;
+      if (isCivilStatusValid(civilStatus)) {
+          this.civilStatus = civilStatus;
+      }
+
   }
 }
