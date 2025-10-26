@@ -78,7 +78,7 @@ public class Worker {
   }
 
   public boolean isValidContract(String contract) {
-    return contract.equals("indefinido") || contract.equals("temporal") || contract.equals("prácticas");
+    return contract.equals("Indefinido") || contract.equals("Temporal") || contract.equals("Formacion en Alternancia")|| contract.equals("Formativo para la Obtencion de la Práctica Profesional");
   }
 
   public void setContract(String contract) {
@@ -88,7 +88,7 @@ public class Worker {
   }
 
   public boolean isCivilStatusValid(String civilStatus) {
-      return civilStatus.equals("soltero") || civilStatus.equals("casado") || civilStatus.equals("divorciado") || civilStatus.equals("viudo");
+      return civilStatus.equals("Soltero") || civilStatus.equals("Casado") || civilStatus.equals("Divorciado") || civilStatus.equals("Viudo");
   }
   public void setCivilStatus(String civilStatus) {
       if (isCivilStatusValid(civilStatus)) {
