@@ -106,10 +106,13 @@ public class workerTest {
 
   @Test
   void testCivilStatus() {
-    Worker worker = new Worker("Ana", "soltera", 0, 28000, 14, "temporal", 3);
+    Worker worker = new Worker();
+    worker.setCivilStatus("indefinido-invalid");
     assertEquals("soltero", worker.getCivilStatus());
     assertNotSame("casado", worker.getCivilStatus());
   }
+
+
 
 
 }

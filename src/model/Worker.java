@@ -86,4 +86,8 @@ public class Worker {
       this.contract = contract;
     }
   }
+
+  public void setCivilStatus(String civilStatus) {
+    this.civilStatus = civilStatus;
+  }
 }
