@@ -81,7 +81,8 @@ public class workerTest {
     assertFalse(worker.getCategory()==20);
   }
 
-  @Test void testContract() {
+  @Test
+  void testContract() {
     Worker worker = new Worker();
 
     // Set contract type temporal
@@ -102,6 +103,14 @@ public class workerTest {
     assertEquals("prácticas", worker.getContract());
 
   }
+
+  @Test
+  void testCivilStatus() {
+    Worker worker = new Worker("Ana", "soltera", 0, 28000, 14, "temporal", 3);
+    assertEquals("soltero", worker.getCivilStatus());
+    assertNotSame("casado", worker.getCivilStatus());
+  }
+
 
 }
 
