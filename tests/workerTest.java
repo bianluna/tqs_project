@@ -1,9 +1,34 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import model.Worker;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class workerTest {
+  Worker worker = new Worker();
+  Worker invalidWorker = new Worker();
+  @BeforeEach
+  void setUp() {
+    // This method can be used to set up common test data if needed
+    worker = new Worker(
+        "Pepito",
+        "casado",
+        3,
+        35000,
+        12,
+        "indefinido",
+        7 );
+
+    invalidWorker = new Worker(
+        "Pepito",
+        "casado",
+        3,
+        35000,
+        12,
+        "indefinido",
+        7 );
+
+  }
 
   @Test
   void testConstructor() {
@@ -21,10 +46,7 @@ public class workerTest {
 
   @Test
   void testValidPayments() {
-    Worker worker = new Worker();
-
     // Valid payment 12
-    worker.setPayments(12);
     assertTrue(worker.getPayments() == 12);
 
     // Valid payment 14
@@ -32,7 +54,6 @@ public class workerTest {
     assertTrue(worker.getPayments() == 14);
 
     // Invalid payment should be ignored (value stays unchanged, in this case it stays as default 0)
-    Worker invalidWorker = new Worker();
     invalidWorker.setPayments(15);
     assertFalse(invalidWorker.getPayments() == 15);
     assertTrue(invalidWorker.getPayments() == 0);
@@ -40,32 +61,27 @@ public class workerTest {
 
   @Test
   void testNegativeTotalIncome() {
-    Worker worker = new Worker();
     assertThrows(IllegalArgumentException.class, () -> {
-      worker.setTotalIncome(-20000);
+      invalidWorker.setTotalIncome(-20000);
     },"Debe lanzar una excepción si el salario neto bruto es negativo." );
   }
 
   @Test
   void testTotalIncomeNotZero() {
-    Worker worker = new Worker();
     assertThrows(IllegalArgumentException.class, () -> {
-      worker.setTotalIncome(0);
+      invalidWorker.setTotalIncome(0);
     },"Debe lanzar una excepción si el salario neto bruto es cero." );
   }
 
   @Test
   void testChildren() {
-    Worker worker = new Worker();
-
     // Valid number of children
-    worker.setChildren(2);
-    assertEquals(2, worker.getChildren());
+    assertEquals(3, worker.getChildren());
 
     // Attempt to set negative children should not change value
     worker.setChildren(-3);
     assertFalse(worker.getChildren() == -3);
-    assertTrue(worker.getChildren() == 2);
+    assertEquals(3, worker.getChildren());
 
     // Setting zero children
     worker.setChildren(0);
@@ -74,17 +90,13 @@ public class workerTest {
 
   @Test
   void testValidCategory() {
-    Worker worker = new Worker();
-    worker = new Worker("Ana", "soltera", 0, 28000, 14, "temporal", 3);
-    assertTrue(worker.getCategory()==3);
+    assertTrue(worker.getCategory()==7);
     worker.setCategory(20);
     assertFalse(worker.getCategory()==20);
   }
 
   @Test
   void testContract() {
-    Worker worker = new Worker();
-
     // Set contract type temporal
     worker.setContract("temporal");
     assertEquals("temporal", worker.getContract());
@@ -106,9 +118,7 @@ public class workerTest {
 
   @Test
   void testCivilStatus() {
-    Worker worker = new Worker();
-    worker.setCivilStatus("soltero");
-    assertEquals("soltero", worker.getCivilStatus());
+    assertEquals("casado", worker.getCivilStatus());
     assertNotSame("hijo", worker.getCivilStatus());
   }
 
