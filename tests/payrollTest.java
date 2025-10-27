@@ -18,8 +18,8 @@ public class payrollTest {
   @Test
   void testMonthlySalary() {
     payroll = new Payroll(20000, "Pepito", 12);
-    assertTrue(payroll.paymentsPerMonth == 1666.66f);
-    assertFalse(payroll.paymentsPerMonth == 1666);
+    assertTrue(payroll.paymentsPerMonth(payroll.annualGrossSalary, payroll.paymentsPerYear ) == 1666.67);
+    assertFalse(payroll.paymentsPerMonth(payroll.annualGrossSalary, payroll.paymentsPerYear ) == 1666);
   }
 
 

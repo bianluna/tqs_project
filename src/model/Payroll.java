@@ -1,5 +1,7 @@
 package model;
 
+import java.text.DecimalFormat;
+
 public class Payroll {
   public String workerName;
   public float annualGrossSalary;
@@ -18,6 +20,9 @@ public class Payroll {
   }
 
 
+  public double paymentsPerMonth(float annualGrossSalary, int paymentsPerYear) {
+    return (Math.round((annualGrossSalary / paymentsPerYear) * 100) / 100d);
+  }
 
 
 
