@@ -10,7 +10,7 @@ public class payrollTest {
 
   @Test
   void testConstructor() {
-    payroll = new Payroll(20000, "Pepito", 12);
+    payroll = new Payroll(20000, "Pepito", 12, 2000);
     assertEquals("Pepito", payroll.workerName);
     assertTrue(payroll.annualGrossSalary == 20000);
     assertTrue(payroll.paymentsPerYear == 12);
@@ -18,7 +18,7 @@ public class payrollTest {
 
   @Test
   void testMonthlySalary() {
-    payroll = new Payroll(20000, "Pepito", 12);
+    payroll = new Payroll(20000, "Pepito", 12, 2000);
     assertTrue(payroll.paymentsPerMonth(payroll.annualGrossSalary, payroll.paymentsPerYear ) == 1666.67);
     assertFalse(payroll.paymentsPerMonth(payroll.annualGrossSalary, payroll.paymentsPerYear ) == 1666);
   }
@@ -27,8 +27,10 @@ public class payrollTest {
   void testSalaryExtras(){
     payroll = new Payroll(20000, "Pepito", 12, 2000);
     assertTrue(payroll.monthlyGrossSalary(payroll.annualGrossSalary, payroll.paymentsPerYear, payroll.extras) == 3666.67);
-    assertFalse(payroll.monthlyGrossSalary == 1800);
+    assertFalse(payroll.monthlyGrossSalary(payroll.annualGrossSalary, payroll.paymentsPerYear, payroll.extras) == 1800);
   }
+
+
 
 
 }
