@@ -10,12 +10,18 @@ public class payrollTest {
   @Test
   void testConstructor() {
     payroll = new Payroll(20000, "Pepito", 12);
-
     assertEquals("Pepito", payroll.workerName);
     assertTrue(payroll.annualGrossSalary == 20000);
     assertTrue(payroll.paymentsPerYear == 12);
-
   }
+
+  @Test
+  void testMonthlySalary() {
+    payroll = new Payroll(20000, "Pepito", 12);
+    assertTrue(payroll.paymentsPerMonth == 1666.66f);
+    assertFalse(payroll.paymentsPerMonth == 1666);
+  }
+
 
 
 
