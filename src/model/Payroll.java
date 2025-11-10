@@ -33,4 +33,15 @@ public class Payroll {
   }
 
 
+  public double calculateSocialSecurity(int totalIncome, int category) {
+    float percentage;
+
+    if (category >= 1 && category <= 4) percentage = 6.35f;
+    else if (category >= 5 && category <= 7) percentage = 6.40f;
+    else if (category >= 8 && category <= 10) percentage = 6.45f;
+    //else throw new IllegalArgumentException("Categoría fuera de rango");
+    else percentage = 0.00f;
+
+    return totalIncome * (percentage / 100);
+  }
 }

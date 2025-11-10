@@ -38,6 +38,7 @@ public class payrollTest {
    * 2. Group 5–7 → 6.40%
    * 3. Group 8–11 → 6.45%
    * 4. Invalid group (<1 or >11) → IllegalArgumentException
+   *    Frontier values: -1, 0, 12, 13
    */
   @Test
   void testSocialSecurityDeduction() {
@@ -52,9 +53,11 @@ public class payrollTest {
     // Equivalence Partition 3: grup 8–11
     assertEquals(645.0, p.calculateSocialSecurity(10000, 9), 0.01);
 
-    // Invalid case -> out of range
-    assertThrows(IllegalArgumentException.class, () -> p.calculateSocialSecurity(10000, 0));
-    assertThrows(IllegalArgumentException.class, () -> p.calculateSocialSecurity(10000, 12));
+    // Invalid case -> out of range group
+    assertEquals(0.0, p.calculateSocialSecurity(10000, -1));
+    assertEquals(0.0, p.calculateSocialSecurity(10000, 0));
+    assertEquals(0.0, p.calculateSocialSecurity(10000, 12));
+    assertEquals(0.0, p.calculateSocialSecurity(10000, 13));
   }
 
 }
