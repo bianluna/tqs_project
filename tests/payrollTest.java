@@ -45,13 +45,13 @@ public class payrollTest {
     Payroll p = new Payroll();
 
     // Equivalence Partition 1: grup 1–4
-    assertEquals(635.0, p.calculateSocialSecurity(10000, 2), 0.01);
+    assertEquals(635.0, p.calculateSocialSecurity(10000, 2));
 
     // Equivalence Partition 2: grup 5–7
-    assertEquals(640.0, p.calculateSocialSecurity(10000, 6), 0.01);
+    assertEquals(640.0, p.calculateSocialSecurity(10000, 6));
 
     // Equivalence Partition 3: grup 8–11
-    assertEquals(645.0, p.calculateSocialSecurity(10000, 9), 0.01);
+    assertEquals(645.0, p.calculateSocialSecurity(10000, 9));
 
     // Invalid case -> out of range group
     assertEquals(0.0, p.calculateSocialSecurity(10000, -1));
