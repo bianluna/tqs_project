@@ -30,7 +30,31 @@ public class payrollTest {
     assertFalse(payroll.monthlyGrossSalary(payroll.annualGrossSalary, payroll.paymentsPerYear, payroll.extras) == 1800);
   }
 
+  /*
+   * Test cases for calculating social security deduction based on contribution group.
+   *
+   * Equivalence Partitions:
+   * 1. Group 1–4 → 6.35%
+   * 2. Group 5–7 → 6.40%
+   * 3. Group 8–11 → 6.45%
+   * 4. Invalid group (<1 or >11) → IllegalArgumentException
+   */
+  @Test
+  void testSocialSecurityDeduction() {
+    Payroll p = new Payroll();
 
+    // Equivalence Partition 1: grup 1–4
+    assertEquals(635.0, p.calculateSocialSecurity(10000, 2), 0.01);
 
+    // Equivalence Partition 2: grup 5–7
+    assertEquals(640.0, p.calculateSocialSecurity(10000, 6), 0.01);
+
+    // Equivalence Partition 3: grup 8–11
+    assertEquals(645.0, p.calculateSocialSecurity(10000, 9), 0.01);
+
+    // Invalid case -> out of range
+    assertThrows(IllegalArgumentException.class, () -> p.calculateSocialSecurity(10000, 0));
+    assertThrows(IllegalArgumentException.class, () -> p.calculateSocialSecurity(10000, 12));
+  }
 
 }
