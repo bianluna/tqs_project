@@ -1,19 +1,35 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import model.Payroll;
+import model.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class payrollTest {
 
   Payroll payroll = new Payroll();
-
+  
   @Test
   void testConstructor() {
-    payroll = new Payroll(20000, "Pepito", 12, 2000);
-    assertEquals("Pepito", payroll.workerName);
-    assertTrue(payroll.annualGrossSalary == 20000);
-    assertTrue(payroll.paymentsPerYear == 12);
+    /*
+    * public class Payroll {
+        public String payrollCode;
+        Worker worker;
+        public float annualGrossSalary; // worker.getTotalIncome()
+        public float netSalary; // annualGrossSalary - deductions
+        public float irpf;
+        public float sgs;
+  * */
+
+    // new Payroll(String payrollCode, Worker worker) // other attributes -->  annualGrossSalary, netSalary, irpf, sgs
+    Worker basicWorker = new Worker("Pepito", "Casado", 3, 35000, 12, "Indefinido", 7 );
+    payroll = new Payroll("112025",basicWorker);
+    assertEquals("112025", payroll.getPayrollCode()); // to identify each payroll
+    assertNotNull(payroll.getWorker()); // asegura que se ha asociado un trabajador a la nómina
+    assertEquals(35000,payroll.getTotalIncome()); // obtiene el salario bruto anual del trabajador
+
+    //assertEquals(0,payroll.getNetSalary()); // obtiene el salario neto anual (nulo de momento)
+    //assertEquals(0,payroll.getDeductions()); //obtiene las deducciones a realizar del salario bruto -> irpf, sgs
   }
 
   @Test
