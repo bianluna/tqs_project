@@ -1,27 +1,30 @@
 package model;
 
-import java.text.DecimalFormat;
-
 public class Payroll {
-  public String workerName;
-  public float annualGrossSalary;
-  public int paymentsPerYear;
-  public float extras;
+  public String payrollCode;
+  Worker worker;
+  public float annualGrossSalary; // worker.getTotalIncome()
+  public float netSalary; // annualGrossSalary - deductions
+  public float irpf;
+  public float sgs;
 
 
   public Payroll() {
-    this.workerName = "";
+    this.payrollCode = "";
+    this.worker = new Worker();
     this.annualGrossSalary = 0;
-    this.paymentsPerYear = 0;
-    this.extras = 0;
   }
 
-  public Payroll(float annualGrossSalary, String workerName, int paymentsPerYear, float extras) {
-    this.annualGrossSalary = annualGrossSalary;
-    this.workerName = workerName;
-    this.paymentsPerYear = paymentsPerYear;
-    this.extras = extras;
+  public Payroll(String payrollCode, Worker worker) {
+    this.payrollCode = payrollCode;
+    this.worker = worker;
+    this.annualGrossSalary = worker.getTotalIncome();
   }
+
+  public String getPayrollCode() { return payrollCode; }
+  public Worker getWorker() { return worker;}
+  public float getTotalIncome() { return annualGrossSalary;}
+
 
 
   public double paymentsPerMonth(float annualGrossSalary, int paymentsPerYear) {
