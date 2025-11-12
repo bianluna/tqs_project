@@ -94,4 +94,94 @@ public class payrollTest {
     assertEquals(0.0, p.calculateSocialSecurity(10000, 13));*/
   }
 
+  /* Important variables:
+    * - Annual gross income
+    * - Number of children
+    * - Contract type (Indefinite or Temporary)
+    *
+    * Equivalence Partitions:
+    * 1. Base cases (no children, indefinite contract):
+    *    - Income ≤ 12,450 → 19%
+    *    - 12,451 – 20,200 → 24%
+    *    - 20,201 – 35,200 → 30%
+    *    - 35,201 – 60,000 → 37%
+    *    - > 60,000 → 45%
+    *
+    * 2. Children cases (1 to 5 children):
+    *    - Each child reduces IRPF by 1% up to a maximum of 5%
+    *
+    * 3. Temporary contract cases:
+    *    - Add an additional 3% to the base IRPF rate
+    *
+    * Test cases will cover each partition and boundary values.
+  * */
+  @Test
+  void testIrpfDeduction() {
+    Payroll payroll = new Payroll();
+
+    // === BASE CASES (no children, indefinite contract) ===
+    Worker base1 = new Worker("A", "Soltero", 0, 12000, 12, "Indefinido", 3);
+    Worker base2 = new Worker("B", "Soltero", 0, 18000, 12, "Indefinido", 3);
+    Worker base3 = new Worker("C", "Soltero", 0, 30000, 12, "Indefinido", 3);
+    Worker base4 = new Worker("D", "Soltero", 0, 50000, 12, "Indefinido", 3);
+    Worker base5 = new Worker("E", "Soltero", 0, 80000, 12, "Indefinido", 3);
+
+    payroll.setWorker(base1);
+    assertEquals(2280.0, payroll.calculateIrpf(), 0.01); // 19% of 12000
+    payroll.setWorker(base2);
+    assertEquals(4320.0, payroll.calculateIrpf(), 0.01); // 24% of 18000
+    payroll.setWorker(base3);
+    assertEquals(9000.0, payroll.calculateIrpf(), 0.01); // 30% of 30000
+    payroll.setWorker(base4);
+    assertEquals(18500.0, payroll.calculateIrpf(), 0.01); // 37% of 50000
+    payroll.setWorker(base5);
+    assertEquals(36000.0, payroll.calculateIrpf(), 0.01); // 45% of 80000
+
+    // === CHILDREN CASES (1, 2, 3, 5 children) ===
+    // Each child reduces IRPF 1% up to 5%
+
+    // Partition 1: 1 child → -1%
+    Worker child1 = new Worker("A1", "Soltero", 1, 12000, 12, "Indefinido", 3);
+    payroll.setWorker(child1);
+    assertEquals(2160.0, payroll.calculateIrpf(), 0.01); // 18%
+
+    // Partition 2: 2 children → -2%
+    Worker child2 = new Worker("A2", "Soltero", 2, 18000, 12, "Indefinido", 3);
+    payroll.setWorker(child2);
+    assertEquals(3960.0, payroll.calculateIrpf(), 0.01); // 22%
+
+    // Partition 3: 3 children → -3%
+    Worker child3 = new Worker("A3", "Soltero", 3, 30000, 12, "Indefinido", 3);
+    payroll.setWorker(child3);
+    assertEquals(8100.0, payroll.calculateIrpf(), 0.01); // 27%
+
+    // Partition 4: 5 children → -5% (maximum)
+    Worker child5 = new Worker("A5", "Soltero", 5, 80000, 12, "Indefinido", 3);
+    payroll.setWorker(child5);
+    assertEquals(32000.0, payroll.calculateIrpf(), 0.01); // 40%
+
+    // === TEMPORARY CONTRACT CASES (+3%) ===
+
+    Worker temp1 = new Worker("T1", "Soltero", 0, 12000, 12, "Temporal", 3);
+    payroll.setWorker(temp1);
+    assertEquals(2640.0, payroll.calculateIrpf(), 0.01); // 22%
+
+    Worker temp2 = new Worker("T2", "Soltero", 0, 18000, 12, "Temporal", 3);
+    payroll.setWorker(temp2);
+    assertEquals(4860.0, payroll.calculateIrpf(), 0.01); // 27%
+
+    Worker temp3 = new Worker("T3", "Soltero", 0, 30000, 12, "Temporal", 3);
+    payroll.setWorker(temp3);
+    assertEquals(9900.0, payroll.calculateIrpf(), 0.01); // 33%
+
+    Worker temp4 = new Worker("T4", "Soltero", 0, 50000, 12, "Temporal", 3);
+    payroll.setWorker(temp4);
+    assertEquals(20000.0, payroll.calculateIrpf(), 0.01); // 40%
+
+    Worker temp5 = new Worker("T5", "Soltero", 0, 80000, 12, "Temporal", 3);
+    payroll.setWorker(temp5);
+    assertEquals(38400.0, payroll.calculateIrpf(), 0.01); // 48%
+  }
+
+
 }
