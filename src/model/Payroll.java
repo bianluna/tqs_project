@@ -21,6 +21,7 @@ public class Payroll {
     this.annualGrossSalary = worker.getTotalIncome();
   }
 
+  public void setWorker(Worker worker) { this.worker = worker; }
   public String getPayrollCode() { return payrollCode; }
   public Worker getWorker() { return worker;}
   public float getTotalIncome() { return annualGrossSalary;}
@@ -36,15 +37,16 @@ public class Payroll {
   }
 
 
-  public double calculateSocialSecurity(int totalIncome, int category) {
+  public double calculateSocialSecurity() {
     float percentage;
 
-    if (category >= 1 && category <= 4) percentage = 6.35f;
-    else if (category >= 5 && category <= 7) percentage = 6.40f;
-    else if (category >= 8 && category <= 10) percentage = 6.45f;
+    if (worker.getCategory() >= 1 && worker.getCategory() <= 4) percentage = 6.35f;
+    else if (worker.getCategory() >= 5 && worker.getCategory() <= 7) percentage = 6.40f;
+    else if (worker.getCategory() >= 8 && worker.getCategory() <= 11) percentage = 6.45f;
     //else throw new IllegalArgumentException("Categoría fuera de rango");
     else percentage = 100; // keep income as it is without deductions
+    sgs = Math.round(worker.getTotalIncome() * (percentage / 100));
 
-    return totalIncome * (percentage / 100);
+    return sgs;
   }
 }

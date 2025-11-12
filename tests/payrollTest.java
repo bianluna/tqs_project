@@ -75,15 +75,15 @@ public class payrollTest {
 
     // Equivalence Partition 2: grup 5–7
     p.setWorker(cat5Worker);
-    assertEquals(640.0, p.calculateSocialSecurity();
+    assertEquals(640.0, p.calculateSocialSecurity());
     p.setWorker(cat7Worker);
-    assertEquals(640.0, p.calculateSocialSecurity();
+    assertEquals(640.0, p.calculateSocialSecurity());
 
     // Equivalence Partition 3: grup 8–11
     p.setWorker(cat8Worker);
     assertEquals(645.0, p.calculateSocialSecurity());
     p.setWorker(cat11Worker);
-    assertEquals(645.0, p.calculateSocialSecurity()));
+    assertEquals(645.0, p.calculateSocialSecurity());
     p.setWorker(cat9Worker);
     assertEquals(645.0, p.calculateSocialSecurity());
 
