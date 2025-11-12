@@ -4,9 +4,9 @@ public class Payroll {
   public String payrollCode;
   Worker worker;
   public float annualGrossSalary; // worker.getTotalIncome()
-  public float netSalary; // annualGrossSalary - deductions
-  public float irpf;
-  public float sgs;
+  public double netSalary; // annualGrossSalary - deductions
+  public double irpf;
+  public double sgs;
 
 
   public Payroll() {
@@ -98,4 +98,14 @@ public class Payroll {
     double irpf = Math.round(irpfAmount * 100.0) / 100.0;
     return irpf;
   }
+
+  public double calculateNetSalary() {
+    double gross = worker.getTotalIncome();
+    double irpfAmount = calculateIrpf();
+    double socialSecurity = calculateSocialSecurity();
+
+    netSalary = gross - (irpfAmount + socialSecurity);
+    return Math.round(netSalary * 100.0) / 100.0;
+  }
+
 }
