@@ -183,5 +183,40 @@ public class payrollTest {
     assertEquals(38400.0, payroll.calculateIrpf(), 0.01); // 48%
   }
 
+  @Test
+  void testCalculateNetSalary() {
+    Payroll payroll = new Payroll();
+
+    // === Caso 1: Trabajador base, sin hijos, contrato indefinido, categoría 5 ===
+    Worker w1 = new Worker("Ana", "Soltero", 0, 30000, 12, "Indefinido", 5);
+    payroll.setWorker(w1);
+
+    // IRPF base 30% → 9 000 €
+    // Seguridad Social (cat 5 → 6.40%) → 1 920 €
+    // Neto esperado = 30 000 - (9 000 + 1 920) = 19 080 €
+    assertEquals(19080.0, payroll.calculateNetSalary(), 0.01);
+
+    // === Caso 2: Trabajador con hijos y contrato temporal ===
+    Worker w2 = new Worker("Luis", "Casado", 3, 40000, 14, "Temporal", 7);
+    payroll.setWorker(w2);
+
+    // IRPF base (tramo 4 → 37%) -3% por hijos +3% temporal = 37%
+    // IRPF = 40000 * 0.37 = 14 800 €
+    // SS (cat 7 → 6.40%) = 2 560 €
+    // Neto esperado = 40000 - (14800 + 2560) = 22 640 €
+    assertEquals(22640.0, payroll.calculateNetSalary(), 0.01);
+
+    // === Caso 3: Trabajador de categoría alta con muchos hijos ===
+    Worker w3 = new Worker("Lucia", "Casado", 5, 80000, 12, "Indefinido", 10);
+    payroll.setWorker(w3);
+
+    // IRPF base 45% -5% por hijos = 40%
+    // IRPF = 80000 * 0.40 = 32 000 €
+    // SS (cat 10 → 6.45%) = 5 160 €
+    // Neto esperado = 80000 - (32 000 + 5 160) = 42 840 €
+    assertEquals(42840.0, payroll.calculateNetSalary(), 0.01);
+  }
+
+
 
 }
