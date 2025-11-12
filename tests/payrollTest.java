@@ -217,6 +217,32 @@ public class payrollTest {
     assertEquals(42840.0, payroll.calculateNetSalary(), 0.01);
   }
 
+  @Test
+  void testCalculateMonthlyNetSalary() {
+    Payroll payroll = new Payroll();
+
+    // === Caso 1: Trabajador con 12 pagas ===
+    Worker w1 = new Worker("Ana", "Soltero", 0, 36000, 12, "Indefinido", 5);
+    payroll.setWorker(w1);
+
+    // IRPF base 30% = 10 800 €
+    // Seguridad Social 6.40% = 2 304 €
+    // Neto anual = 36 000 - (10 800 + 2 304) = 22 896 €
+    // Neto mensual esperado = 22 896 / 12 = 1 908 €
+    assertEquals(1908.0, payroll.calculateMonthlyNetSalary(), 0.01);
+
+    // === Caso 2: Trabajador con 14 pagas ===
+    Worker w2 = new Worker("Luis", "Casado", 2, 42000, 14, "Temporal", 7);
+    payroll.setWorker(w2);
+
+    // IRPF base 37% -2% hijos +3% temporal = 38%
+    // IRPF = 15 960 €
+    // SS (cat 7 → 6.40%) = 2 688 €
+    // Neto anual = 42 000 - (15 960 + 2 688) = 23 352 €
+    // Neto mensual esperado = 23 352 / 14 = 1 668 €
+    assertEquals(1668.0, payroll.calculateMonthlyNetSalary(), 0.01);
+  }
+
 
 
 }
