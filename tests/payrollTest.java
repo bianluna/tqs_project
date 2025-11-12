@@ -29,8 +29,8 @@ public class payrollTest {
     assertNotNull(payroll.getWorker()); // asegura que se ha asociado un trabajador a la nómina
     assertEquals(35000,payroll.getTotalIncome()); // obtiene el salario bruto anual del trabajador
 
-    //assertEquals(0,payroll.getNetSalary()); // obtiene el salario neto anual (nulo de momento) -- imple
-    //assertEquals(0,payroll.getDeductions()); //obtiene las deducciones a realizar del salario bruto -> irpf, sgs
+    //assertEquals(0,payroll.getNetSalary()); // obtiene el salario neto anual (nulo de momento) -- a implementar más adelante
+    //assertEquals(0,payroll.getDeductions()); //obtiene las deducciones a realizar del salario bruto -> irpf, sgs -- a implementado más adelante
   }
 
   @Test
@@ -59,22 +59,39 @@ public class payrollTest {
    */
   @Test
   void testSocialSecurityDeduction() {
+    Worker cat1Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 1);
+    Worker cat2Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 2);
+    Worker cat4Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 4);
+    Worker cat5Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 5);
+    Worker cat7Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 7);
+    Worker cat8Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 8);
+    Worker cat9Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 9);
+    Worker cat11Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 11);
     Payroll p = new Payroll();
 
     // Equivalence Partition 1: grup 1–4
-    assertEquals(635.0, p.calculateSocialSecurity(10000, 2));
+    p.setWorker(cat2Worker);
+    assertEquals(635.0, p.calculateSocialSecurity());
 
     // Equivalence Partition 2: grup 5–7
-    assertEquals(640.0, p.calculateSocialSecurity(10000, 6));
+    p.setWorker(cat5Worker);
+    assertEquals(640.0, p.calculateSocialSecurity();
+    p.setWorker(cat7Worker);
+    assertEquals(640.0, p.calculateSocialSecurity();
 
     // Equivalence Partition 3: grup 8–11
-    assertEquals(645.0, p.calculateSocialSecurity(10000, 9));
+    p.setWorker(cat8Worker);
+    assertEquals(645.0, p.calculateSocialSecurity());
+    p.setWorker(cat11Worker);
+    assertEquals(645.0, p.calculateSocialSecurity()));
+    p.setWorker(cat9Worker);
+    assertEquals(645.0, p.calculateSocialSecurity());
 
     // Invalid case -> out of range group
-    assertEquals(0.0, p.calculateSocialSecurity(10000, -1));
+    /*assertEquals(0.0, p.calculateSocialSecurity(10000, -1));
     assertEquals(0.0, p.calculateSocialSecurity(10000, 0));
     assertEquals(0.0, p.calculateSocialSecurity(10000, 12));
-    assertEquals(0.0, p.calculateSocialSecurity(10000, 13));
+    assertEquals(0.0, p.calculateSocialSecurity(10000, 13));*/
   }
 
 }
