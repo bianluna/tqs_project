@@ -108,4 +108,13 @@ public class Payroll {
     return Math.round(netSalary * 100.0) / 100.0;
   }
 
+  public double calculateMonthlyNetSalary() {
+    double netAnnual = calculateNetSalary();
+    int payments = worker.getPayments();
+
+    double monthly = netAnnual / payments;
+    return Math.round(monthly * 100.0) / 100.0;
+  }
+
+
 }
