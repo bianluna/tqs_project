@@ -18,13 +18,13 @@ public class payrollTest {
     assertEquals(35000,payroll.getTotalIncome()); // obtiene el salario bruto anual del trabajador
   }
 
-  /*@Test
+  @Test
   void testMonthlySalary() {
     Worker basicWorker = new Worker("Pepito", "Casado", 3, 20000, 12, "Indefinido", 7 );
     payroll = new Payroll("112025", basicWorker);
     assertTrue(payroll.paymentsPerMonth() == 1666.67);
-    assertFalse(payroll.paymentsPerMonth(payroll.annualGrossSalary, payroll.paymentsPerYear ) == 1666);
-  }*/
+    assertFalse(payroll.paymentsPerMonth() == 1666);
+  }
 
   @Test
   void testSalaryExtras(){
