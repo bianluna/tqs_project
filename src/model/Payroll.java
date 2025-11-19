@@ -13,6 +13,9 @@ public class Payroll {
     this.payrollCode = "";
     this.worker = new Worker();
     this.annualGrossSalary = 0;
+    this.netSalary = 0;
+    this.irpf = 0;
+    this.sgs = 0;
   }
 
   public Payroll(String payrollCode, Worker worker) {
@@ -21,7 +24,7 @@ public class Payroll {
     this.annualGrossSalary = worker.getTotalIncome();
   }
 
-  public void setWorker(Worker worker) { this.worker = worker; }
+  public void setWorker(Worker worker) { this.worker = worker; this.annualGrossSalary = worker.getTotalIncome(); }
   public String getPayrollCode() { return payrollCode; }
   public Worker getWorker() { return worker;}
   public float getTotalIncome() { return annualGrossSalary;}
@@ -43,7 +46,6 @@ public class Payroll {
     if (worker.getCategory() >= 1 && worker.getCategory() <= 4) percentage = 6.35f;
     else if (worker.getCategory() >= 5 && worker.getCategory() <= 7) percentage = 6.40f;
     else if (worker.getCategory() >= 8 && worker.getCategory() <= 11) percentage = 6.45f;
-    //else throw new IllegalArgumentException("Categoría fuera de rango");
     else percentage = 100; // keep income as it is without deductions
     sgs = Math.round(worker.getTotalIncome() * (percentage / 100));
 
@@ -95,16 +97,15 @@ public class Payroll {
     double irpfAmount = income * adjustedRate;
 
     // Redondear a 2 decimales (céntimos)
-    double irpf = Math.round(irpfAmount * 100.0) / 100.0;
+    irpf = Math.round(irpfAmount * 100.0) / 100.0;
     return irpf;
   }
 
   public double calculateNetSalary() {
-    double gross = worker.getTotalIncome();
-    double irpfAmount = calculateIrpf();
-    double socialSecurity = calculateSocialSecurity();
+    irpf = calculateIrpf();
+    sgs = calculateSocialSecurity();
 
-    netSalary = gross - (irpfAmount + socialSecurity);
+    netSalary = annualGrossSalary - (irpf + sgs);
     return Math.round(netSalary * 100.0) / 100.0;
   }
 
