@@ -31,12 +31,12 @@ public class Payroll {
 
 
 
-  public double paymentsPerMonth(float annualGrossSalary, int paymentsPerYear) {
-    return (Math.round((annualGrossSalary / paymentsPerYear) * 100) / 100d);
+  public double paymentsPerMonth() {
+    return (Math.round((annualGrossSalary / worker.getPayments()) * 100) / 100d);
   }
 
   public double monthlyGrossSalary(float annualGrossSalary, int paymentsPerYear, float extras) {
-    return paymentsPerMonth(annualGrossSalary, paymentsPerYear) + (extras);
+    return paymentsPerMonth() + (extras);
   }
 
 
