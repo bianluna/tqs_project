@@ -144,32 +144,31 @@ public class payrollTest {
     payroll.setWorker(base1);
     assertEquals(2280.0, payroll.calculateIrpf(), 0.01); // 19% of 12000
     payroll.setWorker(base1b);
-    assertEquals(2365.31, payroll.calculateIrpf(), 0.01);
+    assertEquals(2365.31, payroll.calculateIrpf(), 0.01); // 19% of 12449
+
     payroll.setWorker(base1c);
-    assertEquals(2364.24, payroll.calculateIrpf(), 0.01);
-
-
+    assertEquals(2988.24, payroll.calculateIrpf(), 0.01); // 24% of 12451
     payroll.setWorker(base2);
     assertEquals(4320.0, payroll.calculateIrpf(), 0.01); // 24% of 18000
-    payroll.setWorker(base2b);
-    assertEquals(4848.24, payroll.calculateIrpf(), 0.01);
     payroll.setWorker(base2c);
-    assertEquals(4835.76, payroll.calculateIrpf(), 0.01);
+    assertEquals(4847.76, payroll.calculateIrpf(), 0.01); // 24% of 20199
 
+    payroll.setWorker(base2b);
+    assertEquals(6060.3, payroll.calculateIrpf(), 0.01); // 30% of 20201
     payroll.setWorker(base3);
     assertEquals(9000.0, payroll.calculateIrpf(), 0.01); // 30% of 30000
     payroll.setWorker(base3b);
-    assertEquals(10571.63, payroll.calculateIrpf(), 0.01);
-    payroll.setWorker(base3c);
-    assertEquals(10578.37, payroll.calculateIrpf(), 0.01);
+    assertEquals(10559.7, payroll.calculateIrpf(), 0.01); // 30% of 35199
 
+    payroll.setWorker(base3c);
+    assertEquals(13024.37, payroll.calculateIrpf(), 0.01); // 37% of 35201
     payroll.setWorker(base4);
     assertEquals(18500.0, payroll.calculateIrpf(), 0.01); // 37% of 50000
     payroll.setWorker(base4b);
-    assertEquals(22199.63, payroll.calculateIrpf(), 0.01);
-    payroll.setWorker(base4c);
-    assertEquals(22200.45, payroll.calculateIrpf(), 0.01);
+    assertEquals(22199.63, payroll.calculateIrpf(), 0.01); // 37% of 59999
 
+    payroll.setWorker(base4c);
+    assertEquals(27000.45, payroll.calculateIrpf(), 0.01); // 45% of 60001
     payroll.setWorker(base5);
     assertEquals(36000.0, payroll.calculateIrpf(), 0.01); // 45% of 80000
 
