@@ -7,7 +7,12 @@ import org.junit.jupiter.api.Test;
 
 public class payrollTest {
 
-  Payroll payroll = new Payroll();
+  Payroll payroll;
+
+  @BeforeEach
+  void setup() {
+    payroll = new Payroll();
+  }
 
   @Test
   void testConstructor() {
@@ -49,29 +54,35 @@ public class payrollTest {
     Worker cat2Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 2);
     Worker cat4Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 4);
     Worker cat5Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 5);
+    Worker cat6Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 6);
     Worker cat7Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 7);
     Worker cat8Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 8);
     Worker cat9Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 9);
     Worker cat11Worker = new Worker("Juanito", "Soltero", 0, 10000, 12, "Temporal", 11);
-    Payroll p = new Payroll();
 
     // Equivalence Partition 1: grup 1–4
-    p.setWorker(cat2Worker);
-    assertEquals(635.0, p.calculateSocialSecurity());
+    payroll.setWorker(cat1Worker);
+    assertEquals(635.0, payroll.calculateSocialSecurity());
+    payroll.setWorker(cat2Worker);
+    assertEquals(635.0, payroll.calculateSocialSecurity());
+    payroll.setWorker(cat4Worker);
+    assertEquals(635.0, payroll.calculateSocialSecurity());
 
     // Equivalence Partition 2: grup 5–7
-    p.setWorker(cat5Worker);
-    assertEquals(640.0, p.calculateSocialSecurity());
-    p.setWorker(cat7Worker);
-    assertEquals(640.0, p.calculateSocialSecurity());
+    payroll.setWorker(cat5Worker);
+    assertEquals(640.0, payroll.calculateSocialSecurity());
+    payroll.setWorker(cat6Worker);
+    assertEquals(640.0, payroll.calculateSocialSecurity());
+    payroll.setWorker(cat7Worker);
+    assertEquals(640.0, payroll.calculateSocialSecurity());
 
     // Equivalence Partition 3: grup 8–11
-    p.setWorker(cat8Worker);
-    assertEquals(645.0, p.calculateSocialSecurity());
-    p.setWorker(cat11Worker);
-    assertEquals(645.0, p.calculateSocialSecurity());
-    p.setWorker(cat9Worker);
-    assertEquals(645.0, p.calculateSocialSecurity());
+    payroll.setWorker(cat8Worker);
+    assertEquals(645.0, payroll.calculateSocialSecurity());
+    payroll.setWorker(cat9Worker);
+    assertEquals(645.0, payroll.calculateSocialSecurity());
+    payroll.setWorker(cat11Worker);
+    assertEquals(645.0, payroll.calculateSocialSecurity());
 
     // Invalid case -> out of range group
     /*assertEquals(0.0, p.calculateSocialSecurity(10000, -1));
@@ -80,12 +91,7 @@ public class payrollTest {
     assertEquals(0.0, p.calculateSocialSecurity(10000, 13));*/
   }
 
-  /* Important variables:
-    * - Annual gross income
-    * - Number of children
-    * - Contract type (Indefinite or Temporary)
-    *
-    * Equivalence Partitions:
+  /* Equivalence Partitions:
     * 1. Base cases (no children, indefinite contract):
     *    - Income ≤ 12,450 → 19%
     *    - 12,451 – 20,200 → 24%
@@ -97,32 +103,73 @@ public class payrollTest {
     *    - Each child reduces IRPF by 1% up to a maximum of 5%
     *
     * 3. Temporary contract cases:
-    *    - Add an additional 3% to the base IRPF rate
+    *    - Add 3% to the base IRPF rate
     * 4. Frontier values:
     *   income: negative income, 0 income, 12449, 12451, 20199, 20201, 35199, 35201, 59999, 60001
     *   children: 0, 4, 6
     *   contract type: "Indefinido", "Temporal", invalid types
-    *
-  * */
+    *  */
+
   @Test
   void testIrpfDeduction() {
-    Payroll payroll = new Payroll();
 
     // === BASE CASES (no children, indefinite contract) ===
     Worker base1 = new Worker("A", "Soltero", 0, 12000, 12, "Indefinido", 3);
+    // Frontier value test: 12449
+    Worker base1b = new Worker("A", "Soltero", 0, 12449, 12, "Indefinido", 3);
+    // Frontier value test: 12451
+    Worker base1c = new Worker("A", "Soltero", 0, 12451, 12, "Indefinido", 3);
+
+
     Worker base2 = new Worker("B", "Soltero", 0, 18000, 12, "Indefinido", 3);
+    // Frontier value test: 20201
+    Worker base2b = new Worker("B", "Soltero", 0, 20201, 12, "Indefinido", 3);
+    // Frontier value test: 20199
+    Worker base2c = new Worker("B", "Soltero", 0, 20199, 12, "Indefinido", 3);
+
     Worker base3 = new Worker("C", "Soltero", 0, 30000, 12, "Indefinido", 3);
+    // Frontier value test: 35199
+    Worker base3b = new Worker("C", "Soltero", 0, 35199, 12, "Indefinido", 3);
+    // Frontier value test: 35201
+    Worker base3c = new Worker("C", "Soltero", 0, 35201, 12, "Indefinido", 3);
+
     Worker base4 = new Worker("D", "Soltero", 0, 50000, 12, "Indefinido", 3);
+    // Frontier value test: 59999
+    Worker base4b = new Worker("D", "Soltero", 0, 59999, 12, "Indefinido", 3);
+    // Frontier value test: 60001
+    Worker base4c = new Worker("D", "Soltero", 0, 60001, 12, "Indefinido", 3);
+
     Worker base5 = new Worker("E", "Soltero", 0, 80000, 12, "Indefinido", 3);
 
     payroll.setWorker(base1);
     assertEquals(2280.0, payroll.calculateIrpf(), 0.01); // 19% of 12000
+    payroll.setWorker(base1b);
+    assertEquals(2365.31, payroll.calculateIrpf(), 0.01);
+    payroll.setWorker(base1c);
+    assertEquals(2364.24, payroll.calculateIrpf(), 0.01);
+
+
     payroll.setWorker(base2);
     assertEquals(4320.0, payroll.calculateIrpf(), 0.01); // 24% of 18000
+    payroll.setWorker(base2b);
+    assertEquals(4848.24, payroll.calculateIrpf(), 0.01);
+    payroll.setWorker(base2c);
+    assertEquals(4835.76, payroll.calculateIrpf(), 0.01);
+
     payroll.setWorker(base3);
     assertEquals(9000.0, payroll.calculateIrpf(), 0.01); // 30% of 30000
+    payroll.setWorker(base3b);
+    assertEquals(10571.63, payroll.calculateIrpf(), 0.01);
+    payroll.setWorker(base3c);
+    assertEquals(10578.37, payroll.calculateIrpf(), 0.01);
+
     payroll.setWorker(base4);
     assertEquals(18500.0, payroll.calculateIrpf(), 0.01); // 37% of 50000
+    payroll.setWorker(base4b);
+    assertEquals(22199.63, payroll.calculateIrpf(), 0.01);
+    payroll.setWorker(base4c);
+    assertEquals(22200.45, payroll.calculateIrpf(), 0.01);
+
     payroll.setWorker(base5);
     assertEquals(36000.0, payroll.calculateIrpf(), 0.01); // 45% of 80000
 
@@ -174,8 +221,6 @@ public class payrollTest {
 
   @Test
   void testCalculateNetSalary() {
-    Payroll payroll = new Payroll();
-
     // === Caso 1: Trabajador base, sin hijos, contrato indefinido, categoría 5 ===
     Worker w1 = new Worker("Ana", "Soltero", 0, 30000, 12, "Indefinido", 5);
     payroll.setWorker(w1);
@@ -208,8 +253,6 @@ public class payrollTest {
 
   @Test
   void testCalculateMonthlyNetSalary() {
-    Payroll payroll = new Payroll();
-
     // === Caso 1: Trabajador con 12 pagas ===
     Worker w1 = new Worker("Ana", "Soltero", 0, 36000, 12, "Indefinido", 5);
     payroll.setWorker(w1);
@@ -231,7 +274,4 @@ public class payrollTest {
     // Neto mensual esperado = 23 352 / 14 = 1 668 €
     assertEquals(1668.0, payroll.calculateMonthlyNetSalary(), 0.01);
   }
-
-
-
 }
