@@ -263,5 +263,19 @@ public class CompanyTest {
     assertEquals("TechCorp Solutions", foundCompany.name, "El nombre de la compañía debería coincidir");
   }
 
+  @Test
+  void testDeleteCompany() {
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+
+    // Eliminar una empresa existente
+    boolean result = mock.delete("B12345678");
+
+    assertTrue(result);
+    assertTrue(mock.deleteWasCalled);
+
+    // Verificar que ya no existe
+    Company found = mock.findByCif("B12345678");
+    assertNull(found);
+  }
 
 }
