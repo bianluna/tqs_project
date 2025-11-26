@@ -199,6 +199,19 @@ public class CompanyTest {
       return false;
     }
 
+    @Override
+    public Company findByCif(String cif) {
+      methodCallLog.add("findByCif");
+      findByCifWasCalled = true;
+      lastSearchedCif = cif;
+
+      if (stubReturnValue != null) {
+        return stubReturnValue;
+      }
+
+      return database.get(cif);
+    }
+
   }
 
   @Test
