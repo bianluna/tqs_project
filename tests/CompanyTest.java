@@ -237,9 +237,18 @@ public class CompanyTest {
     boolean result = mock.save(company);
     // Verificamos el resultado del retorno
     assertTrue(result, "El método debería devolver true");
-
   }
 
+  @Test
+  void testFindByCif() {
+    // Instanciamos nuestro mock
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    // Ejecutamos el método usando nuestro mock
+    Company foundCompany = mock.findByCif("B12345678");
+    // Verificamos el resultado del retorno
+    assertNotNull(foundCompany, "La compañía debería ser encontrada");
+    assertEquals("TechCorp Solutions", foundCompany.name, "El nombre de la compañía debería coincidir");
+  }
 
 
 }
