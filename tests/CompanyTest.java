@@ -212,6 +212,18 @@ public class CompanyTest {
       return database.get(cif);
     }
 
+    @Override
+    public boolean delete(String cif) {
+      methodCallLog.add("delete");
+      deleteWasCalled = true;
+
+      if (database.containsKey(cif)) {
+        database.remove(cif);
+        return true;
+      }
+      return false;
+    }
+
   }
 
   @Test

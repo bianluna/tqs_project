@@ -13,4 +13,5 @@ public interface CompanyRepository {
    */
   boolean save(Company company);
   Company findByCif(String cif);
+  boolean delete(String cif);
 }
