@@ -16,26 +16,15 @@ public class CompanyTest {
 
     private Map<String, Company> database;
 
-    // Variables de espionaje
-    private boolean saveWasCalled;
-    private boolean findByCifWasCalled;
     private boolean deleteWasCalled;
-    private Company lastSavedCompany;
-    private String lastSearchedCif;
     private List<String> methodCallLog;
-
-    // Variables de stubbing
     private boolean shouldFailOnSave;
-    private Company stubReturnValue;
-
     /**
      * Constructor que inicializa la BD con datos ficticios
      */
     public CompanyRepositoryMock() {
       this.database = new HashMap<>();
       this.methodCallLog = new ArrayList<>();
-      this.saveWasCalled = false;
-      this.findByCifWasCalled = false;
       this.deleteWasCalled = false;
       this.shouldFailOnSave = false;
       loadFakeData();
@@ -45,7 +34,7 @@ public class CompanyTest {
      * Carga empresas ficticias en la base de datos simulada
      */
     private void loadFakeData() {
-      // Empresas tecnológicas
+
       database.put("B12345678", new Company(
           "TechCorp Solutions",
           "B12345678",
@@ -96,97 +85,11 @@ public class CompanyTest {
           "www.reformasmartinez.es",
           "F43.32"
       ));
-
-      // Empresas de hostelería
-      database.put("B67890123", new Company(
-          "Restaurante El Buen Gusto",
-          "B67890123",
-          "reservas@elbuengusto.com",
-          "+34 93 678 9012",
-          "Rambla de Catalunya, 147, Barcelona",
-          "www.elbuengusto.com",
-          "I56.10"
-      ));
-
-      database.put("B78901234", new Company(
-          "Café Central Barcelona",
-          "B78901234",
-          "info@cafecentral.es",
-          "+34 93 789 0123",
-          "Plaça Catalunya, 21, Barcelona",
-          "www.cafecentral.es",
-          "I56.30"
-      ));
-
-      database.put("B89012345", new Company(
-          "Hotel Mediterráneo",
-          "B89012345",
-          "reservas@hotelmediterraneo.com",
-          "+34 93 890 1234",
-          "Passeig de Gràcia, 88, Barcelona",
-          "www.hotelmediterraneo.com",
-          "I55.10"
-      ));
-
-      // Empresas de servicios profesionales
-      database.put("B90123456", new Company(
-          "Asesoría Legal López",
-          "B90123456",
-          "info@asesorialopez.com",
-          "+34 93 901 2345",
-          "Carrer de Muntaner, 234, Barcelona",
-          "www.asesorialopez.com",
-          "M69.10"
-      ));
-
-      database.put("B01234567", new Company(
-          "Consultoría Financiera Global",
-          "B01234567",
-          "contacto@cfglobal.es",
-          "+34 93 012 3456",
-          "Avinguda Meridiana, 567, Barcelona",
-          "www.cfglobal.es",
-          "K64.99"
-      ));
-
-      // Empresas de comercio
-      database.put("B11111111", new Company(
-          "Supermercado FreshMart",
-          "B11111111",
-          "info@freshmart.com",
-          "+34 93 111 1111",
-          "Carrer de Gran Via, 999, Barcelona",
-          "www.freshmart.com",
-          "G47.11"
-      ));
-
-      database.put("B22222222", new Company(
-          "Librería Cervantes",
-          "B22222222",
-          "libros@cervantes.es",
-          "+34 93 222 2222",
-          "Carrer de Pelai, 52, Barcelona",
-          "www.libreriacervantes.es",
-          "G47.61"
-      ));
-
-      // Empresas de salud
-      database.put("B33333333", new Company(
-          "Farmacia Central",
-          "B33333333",
-          "farmacia@central.com",
-          "+34 93 333 3333",
-          "Carrer de Aragó, 123, Barcelona",
-          "www.farmaciacentral.com",
-          "G47.73"
-      ));
     }
 
     @Override
     public boolean save(Company company) {
       methodCallLog.add("save");
-      saveWasCalled = true;
-      lastSavedCompany = company;
 
       if (shouldFailOnSave) {
         return false;
@@ -202,13 +105,6 @@ public class CompanyTest {
     @Override
     public Company findByCif(String cif) {
       methodCallLog.add("findByCif");
-      findByCifWasCalled = true;
-      lastSearchedCif = cif;
-
-      if (stubReturnValue != null) {
-        return stubReturnValue;
-      }
-
       return database.get(cif);
     }
 
@@ -289,5 +185,6 @@ public class CompanyTest {
     Company found = mock.findByCif("B12345678");
     assertNull(found);
   }
+
 
 }
