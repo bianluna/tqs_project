@@ -37,7 +37,7 @@ class CompanyTest {
 
   @Test
   void testFindByCif() {
-    // Uses the CIF that is hardcoded inside your Mock
+    // Uses the CIF that is hardcoded inside Mock
     Company foundCompany = mock.findByCif(EXISTING_CIF);
 
     assertNotNull(foundCompany, "Company should be found");
@@ -58,6 +58,7 @@ class CompanyTest {
     Company nullCifCompany = createCompany(null, "email@test.com", "A03");
     assertFalse(mock.save(nullCifCompany), "Should return false for null CIF");
   }
+
 
   @Test
   void testSaveCompanyWithInvalidEmail() {
