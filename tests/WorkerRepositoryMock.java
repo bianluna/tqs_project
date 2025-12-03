@@ -63,4 +63,18 @@ public class WorkerRepositoryMock {
     return null;
   }
 
+  public void update(String name, String dni,  String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
+    Worker worker = (Worker) findByDni(dni);
+    if (worker != null) {
+      if (worker.getContract()=="Temporary" && contract=="Indefinido"){
+        worker.setContract(contract);
+      }
+      worker.setTotalIncome(totalIncome);
+      worker.setPayments(payments);
+      worker.setCategory(category);
+      worker.setCivilStatus(civilStatus);
+      worker.setChildren(children);
+    }
+
+  }
 }

@@ -212,6 +212,46 @@ public class WorkerTest {
     assertNull(repository.findByDni("1111111A"), "Worker should be null after deletion");
   }
 
+  @Test
+  void testUpdateEmployeeData(){
+    repository.save(worker);
+
+    // Update worker data
+    Worker existingWorker = (Worker) repository.findByDni("1111111A");
+    assertNotNull(existingWorker, "Worker should exist before update");
+
+    repository.update("Pepito",
+        "1111111A",
+        "Casado",
+        3,
+        40000,
+        14,
+        "Temporal",
+        7 ,
+        "B12345678");
+
+    // Retrieve updated worker
+    Worker updatedWorker = (Worker) repository.findByDni("1111111A");
+    assertNotNull(updatedWorker, "Updated worker should exist");
+    // Print all workers to verify
+    System.out.println("\n=== Lista de todos los Workers ===");
+    repository.findAll().forEach(w -> {
+      System.out.println("Nombre: " + w.getName());
+      System.out.println("DNI: " + w.getDni());
+      System.out.println("Estado Civil: " + w.getCivilStatus());
+      System.out.println("Hijos: " + w.getChildren());
+      System.out.println("Ingreso Total: " + w.getTotalIncome());
+      System.out.println("Pagos: " + w.getPayments());
+      System.out.println("Contrato: " + w.getContract());
+      System.out.println("Categoría: " + w.getCategory());
+      System.out.println("CIF Empresa: " + w.getCifEmpresa());
+      System.out.println("----------------------------");
+    });
+    // Verify updates
+    assertEquals(40000, updatedWorker.getTotalIncome(), "Total income should be updated to 40000");
+    assertEquals(14, updatedWorker.getPayments(), "Number of payments should be updated to 14");
+    assertEquals("Indefinido", updatedWorker.getContract(), "Contract should not be updated to Temporal");
+  }
 
 
 }
