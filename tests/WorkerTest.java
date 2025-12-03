@@ -16,6 +16,8 @@ public class WorkerTest {
   @BeforeEach
   void setUp() {
     // This method can be used to set up common test data if needed
+    repository = new WorkerRepositoryMock();
+
     worker = new Worker(
         "Pepito",
         "Casado",
@@ -172,6 +174,30 @@ public class WorkerTest {
   void testSaveWorker(){
     boolean result = repository.save(worker);
     assertTrue(result, "Worker should be saved successfully");
+  }
+
+  @Test
+  void testSaveAndPrintAllWorkers(){
+    // Save the worker
+    boolean result = repository.save(worker);
+    assertTrue(result, "Worker should be saved successfully");
+
+    // Print all workers to verify
+    System.out.println("\n=== Lista de todos los Workers ===");
+    repository.findAll().forEach(w -> {
+      System.out.println("Nombre: " + w.getName());
+      System.out.println("Estado Civil: " + w.getCivilStatus());
+      System.out.println("Hijos: " + w.getChildren());
+      System.out.println("Ingreso Total: " + w.getTotalIncome());
+      System.out.println("Pagos: " + w.getPayments());
+      System.out.println("Contrato: " + w.getContract());
+      System.out.println("Categoría: " + w.getCategory());
+      System.out.println("CIF Empresa: " + w.getCifEmpresa());
+      System.out.println("----------------------------");
+    });
+
+    // Verify that we have at least 6 workers (5 initial + 1 new)
+    assertEquals(6, repository.findAll().size(), "Should have 6 workers after saving");
   }
 
 

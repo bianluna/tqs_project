@@ -41,4 +41,12 @@ public class WorkerRepositoryMock {
     ));
   }
 
+  public boolean save(Worker worker) {
+    return workers.add(worker);
+  }
+
+  public List<Worker> findAll() {
+    return new ArrayList<>(workers);
+  }
+
 }
