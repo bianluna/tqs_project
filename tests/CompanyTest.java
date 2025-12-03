@@ -25,7 +25,7 @@ public class CompanyTest {
   }
 
   @Test
-  void testCompanyDatabase() {
+  void testSaveCompany() {
     Company company = new Company(
         "Tech Solutions",
         "123456789",
