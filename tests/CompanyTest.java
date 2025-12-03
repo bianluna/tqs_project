@@ -108,4 +108,24 @@ public class CompanyTest {
     assertFalse(result, "El método debería devolver false ya que el email es inválido");
   }
 
+
+  @Test
+  void testSaveCompanyWithInvalidCnae(){
+    Company company = new Company(
+        "Tech Solutions",
+        "123456789",
+        "invalid-email-format",
+        "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A3"
+    );
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    // Ejecutamos el método usando nuestro mock
+    boolean result = mock.save(company);
+    // Verificamos el resultado del retorno
+    assertFalse(result, "El método debería devolver false ya que el cnae es inválido");
+
+  }
+
 }
