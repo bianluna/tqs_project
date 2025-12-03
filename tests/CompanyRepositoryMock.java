@@ -1,5 +1,5 @@
 import model.Company;
-
+import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class CompanyRepositoryMock implements CompanyRepository {
 
+  private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+  private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
   public Map<String, Company> database;
   public boolean deleteWasCalled;
   public List<String> methodCallLog;
@@ -88,7 +90,7 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return false;
     }
 
-    if (company != null && company.cif != null && !company.cif.isEmpty()) {
+    if (company != null && company.cif != null && !company.cif.isEmpty() && isValidEmail(company.email)) {
       database.put(company.cif, company);
       return true;
     }
@@ -111,5 +113,12 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return true;
     }
     return false;
+  }
+
+  private boolean isValidEmail(String email) {
+    if (email == null) {
+      return false;
+    }
+    return EMAIL_PATTERN.matcher(email).matches();
   }
 }
