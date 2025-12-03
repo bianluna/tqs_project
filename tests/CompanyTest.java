@@ -174,4 +174,20 @@ public class CompanyTest {
     Company updatedCompany = mock.findByCif("B12345678");
     assertEquals("Tech Solutions Updated", updatedCompany.getName(), "El nombre de la compañía debería ser actualizado");
   }
+
+  @Test
+  void testUpdateCompanyNotExisting(){
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    Company company = new Company(
+        "Non Existing Company",
+        "B99999999",
+        "techsolutions@email.com",
+    "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A03");
+    boolean result = mock.update(company);
+    assertFalse(result, "El método debería devolver false ya que la compañia a actualizar no existe");
+  }
+
 }
