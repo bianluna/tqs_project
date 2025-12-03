@@ -190,4 +190,29 @@ public class CompanyTest {
     assertFalse(result, "El método debería devolver false ya que la compañia a actualizar no existe");
   }
 
+  @Test
+  void testUpdateCompanyInvalidValues(){
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    Company company = new Company(
+        "Tech Solutions Updated",
+        "B12345678",
+        "techsolutions@email.com",
+        "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A3");
+    boolean result = mock.update(company);
+    assertFalse(result, "El método debería devolver false ya que el valor del cnae de la compañia a actualizar no es valido");
+    Company company1 = new Company(
+        "Tech Solutions Updated",
+        "B12345678",
+        "techsolutionsemail.com",
+        "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A03");
+    boolean result1 = mock.update(company);
+    assertFalse(result1, "El método debería devolver false ya que el valor del email de la compañia a actualizar no es valido");
+  }
+
 }
