@@ -268,7 +268,7 @@ public class WorkerTest {
     // 3. Verificar que el DNI sigue siendo el antiguo (el cambio fue rechazado)
     assertEquals(validDni, worker.getDni(), "El worker no debería aceptar DNIs matemáticamente incorrectos");
   }
-  }
+
 
 }
 
