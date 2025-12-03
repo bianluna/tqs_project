@@ -68,4 +68,25 @@ public class CompanyTest {
   }
 
 
+  @Test
+  void testSaveCompanyWithNullValues(){
+    Company company = new Company(
+        "Tech Solutions",
+        null,
+        "techsolutions@email.com",
+        "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A03"
+    );
+
+    // Instanciamos nuestro mock
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    // Ejecutamos el método usando nuestro mock
+    boolean result = mock.save(company);
+    // Verificamos el resultado del retorno
+    assertFalse(result, "El método debería devolver false ya que el CIF es nulo");
+  }
+
+
 }
