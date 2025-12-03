@@ -20,6 +20,7 @@ public class WorkerTest {
 
     worker = new Worker(
         "Pepito",
+        "1111111A",
         "Casado",
         3,
         35000,
@@ -34,7 +35,7 @@ public class WorkerTest {
 
   @Test
   void testConstructor() {
-    Worker worker = new Worker("Pepito", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
+    Worker worker = new Worker("Pepito", "1111111A", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
 
     assertEquals("Pepito", worker.getName());
     assertEquals(worker.getCivilStatus(), "Casado");
@@ -186,6 +187,7 @@ public class WorkerTest {
     System.out.println("\n=== Lista de todos los Workers ===");
     repository.findAll().forEach(w -> {
       System.out.println("Nombre: " + w.getName());
+      System.out.println("DNI: " + w.getDni());
       System.out.println("Estado Civil: " + w.getCivilStatus());
       System.out.println("Hijos: " + w.getChildren());
       System.out.println("Ingreso Total: " + w.getTotalIncome());
@@ -207,7 +209,7 @@ public class WorkerTest {
     boolean deleted = repository.delete(worker.getDni());
     assertTrue(deleted);
 
-    assertNull(repository.findByDni("Pepito"), "Worker should be null after deletion");
+    assertNull(repository.findByDni("1111111A"), "Worker should be null after deletion");
   }
 
 

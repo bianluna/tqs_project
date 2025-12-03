@@ -3,7 +3,7 @@ import java.util.List;
 
 public interface WorkerRepository {
   boolean save(String dni, Worker worker, String companyCif);
-  Worker findByName(String name);
+  Worker findByDni(String name);
   List<Worker> findByCompany(String companyCif);
   boolean delete(String dni);
 }

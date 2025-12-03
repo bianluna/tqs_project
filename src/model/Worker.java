@@ -14,6 +14,7 @@ public class Worker {
 
     public Worker() {
         this.name = "";
+        this.dni = "";
         this.civilStatus = "";
         this.children = 0;
         this.totalIncome = 0;
@@ -23,8 +24,9 @@ public class Worker {
         this.cifEmpresa = "";
     }
 
-  public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
+  public Worker(String name, String dni,  String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
     this.name = name;
+    this.dni = dni;
     this.civilStatus = civilStatus;
     this.children = children;
     this.totalIncome = totalIncome;
