@@ -200,6 +200,16 @@ public class WorkerTest {
     assertEquals(6, repository.findAll().size(), "Should have 6 workers after saving");
   }
 
+  @Test
+  void testDeleteWorker() {
+    repository.save(worker);
+
+    boolean deleted = repository.delete(worker.getDni());
+    assertTrue(deleted);
+
+    assertNull(repository.findByDni("Pepito"), "Worker should be null after deletion");
+  }
+
 
 
 }
