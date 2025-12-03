@@ -148,4 +148,13 @@ public class CompanyTest {
     assertFalse(secondSaveResult, "El método debería devolver false al intentar guardar un CIF duplicado");
   }
 
+
+  @Test
+  void testFindbyCifNotFound(){
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    // Ejecutamos el método usando nuestro mock
+    Company foundCompany = mock.findByCif("B56789038");
+    // Verificamos el resultado del retorno
+    assertNull(foundCompany, "La compañía no debería ser encontrada");
+  }
 }
