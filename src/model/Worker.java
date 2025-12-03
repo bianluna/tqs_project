@@ -2,6 +2,8 @@ package model;
 
 public class Worker {
 
+  private static final String LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
+
   private String name;
   private String dni;
   private String civilStatus;
@@ -102,6 +104,35 @@ public class Worker {
       if (isCivilStatusValid(civilStatus)) {
           this.civilStatus = civilStatus;
       }
+  }
 
+  public void setDni(String dni) {
+    if (isValidDni(dni)) {
+      this.dni = dni;
+    } else {
+      System.err.println("Error: DNI inválido intentando ser asignado: " + dni);
+      //throw new IllegalArgumentException("DNI inválido");
+    }
+  }
+
+  private boolean isValidDni(String dni) {
+    if (dni == null || dni.isEmpty()) {
+      return false;
+    }
+
+    dni = dni.replace("-", "").trim().toUpperCase();
+
+    if (!dni.matches("^\\d{8}[A-Z]$")) {
+      return false;
+    }
+
+    String numeroStr = dni.substring(0, 8);
+    char letraProporcionada = dni.charAt(8);
+
+    int numero = Integer.parseInt(numeroStr);
+    int resto = numero % 23;
+    char letraCalculada = LETRAS_DNI.charAt(resto);
+
+    return letraProporcionada == letraCalculada;
   }
 }
