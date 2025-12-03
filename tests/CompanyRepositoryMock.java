@@ -106,6 +106,10 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return false;
     }
 
+    if (database.containsKey(company.getCif())) {
+      return false; // Indicates failure because it already exists
+    }
+
     if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
       database.put(company.getCif(), company);
       return true;

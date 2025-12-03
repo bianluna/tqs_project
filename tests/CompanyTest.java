@@ -128,4 +128,24 @@ public class CompanyTest {
 
   }
 
+  @Test
+  void testSaveDuplicateCif() {
+    Company company = new Company(
+        "Tech Solutions",
+        "123456789",
+        "invalid-email-format",
+        "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A03"
+    );
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    // Guardar la primera vez
+    boolean firstSaveResult = mock.save(company);
+    // Intentar guardar de nuevo con el mismo CIF
+    boolean secondSaveResult = mock.save(company);
+    // Verificamos el resultado del segundo intento de guardado
+    assertFalse(secondSaveResult, "El método debería devolver false al intentar guardar un CIF duplicado");
+  }
+
 }
