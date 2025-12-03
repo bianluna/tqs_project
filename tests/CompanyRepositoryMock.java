@@ -1,9 +1,7 @@
 import model.Company;
+
+import java.util.*;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CompanyRepositoryMock implements CompanyRepository {
 
@@ -13,6 +11,24 @@ public class CompanyRepositoryMock implements CompanyRepository {
   public boolean deleteWasCalled;
   public List<String> methodCallLog;
   public boolean shouldFailOnSave;
+
+
+  private static final Set<String> VALID_CNAE_CODES = new HashSet<>(Arrays.asList(
+      "6201", // Actividades de programación informática
+      "6202", // Consultoría de informática
+      "4110", // Promoción inmobiliaria
+      "4121", // Construcción de edificios residenciales
+      "5610", // Restaurantes y puestos de comidas
+      "6920",  // Actividades de contabilidad
+      "J62.01",
+      "J62.02",
+      "J63.11",
+      "F41.20",
+      "F43.32",
+      "A03"
+      // ... many more codes can be added here
+  ));
+
 
   /**
    * Constructor que inicializa la BD con datos ficticios
@@ -90,7 +106,7 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return false;
     }
 
-    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail())) {
+    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
       database.put(company.getCif(), company);
       return true;
     }
@@ -120,5 +136,12 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return false;
     }
     return EMAIL_PATTERN.matcher(email).matches();
+  }
+
+  private boolean isValidCnae(String cnae) {
+    if (cnae == null) {
+      return false;
+    }
+    return VALID_CNAE_CODES.contains(cnae);
   }
 }
