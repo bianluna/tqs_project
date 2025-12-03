@@ -5,214 +5,124 @@ import org.junit.jupiter.api.Test;
 import java.awt.*;
 
 
-public class CompanyTest {
+class CompanyTest {
+
+  private CompanyRepositoryMock mock;
+  private Company validCompany;
+
+  // Constants for the "Pre-existing" company defined inside your Mock
+  private static final String EXISTING_CIF = "B12345678";
+
+  @BeforeEach
+  void setUp() {
+    // 1. Initialize the mock before every test
+    mock = new CompanyRepositoryMock();
+
+    // 2. Create a standard valid company object to reuse
+    validCompany = createCompany("123456789", "techsolutions@email.com", "A03");
+  }
 
   @Test
   void testCompanyConstructor() {
-    Company company = new Company(
-        "Tech Solutions",
-        "123456789",
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03"
-    );
-    assertNotNull(company);
-    assertEquals("A03", company.getCnae());
-    assertEquals("Tech Solutions", company.getName());
-    assertEquals("123456789", company.getCif());
+    assertNotNull(validCompany);
+    assertEquals("A03", validCompany.getCnae());
+    assertEquals("Tech Solutions", validCompany.getName());
+    assertEquals("123456789", validCompany.getCif());
   }
 
   @Test
   void testSaveCompany() {
-    Company company = new Company(
-        "Tech Solutions",
-        "123456789",
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03"
-    );
-
-    // Instanciamos nuestro mock
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Ejecutamos el método usando nuestro mock
-    boolean result = mock.save(company);
-    // Verificamos el resultado del retorno
-    assertTrue(result, "El método debería devolver true");
+    assertTrue(mock.save(validCompany), "Valid company should be saved");
   }
 
   @Test
   void testFindByCif() {
-    // Instanciamos nuestro mock
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Ejecutamos el método usando nuestro mock
-    Company foundCompany = mock.findByCif("B12345678");
-    // Verificamos el resultado del retorno
-    assertNotNull(foundCompany, "La compañía debería ser encontrada");
-    assertEquals("TechCorp Solutions", foundCompany.getName(), "El nombre de la compañía debería coincidir");
+    // Uses the CIF that is hardcoded inside your Mock
+    Company foundCompany = mock.findByCif(EXISTING_CIF);
+
+    assertNotNull(foundCompany, "Company should be found");
+    assertEquals("TechCorp Solutions", foundCompany.getName());
   }
 
   @Test
   void testDeleteCompany() {
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Eliminar una empresa existente
-    boolean result = mock.delete("B12345678");
+    boolean result = mock.delete(EXISTING_CIF);
+
     assertTrue(result);
     assertTrue(mock.deleteWasCalled);
-    // Verificar que ya no existe
-    Company found = mock.findByCif("B12345678");
-    assertNull(found);
+    assertNull(mock.findByCif(EXISTING_CIF), "Company should not exist after deletion");
   }
 
-
   @Test
-  void testSaveCompanyWithNullValues(){
-    Company company = new Company(
-        "Tech Solutions",
-        null,
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03"
-    );
-
-    // Instanciamos nuestro mock
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Ejecutamos el método usando nuestro mock
-    boolean result = mock.save(company);
-    // Verificamos el resultado del retorno
-    assertFalse(result, "El método debería devolver false ya que el CIF es nulo");
+  void testSaveCompanyWithNullValues() {
+    Company nullCifCompany = createCompany(null, "email@test.com", "A03");
+    assertFalse(mock.save(nullCifCompany), "Should return false for null CIF");
   }
 
   @Test
   void testSaveCompanyWithInvalidEmail() {
-    Company company = new Company(
-        "Tech Solutions",
-        "123456789",
-        "invalid-email-format",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03"
-    );
-
-    // Instanciamos nuestro mock
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Ejecutamos el método usando nuestro mock
-    boolean result = mock.save(company);
-    // Verificamos el resultado del retorno
-    assertFalse(result, "El método debería devolver false ya que el email es inválido");
+    Company badEmailCompany = createCompany("99999999", "invalid-email-format", "A03");
+    assertFalse(mock.save(badEmailCompany), "Should return false for invalid email");
   }
 
-
   @Test
-  void testSaveCompanyWithInvalidCnae(){
-    Company company = new Company(
-        "Tech Solutions",
-        "123456789",
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A3"
-    );
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Ejecutamos el método usando nuestro mock
-    boolean result = mock.save(company);
-    // Verificamos el resultado del retorno
-    assertFalse(result, "El método debería devolver false ya que el cnae es inválido");
-
+  void testSaveCompanyWithInvalidCnae() {
+    Company badCnaeCompany = createCompany("99999999", "email@test.com", "A3");
+    assertFalse(mock.save(badCnaeCompany), "Should return false for invalid CNAE");
   }
 
   @Test
   void testSaveDuplicateCif() {
-    Company company = new Company(
-        "Tech Solutions",
-        "123456789",
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03"
+    mock.save(validCompany); // First save
+    boolean secondSaveResult = mock.save(validCompany); // Second save
+
+    assertFalse(secondSaveResult, "Should return false on duplicate CIF");
+  }
+
+  @Test
+  void testFindbyCifNotFound() {
+    assertNull(mock.findByCif("B56789038"), "Non-existent CIF should return null");
+  }
+
+  @Test
+  void testUpdateCompanySuccess() {
+    // We must use the CIF that already exists in the mock to update it
+    Company companyToUpdate = createCompany(EXISTING_CIF, "tech@email.com", "A03");
+
+    assertTrue(mock.update(companyToUpdate), "Should return true when updating existing company");
+
+    Company updated = mock.findByCif(EXISTING_CIF);
+    assertEquals("Tech Solutions", updated.getName());
+  }
+
+  @Test
+  void testUpdateCompanyNotExisting() {
+    Company nonExisting = createCompany("B99999999", "tech@email.com", "A03");
+    assertFalse(mock.update(nonExisting), "Should fail if company does not exist");
+  }
+
+  @Test
+  void testUpdateCompanyInvalidValues() {
+    // Case 1: Invalid CNAE
+    Company badCnae = createCompany(EXISTING_CIF, "valid@email.com", "A3");
+    assertFalse(mock.update(badCnae), "Should fail update with invalid CNAE");
+
+    // Case 2: Invalid Email
+    Company badEmail = createCompany(EXISTING_CIF, "bad-email", "A03");
+    assertFalse(mock.update(badEmail), "Should fail update with invalid Email");
+  }
+
+  // --- Helper Method ---
+  // This allows us to create a company with one line, customizing only what we need
+  private Company createCompany(String cif, String email, String cnae) {
+    return new Company(
+        "Tech Solutions", // Default Name
+        cif,
+        email,
+        "555-1234",       // Default Phone
+        "123 Tech St",    // Default Address
+        "www.tech.com",   // Default Web
+        cnae
     );
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Guardar la primera vez
-    boolean firstSaveResult = mock.save(company);
-    // Intentar guardar de nuevo con el mismo CIF
-    boolean secondSaveResult = mock.save(company);
-    // Verificamos el resultado del segundo intento de guardado
-    assertFalse(secondSaveResult, "El método debería devolver false al intentar guardar un CIF duplicado");
   }
-
-
-  @Test
-  void testFindbyCifNotFound(){
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    // Ejecutamos el método usando nuestro mock
-    Company foundCompany = mock.findByCif("B56789038");
-    // Verificamos el resultado del retorno
-    assertNull(foundCompany, "La compañía no debería ser encontrada");
-  }
-
-  @Test
-  void testUpdateCompanySuccess(){
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    Company company = new Company(
-        "Tech Solutions Updated",
-        "B12345678",
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03");
-    boolean result = mock.update(company);
-    assertTrue(result, "El método debería devolver true al actualizar la compañía existente");
-    Company updatedCompany = mock.findByCif("B12345678");
-    assertEquals("Tech Solutions Updated", updatedCompany.getName(), "El nombre de la compañía debería ser actualizado");
-  }
-
-  @Test
-  void testUpdateCompanyNotExisting(){
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    Company company = new Company(
-        "Non Existing Company",
-        "B99999999",
-        "techsolutions@email.com",
-    "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03");
-    boolean result = mock.update(company);
-    assertFalse(result, "El método debería devolver false ya que la compañia a actualizar no existe");
-  }
-
-  @Test
-  void testUpdateCompanyInvalidValues(){
-    CompanyRepositoryMock mock = new CompanyRepositoryMock();
-    Company company = new Company(
-        "Tech Solutions Updated",
-        "B12345678",
-        "techsolutions@email.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A3");
-    boolean result = mock.update(company);
-    assertFalse(result, "El método debería devolver false ya que el valor del cnae de la compañia a actualizar no es valido");
-    Company company1 = new Company(
-        "Tech Solutions Updated",
-        "B12345678",
-        "techsolutionsemail.com",
-        "555-1234",
-        "123 Tech St, Silicon Valley",
-        "www.techsolutions.com",
-        "A03");
-    boolean result1 = mock.update(company);
-    assertFalse(result1, "El método debería devolver false ya que el valor del email de la compañia a actualizar no es valido");
-  }
-
 }
