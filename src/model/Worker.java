@@ -3,6 +3,7 @@ package model;
 public class Worker {
 
   private String name;
+  private String dni;
   private String civilStatus;
   private int children;
   private float totalIncome;
@@ -35,6 +36,7 @@ public class Worker {
 
 
   public String getName() { return this.name; }
+  public String getDni() { return this.dni; }
   public String getCivilStatus() { return civilStatus; }
   public int getChildren() {return children; }
   public float getTotalIncome() {return totalIncome;}
