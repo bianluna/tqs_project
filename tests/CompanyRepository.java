@@ -12,6 +12,7 @@ public interface CompanyRepository {
    * @return true si se guardó correctamente, false en caso contrario
    */
   boolean save(Company company);
+  boolean update(Company company);
   Company findByCif(String cif);
   boolean delete(String cif);
 }

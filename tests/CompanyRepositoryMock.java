@@ -118,6 +118,25 @@ public class CompanyRepositoryMock implements CompanyRepository {
   }
 
   @Override
+  public boolean update(Company company) {
+    methodCallLog.add("update");
+
+    if (shouldFailOnSave) {
+      return false;
+    }
+
+    if (findByCif(company.getCif()) == null) {
+      return false; // Indicates failure because it doesn't exist
+    }
+
+    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
+      database.put(company.getCif(), company);
+      return true;
+    }
+    return false;
+  }
+
+  @Override
   public Company findByCif(String cif) {
     methodCallLog.add("findByCif");
     return database.get(cif);
