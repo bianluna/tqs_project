@@ -49,4 +49,18 @@ public class WorkerRepositoryMock {
     return new ArrayList<>(workers);
   }
 
+  public boolean delete(String dni) {
+    deleteWasCalled = true;
+    return workers.removeIf(worker -> worker.getDni().equals(dni));
+  }
+  
+  public Object findByDni(String dni) {
+    for (Worker worker : workers) {
+      if (worker.getDni().equals(dni)) {
+        return worker;
+      }
+    }
+    return null;
+  }
+
 }
