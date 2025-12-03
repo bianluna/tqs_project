@@ -114,7 +114,7 @@ public class CompanyTest {
     Company company = new Company(
         "Tech Solutions",
         "123456789",
-        "invalid-email-format",
+        "techsolutions@email.com",
         "555-1234",
         "123 Tech St, Silicon Valley",
         "www.techsolutions.com",
@@ -133,7 +133,7 @@ public class CompanyTest {
     Company company = new Company(
         "Tech Solutions",
         "123456789",
-        "invalid-email-format",
+        "techsolutions@email.com",
         "555-1234",
         "123 Tech St, Silicon Valley",
         "www.techsolutions.com",
@@ -156,5 +156,22 @@ public class CompanyTest {
     Company foundCompany = mock.findByCif("B56789038");
     // Verificamos el resultado del retorno
     assertNull(foundCompany, "La compañía no debería ser encontrada");
+  }
+
+  @Test
+  void testUpdateCompanySuccess(){
+    CompanyRepositoryMock mock = new CompanyRepositoryMock();
+    Company company = new Company(
+        "Tech Solutions Updated",
+        "B12345678",
+        "techsolutions@email.com",
+        "555-1234",
+        "123 Tech St, Silicon Valley",
+        "www.techsolutions.com",
+        "A03");
+    boolean result = mock.update(company);
+    assertTrue(result, "El método debería devolver true al actualizar la compañía existente");
+    Company updatedCompany = mock.findByCif("B12345678");
+    assertEquals("Tech Solutions Updated", updatedCompany.getName(), "El nombre de la compañía debería ser actualizado");
   }
 }
