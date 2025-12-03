@@ -9,6 +9,7 @@ public class Worker {
   private int payments;
   private String contract;
   private int category;
+  private String cifEmpresa;
 
     public Worker() {
         this.name = "";
@@ -18,9 +19,10 @@ public class Worker {
         this.payments = 0;
         this.contract = "";
         this.category = 0;
+        this.cifEmpresa = "";
     }
 
-  public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, int category) {
+  public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
     this.name = name;
     this.civilStatus = civilStatus;
     this.children = children;
@@ -28,6 +30,7 @@ public class Worker {
     this.payments = payments;
     this.contract = contract;
     this.category = category;
+    this.cifEmpresa = cifEmpresa;
   }
 
 
@@ -38,6 +41,7 @@ public class Worker {
   public int getPayments() {return payments;}
   public String getContract() {return contract;}
   public int getCategory() {return category;}
+  public String getCifEmpresa() {return cifEmpresa;}
 
   public void setPayments(int payments) {
     if (payments == 12 || payments == 14) {
