@@ -19,9 +19,9 @@ public class CompanyTest {
         "A03"
     );
     assertNotNull(company);
-    assertEquals("A03", company.cnae);
-    assertEquals("Tech Solutions", company.name);
-    assertEquals("123456789", company.cif);
+    assertEquals("A03", company.getCnae());
+    assertEquals("Tech Solutions", company.getName());
+    assertEquals("123456789", company.getCif());
   }
 
   @Test
@@ -52,7 +52,7 @@ public class CompanyTest {
     Company foundCompany = mock.findByCif("B12345678");
     // Verificamos el resultado del retorno
     assertNotNull(foundCompany, "La compañía debería ser encontrada");
-    assertEquals("TechCorp Solutions", foundCompany.name, "El nombre de la compañía debería coincidir");
+    assertEquals("TechCorp Solutions", foundCompany.getName(), "El nombre de la compañía debería coincidir");
   }
 
   @Test

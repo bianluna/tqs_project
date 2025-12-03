@@ -90,8 +90,8 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return false;
     }
 
-    if (company != null && company.cif != null && !company.cif.isEmpty() && isValidEmail(company.email)) {
-      database.put(company.cif, company);
+    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail())) {
+      database.put(company.getCif(), company);
       return true;
     }
     return false;
