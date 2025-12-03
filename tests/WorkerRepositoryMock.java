@@ -13,19 +13,19 @@ public class WorkerRepositoryMock {
     workers.add(new Worker(
         "Juan Pérez", "Soltero", 0,
         24000f, 14, "Indefinido", 3,
-        "B12345678"   // Empresa TechCorp
+        "B12345678"
     ));
 
     workers.add(new Worker(
         "Ana Torres", "Casada", 2,
         28000f, 14, "Indefinido", 2,
-        "B12345678"   // Empresa TechCorp
+        "B12345678"
     ));
 
     workers.add(new Worker(
         "Luis Molina", "Soltero", 1,
         22000f, 12, "Temporal", 4,
-        "B34567890"   // Empresa AlphaBuild
+        "B34567890"
     ));
 
     workers.add(new Worker(
@@ -37,7 +37,7 @@ public class WorkerRepositoryMock {
     workers.add(new Worker(
         "Pedro Gómez", "Soltero", 0,
         18000f, 12, "Parcial", 5,
-        "B34567890"   // Empresa SupportServices
+        "B34567890"
     ));
   }
 
