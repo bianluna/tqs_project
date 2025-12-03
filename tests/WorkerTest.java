@@ -253,6 +253,22 @@ public class WorkerTest {
     assertEquals("Indefinido", updatedWorker.getContract(), "Contract should not be updated to Temporal");
   }
 
+  @Test
+  void testValidDni(){
+    Worker worker = new Worker();
+
+    // 1. Asignar un DNI válido inicial
+    String validDni = "48392015S";
+    worker.setDni(validDni);
+    assertEquals(validDni, worker.getDni());
+
+    // 2. Intentar asignar uno con letra incorrecta
+    worker.setDni("48392015F"); // Letra falsa
+
+    // 3. Verificar que el DNI sigue siendo el antiguo (el cambio fue rechazado)
+    assertEquals(validDni, worker.getDni(), "El worker no debería aceptar DNIs matemáticamente incorrectos");
+  }
+  }
 
 }
 
