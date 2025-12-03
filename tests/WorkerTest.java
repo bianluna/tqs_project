@@ -4,11 +4,13 @@ import model.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class workerTest {
+public class WorkerTest {
 
   //Creation of worker objects for testing
   Worker worker = new Worker();
   Worker emptyWorker = new Worker();
+
+  private WorkerRepositoryMock repository;
 
   // Set up method to initialize common test data
   @BeforeEach
@@ -21,7 +23,8 @@ public class workerTest {
         35000,
         12,
         "Indefinido",
-        7 );
+        7 ,
+        "B12345678");
 
     emptyWorker = new Worker();
 
@@ -29,7 +32,7 @@ public class workerTest {
 
   @Test
   void testConstructor() {
-    Worker worker = new Worker("Pepito", "Casado", 3, 35000, 12, "Indefinido", 7 );
+    Worker worker = new Worker("Pepito", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
 
     assertEquals("Pepito", worker.getName());
     assertEquals(worker.getCivilStatus(), "Casado");
@@ -165,6 +168,11 @@ public class workerTest {
     assertNotSame("Hijo", worker.getCivilStatus());
   }
 
+  @Test
+  void testSaveWorker(){
+    boolean result = repository.save(worker);
+    assertTrue(result, "Worker should be saved successfully");
+  }
 
 
 
