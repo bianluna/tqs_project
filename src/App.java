@@ -126,8 +126,6 @@ public class App {
       userType = "empresa";
       System.out.print("Introduce tu " + BOLD + "CIF" + RESET + ": ");
       identifier = scanner.nextLine().trim();
-      System.out.print("Introduce el nombre de la empresa: ");
-      companyName = scanner.nextLine().trim();
     } else {
       userType = "trabajador";
       System.out.print("Introduce tu " + BOLD + "DNI" + RESET + ": ");
