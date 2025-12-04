@@ -1,5 +1,7 @@
 import model.Worker;
-import java.util.ArrayList;
+import model.Company;
+import repository.WorkerRepositoryMock;
+import repository.CompanyRepositoryMock;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,7 +10,7 @@ public class App {
 
   // --- COLORES Y ESTILOS PARA CONSOLA ---
   // Nota: Funcionan en la mayoría de terminales modernas (VS Code, IntelliJ, Linux, Mac).
-  // En Windows CMD antiguo podrían no verse, pero no rompen el código.
+  // En Windows CMD antiguo podrían no verses, pero no rompen el código.
   private static final String RESET = "\u001B[0m";
   private static final String RED = "\u001B[31m";
   private static final String GREEN = "\u001B[32m";
@@ -17,37 +19,16 @@ public class App {
   private static final String CYAN = "\u001B[36m";
   private static final String BOLD = "\u001B[1m";
 
-  // --- REPOSITORIO (Igual que antes) ---
-  static class InMemoryWorkerRepository {
-    private final List<Worker> workers = new ArrayList<>();
 
-    public InMemoryWorkerRepository() {
-      workers.add(new Worker("Juan Pérez", "48392015S", "Soltero", 0, 24000f, 14, "Indefinido", 3, "B12345678"));
-      workers.add(new Worker("Ana Torres", "71239485K", "Casada", 2, 28000f, 14, "Indefinido", 2, "B12345678"));
-      workers.add(new Worker("Luis Molina", "10293847J", "Soltero", 1, 22000f, 12, "Temporal", 4, "B34567890"));
-    }
-
-    public boolean save(Worker worker) { return workers.add(worker); }
-    public List<Worker> findAll() { return new ArrayList<>(workers); }
-    public boolean delete(String dni) { return workers.removeIf(w -> w.getDni().equalsIgnoreCase(dni)); }
-    public Worker findByDni(String dni) {
-      for (Worker w : workers) if (w.getDni().equalsIgnoreCase(dni)) return w;
-      return null;
-    }
-    public List<Worker> findByCompany(String cif) {
-      List<Worker> res = new ArrayList<>();
-      for (Worker w : workers) if (w.getCifEmpresa().equalsIgnoreCase(cif)) res.add(w);
-      return res;
-    }
-  }
-
-  private final InMemoryWorkerRepository repository;
+  private WorkerRepositoryMock workerRepository;
+  private CompanyRepositoryMock companyRepository;
   private String userType;
   private String identifier;
   private String companyName;
 
   public App() {
-    this.repository = new InMemoryWorkerRepository();
+    this.workerRepository = new WorkerRepositoryMock();
+    this.companyRepository = new CompanyRepositoryMock();
   }
 
   public static void main(String[] args) {
@@ -126,6 +107,16 @@ public class App {
       userType = "empresa";
       System.out.print("Introduce tu " + BOLD + "CIF" + RESET + ": ");
       identifier = scanner.nextLine().trim();
+
+      // Buscar el nombre de la empresa en el repositorio
+      Company company = companyRepository.findByCif(identifier);
+      if (company != null) {
+        companyName = company.getName();
+        printSuccess("Bienvenido/a, " + companyName + "!");
+      } else {
+        printError("CIF no encontrado en el sistema. Continuando con CIF: " + identifier);
+        companyName = "Empresa desconocida";
+      }
     } else {
       userType = "trabajador";
       System.out.print("Introduce tu " + BOLD + "DNI" + RESET + ": ");
@@ -189,7 +180,7 @@ public class App {
 
       Worker worker = new Worker(name, dni, civilStatus, children, totalIncome, payments, contract, category, identifier);
 
-      if (repository.save(worker)) {
+      if (workerRepository.save(worker)) {
         printSuccess("Trabajador " + name + " dado de alta correctamente.");
       } else {
         printError("No se pudo guardar el registro.");
@@ -203,19 +194,19 @@ public class App {
 
   private void listCompanyWorkers() {
     printSubHeader("Plantilla de " + (companyName != null ? companyName : identifier));
-    List<Worker> list = repository.findByCompany(identifier);
+    List<Worker> list = workerRepository.findByCompany(identifier);
     printWorkerTable(list);
   }
 
   private void listWorkersReadOnly() {
     printSubHeader("Directorio Global de Empleados");
-    List<Worker> list = repository.findAll();
+    List<Worker> list = workerRepository.findAll();
     printWorkerTable(list);
   }
 
   private void viewWorkerByDni() {
     printSubHeader("Ficha del Empleado");
-    Worker me = repository.findByDni(identifier);
+    Worker me = workerRepository.findByDni(identifier);
     if (me == null) {
       printError("No constan datos para el DNI " + identifier);
     } else {
@@ -236,12 +227,12 @@ public class App {
     String dni = scanner.nextLine().trim();
 
     // Confirmación simple
-    Worker w = repository.findByDni(dni);
+    Worker w = workerRepository.findByDni(dni);
     if (w != null) {
       System.out.print(YELLOW + "¿Seguro que desea eliminar a " + w.getName() + "? (s/n): " + RESET);
       String confirm = scanner.nextLine();
       if ("s".equalsIgnoreCase(confirm)) {
-        boolean deleted = repository.delete(dni);
+        boolean deleted = workerRepository.delete(dni);
         if (deleted) printSuccess("Trabajador eliminado del sistema.");
       } else {
         System.out.println("Operación cancelada.");
