@@ -81,3 +81,52 @@ Veronica Lozada Perez y Bianca Luna
 
 Proyecto desarrollado con fines educativos como práctica de Test i Qualitat de Software, asignatura de 3ero de Ingenieria Informatica, UAB.
 
+# tqs_project
+
+Este proyecto incluye modelos de `Worker` y `Company`, pruebas unitarias con repositorios mock y ahora una pequeña interfaz de línea de comandos para gestionar workers.
+
+## Interfaz (CLI)
+
+Se añadió `src/App.java` con un menú simple:
+- Agregar worker
+- Listar workers
+- Eliminar worker por DNI
+- Salir
+
+### Ejecutar desde IntelliJ IDEA
+1. Abrir el proyecto.
+2. Asegúrate de que el SDK de Java esté configurado (Project Structure > SDK).
+3. Crea una configuración de ejecución con la clase principal `App`.
+4. Ejecuta y usa el menú interactivo.
+
+### Ejecutar desde terminal (Linux)
+Si tienes `javac` y `java` instalados:
+
+```bash
+# Compilar todas las clases bajo src
+javac $(find src -name "*.java")
+
+# Ejecutar el programa
+java -cp src App
+```
+
+Si ves "Command 'javac' not found", instala un JDK:
+
+```bash
+sudo apt update
+sudo apt install default-jdk
+```
+
+Luego compila y ejecuta como arriba.
+
+### Listar/Imprimir todos los workers
+En el menú, elige la opción "Listar workers". Verás los workers precargados más los que hayas agregado impresos usando `Worker.toString()`.
+
+## Pruebas
+Los tests están en el directorio `tests/` y usan repositorios mock para `Company` y `Worker`.
+
+- Para imprimir workers desde los tests, mira `tests/WorkerTest.java` en el método `testSaveAndPrintAllWorkers()`.
+
+## Notas
+- La validación de DNI y otras reglas del dominio está implementada dentro de `model/Worker`.
+- La CLI usa un repositorio en memoria interno y no depende de los repositorios de prueba.

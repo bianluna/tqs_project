@@ -27,16 +27,17 @@ public class Worker {
     }
 
   public Worker(String name, String dni,  String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
-    this.name = name;
-    this.dni = dni;
-    this.civilStatus = civilStatus;
-    this.children = children;
-    this.totalIncome = totalIncome;
-    this.payments = payments;
-    this.contract = contract;
-    this.category = category;
-    this.cifEmpresa = cifEmpresa;
+      this.name = name;          // Valida no vacío
+      setDni(dni);            // Valida formato y letra
+      setCivilStatus(civilStatus); // Valida lista cerrada
+      setChildren(children);  // Valida >= 0
+      setTotalIncome(totalIncome); // Valida > 0 (o mínimo legal)
+      setPayments(payments);  // Valida 12 o 14
+      setContract(contract);  // Valida tipo contrato
+      setCategory(category);  // Valida rango
+      this.cifEmpresa=cifEmpresa; // Valida formato CIF (simple)
   }
+
 
 
   public String getName() { return this.name; }
@@ -134,5 +135,20 @@ public class Worker {
     char letraCalculada = LETRAS_DNI.charAt(resto);
 
     return letraProporcionada == letraCalculada;
+  }
+
+  @Override
+  public String toString() {
+    return "Worker{" +
+        "name='" + name + '\'' +
+        ", dni='" + dni + '\'' +
+        ", civilStatus='" + civilStatus + '\'' +
+        ", children=" + children +
+        ", totalIncome=" + totalIncome +
+        ", payments=" + payments +
+        ", contract='" + contract + '\'' +
+        ", category=" + category +
+        ", cifEmpresa='" + cifEmpresa + '\'' +
+        '}';
   }
 }
