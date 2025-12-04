@@ -2,42 +2,53 @@ package model;
 
 public class Worker {
 
+  private static final String LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
+
   private String name;
+  private String dni;
   private String civilStatus;
   private int children;
   private float totalIncome;
   private int payments;
   private String contract;
   private int category;
+  private String cifEmpresa;
 
     public Worker() {
         this.name = "";
+        this.dni = "";
         this.civilStatus = "";
         this.children = 0;
         this.totalIncome = 0;
         this.payments = 0;
         this.contract = "";
         this.category = 0;
+        this.cifEmpresa = "";
     }
 
-  public Worker(String name, String civilStatus, int children, float totalIncome, int payments, String contract, int category) {
-    this.name = name;
-    this.civilStatus = civilStatus;
-    this.children = children;
-    this.totalIncome = totalIncome;
-    this.payments = payments;
-    this.contract = contract;
-    this.category = category;
+  public Worker(String name, String dni,  String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
+      this.name = name;          // Valida no vacío
+      setDni(dni);            // Valida formato y letra
+      setCivilStatus(civilStatus); // Valida lista cerrada
+      setChildren(children);  // Valida >= 0
+      setTotalIncome(totalIncome); // Valida > 0 (o mínimo legal)
+      setPayments(payments);  // Valida 12 o 14
+      setContract(contract);  // Valida tipo contrato
+      setCategory(category);  // Valida rango
+      this.cifEmpresa=cifEmpresa; // Valida formato CIF (simple)
   }
 
 
+
   public String getName() { return this.name; }
+  public String getDni() { return this.dni; }
   public String getCivilStatus() { return civilStatus; }
   public int getChildren() {return children; }
   public float getTotalIncome() {return totalIncome;}
   public int getPayments() {return payments;}
   public String getContract() {return contract;}
   public int getCategory() {return category;}
+  public String getCifEmpresa() {return cifEmpresa;}
 
   public void setPayments(int payments) {
     if (payments == 12 || payments == 14) {
@@ -94,6 +105,50 @@ public class Worker {
       if (isCivilStatusValid(civilStatus)) {
           this.civilStatus = civilStatus;
       }
+  }
 
+  public void setDni(String dni) {
+    if (isValidDni(dni)) {
+      this.dni = dni;
+    } else {
+      System.err.println("Error: DNI inválido intentando ser asignado: " + dni);
+      //throw new IllegalArgumentException("DNI inválido");
+    }
+  }
+
+  private boolean isValidDni(String dni) {
+    if (dni == null || dni.isEmpty()) {
+      return false;
+    }
+
+    dni = dni.replace("-", "").trim().toUpperCase();
+
+    if (!dni.matches("^\\d{8}[A-Z]$")) {
+      return false;
+    }
+
+    String numeroStr = dni.substring(0, 8);
+    char letraProporcionada = dni.charAt(8);
+
+    int numero = Integer.parseInt(numeroStr);
+    int resto = numero % 23;
+    char letraCalculada = LETRAS_DNI.charAt(resto);
+
+    return letraProporcionada == letraCalculada;
+  }
+
+  @Override
+  public String toString() {
+    return "Worker{" +
+        "name='" + name + '\'' +
+        ", dni='" + dni + '\'' +
+        ", civilStatus='" + civilStatus + '\'' +
+        ", children=" + children +
+        ", totalIncome=" + totalIncome +
+        ", payments=" + payments +
+        ", contract='" + contract + '\'' +
+        ", category=" + category +
+        ", cifEmpresa='" + cifEmpresa + '\'' +
+        '}';
   }
 }

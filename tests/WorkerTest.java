@@ -4,24 +4,30 @@ import model.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class workerTest {
+public class WorkerTest {
 
   //Creation of worker objects for testing
   Worker worker = new Worker();
   Worker emptyWorker = new Worker();
 
+  private WorkerRepositoryMock repository;
+
   // Set up method to initialize common test data
   @BeforeEach
   void setUp() {
     // This method can be used to set up common test data if needed
+    repository = new WorkerRepositoryMock();
+
     worker = new Worker(
         "Pepito",
+        "1111111A",
         "Casado",
         3,
         35000,
         12,
         "Indefinido",
-        7 );
+        7 ,
+        "B12345678");
 
     emptyWorker = new Worker();
 
@@ -29,7 +35,7 @@ public class workerTest {
 
   @Test
   void testConstructor() {
-    Worker worker = new Worker("Pepito", "Casado", 3, 35000, 12, "Indefinido", 7 );
+    Worker worker = new Worker("Pepito", "1111111A", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
 
     assertEquals("Pepito", worker.getName());
     assertEquals(worker.getCivilStatus(), "Casado");
@@ -165,7 +171,103 @@ public class workerTest {
     assertNotSame("Hijo", worker.getCivilStatus());
   }
 
+  @Test
+  void testSaveWorker(){
+    boolean result = repository.save(worker);
+    assertTrue(result, "Worker should be saved successfully");
+  }
 
+  @Test
+  void testSaveAndPrintAllWorkers(){
+    // Save the worker
+    boolean result = repository.save(worker);
+    assertTrue(result, "Worker should be saved successfully");
+
+    // Print all workers to verify
+    System.out.println("\n=== Lista de todos los Workers ===");
+    repository.findAll().forEach(w -> {
+      System.out.println("Nombre: " + w.getName());
+      System.out.println("DNI: " + w.getDni());
+      System.out.println("Estado Civil: " + w.getCivilStatus());
+      System.out.println("Hijos: " + w.getChildren());
+      System.out.println("Ingreso Total: " + w.getTotalIncome());
+      System.out.println("Pagos: " + w.getPayments());
+      System.out.println("Contrato: " + w.getContract());
+      System.out.println("Categoría: " + w.getCategory());
+      System.out.println("CIF Empresa: " + w.getCifEmpresa());
+      System.out.println("----------------------------");
+    });
+
+    // Verify that we have at least 6 workers (5 initial + 1 new)
+    assertEquals(6, repository.findAll().size(), "Should have 6 workers after saving");
+  }
+
+  @Test
+  void testDeleteWorker() {
+    repository.save(worker);
+
+    boolean deleted = repository.delete(worker.getDni());
+    assertTrue(deleted);
+
+    assertNull(repository.findByDni("1111111A"), "Worker should be null after deletion");
+  }
+
+  @Test
+  void testUpdateEmployeeData(){
+    repository.save(worker);
+
+    // Update worker data
+    Worker existingWorker = (Worker) repository.findByDni("1111111A");
+    assertNotNull(existingWorker, "Worker should exist before update");
+
+    repository.update("Pepito",
+        "1111111A",
+        "Casado",
+        3,
+        40000,
+        14,
+        "Temporal",
+        7 ,
+        "B12345678");
+
+    // Retrieve updated worker
+    Worker updatedWorker = (Worker) repository.findByDni("1111111A");
+    assertNotNull(updatedWorker, "Updated worker should exist");
+    // Print all workers to verify
+    System.out.println("\n=== Lista de todos los Workers ===");
+    repository.findAll().forEach(w -> {
+      System.out.println("Nombre: " + w.getName());
+      System.out.println("DNI: " + w.getDni());
+      System.out.println("Estado Civil: " + w.getCivilStatus());
+      System.out.println("Hijos: " + w.getChildren());
+      System.out.println("Ingreso Total: " + w.getTotalIncome());
+      System.out.println("Pagos: " + w.getPayments());
+      System.out.println("Contrato: " + w.getContract());
+      System.out.println("Categoría: " + w.getCategory());
+      System.out.println("CIF Empresa: " + w.getCifEmpresa());
+      System.out.println("----------------------------");
+    });
+    // Verify updates
+    assertEquals(40000, updatedWorker.getTotalIncome(), "Total income should be updated to 40000");
+    assertEquals(14, updatedWorker.getPayments(), "Number of payments should be updated to 14");
+    assertEquals("Indefinido", updatedWorker.getContract(), "Contract should not be updated to Temporal");
+  }
+
+  @Test
+  void testValidDni(){
+    Worker worker = new Worker();
+
+    // 1. Asignar un DNI válido inicial
+    String validDni = "48392015S";
+    worker.setDni(validDni);
+    assertEquals(validDni, worker.getDni());
+
+    // 2. Intentar asignar uno con letra incorrecta
+    worker.setDni("48392015F"); // Letra falsa
+
+    // 3. Verificar que el DNI sigue siendo el antiguo (el cambio fue rechazado)
+    assertEquals(validDni, worker.getDni(), "El worker no debería aceptar DNIs matemáticamente incorrectos");
+  }
 
 
 }
