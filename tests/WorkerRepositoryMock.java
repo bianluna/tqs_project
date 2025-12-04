@@ -42,6 +42,10 @@ public class WorkerRepositoryMock {
   }
 
   public boolean save(Worker worker) {
+    // Evitar duplicados por DNI
+    if (findByDni(worker.getDni()) != null) {
+      return false;
+    }
     return workers.add(worker);
   }
 
