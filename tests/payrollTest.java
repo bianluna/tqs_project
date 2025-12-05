@@ -135,13 +135,13 @@ public class payrollTest {
     // Frontier value test: 35201
     Worker base3c = new Worker("C", "71239485K", "Soltero", 0, 35201, 12, "Indefinido", 3, "J12345678");
 
-    Worker base4 = new Worker("D", "50123456L", "Soltero", 0, 50000, 12, "Indefinido", 3, "J12345678");
+    Worker base4 = new Worker("D", "71239485K", "Soltero", 0, 50000, 12, "Indefinido", 3, "J12345678");
     // Frontier value test: 59999
-    Worker base4b = new Worker("D", "50123456L", "Soltero", 0, 59999, 12, "Indefinido", 3, "J12345678");
+    Worker base4b = new Worker("D", "71239485K", "Soltero", 0, 59999, 12, "Indefinido", 3, "J12345678");
     // Frontier value test: 60001
-    Worker base4c = new Worker("D", "50123456L", "Soltero", 0, 60001, 12, "Indefinido", 3, "J12345678");
+    Worker base4c = new Worker("D", "71239485K", "Soltero", 0, 60001, 12, "Indefinido", 3, "J12345678");
 
-    Worker base5 = new Worker("E", "60123456L", "Soltero", 0, 80000, 12, "Indefinido", 3, "J12345678");
+    Worker base5 = new Worker("E", "71239485K", "Soltero", 0, 80000, 12, "Indefinido", 3, "J12345678");
 
     payroll.setWorker(base1);
     assertEquals(2280.0, payroll.calculateIrpf(), 0.01); // 19% of 12000
@@ -208,6 +208,7 @@ public class payrollTest {
     assertEquals(4860.0, payroll.calculateIrpf(), 0.01); // 27%
 
     Worker temp3 = new Worker("T3", "71239485K", "Soltero", 0, 30000, 12, "Temporal", 3, "J12345678");
+    payroll.setWorker(temp3);
     assertEquals(9900.0, payroll.calculateIrpf(), 0.01); // 33%
 
     Worker temp4 = new Worker("T4", "71239485K", "Soltero", 0, 50000, 12, "Temporal", 3, "J12345678");
