@@ -20,7 +20,7 @@ public class WorkerTest {
 
     worker = new Worker(
         "Pepito",
-        "1111111A",
+        "11768496V",
         "Casado",
         3,
         35000,
@@ -35,7 +35,7 @@ public class WorkerTest {
 
   @Test
   void testConstructor() {
-    Worker worker = new Worker("Pepito", "1111111A", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
+    Worker worker = new Worker("Pepito", "11768496V", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
 
     assertEquals("Pepito", worker.getName());
     assertEquals(worker.getCivilStatus(), "Casado");
@@ -209,7 +209,7 @@ public class WorkerTest {
     boolean deleted = repository.delete(worker.getDni());
     assertTrue(deleted);
 
-    assertNull(repository.findByDni("1111111A"), "Worker should be null after deletion");
+    assertNull(repository.findByDni("11768496V"), "Worker should be null after deletion");
   }
 
   @Test
@@ -217,11 +217,11 @@ public class WorkerTest {
     repository.save(worker);
 
     // Update worker data
-    Worker existingWorker = (Worker) repository.findByDni("1111111A");
+    Worker existingWorker = (Worker) repository.findByDni("11768496V");
     assertNotNull(existingWorker, "Worker should exist before update");
 
     repository.update("Pepito",
-        "1111111A",
+        "11768496V",
         "Casado",
         3,
         40000,
@@ -231,7 +231,7 @@ public class WorkerTest {
         "B12345678");
 
     // Retrieve updated worker
-    Worker updatedWorker = (Worker) repository.findByDni("1111111A");
+    Worker updatedWorker = (Worker) repository.findByDni("11768496V");
     assertNotNull(updatedWorker, "Updated worker should exist");
     // Print all workers to verify
     System.out.println("\n=== Lista de todos los Workers ===");
@@ -258,7 +258,7 @@ public class WorkerTest {
     Worker worker = new Worker();
 
     // 1. Asignar un DNI válido inicial
-    String validDni = "48392015S";
+    String validDni = "11768496V";
     worker.setDni(validDni);
     assertEquals(validDni, worker.getDni());
 
