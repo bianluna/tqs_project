@@ -89,6 +89,18 @@ public class WorkerTest {
     worker.setTotalIncome(16000);
     assertTrue(worker.getTotalIncome() == 16000);
 
+    // Attempt to set negative total income should throw exception
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(-5000);
+    });
+    assertEquals("El salario neto bruto no puede ser negativo o cero", exception.getMessage());
+
+    // Attempt to set zero total income should throw exception
+    Exception exceptionZero = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(0);
+    });
+    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionZero.getMessage());
+
   }
 
   /*
