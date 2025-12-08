@@ -1,132 +1,118 @@
-# 🧮 Calculadora de Nómina
-> Proyecto de práctica con enfoque en **Desarrollo Guiado por Pruebas (TDD)** utilizando **Java** y **JUnit**
+# Sistema de Gestión de Empresas y Empleados
+
+## 📋 Descripción del Proyecto
+
+Sistema de gestión desarrollado para la asignatura **Test y Calidad (Curso 2025-2026)** que permite administrar organizaciones, gestionar trabajadores y calcular nóminas de manera eficiente.
+
+El sistema implementa dos tipos de acceso diferenciados (empresa y empleado) con funciones, restricciones y mecanismos de control específicos para garantizar la integridad, coherencia y seguridad de la información.
 
 ---
 
-## 📘 Descripción del Proyecto
+## 🎯 Funcionalidades Principales
 
-Este proyecto consiste en el desarrollo de una **calculadora de nómina** en **Java**, cuyo objetivo es automatizar el cálculo del salario neto de los empleados.  
-Se tendrán en cuenta factores como:
+### 👔 Perfil Empresa
+- **Registrar trabajadores**: Alta de nuevos empleados con validación de datos
+- **Gestionar plantilla**: Visualización de todos los trabajadores de la empresa
+- **Eliminar trabajadores**: Baja de empleados del sistema
+- **Calcular nóminas**: Cálculo automático considerando IRPF, Seguridad Social y variables personalizables
 
-- Sueldo base  
-- Horas trabajadas  
-- Deducciones (ISR, seguridad social, etc.)  
-- Bonificaciones y retenciones adicionales  
-
-El enfoque principal del proyecto no es únicamente la funcionalidad, sino la **aplicación práctica del enfoque TDD (Test-Driven Development)**, garantizando calidad, mantenibilidad y confiabilidad en el código.
-
----
-
-## 🎯 Objetivo Principal
-
-- Implementar una aplicación modular de cálculo de nómina en Java.  
-- Aplicar correctamente el **ciclo TDD** durante todo el proceso de desarrollo.  
-- Desarrollar pruebas unitarias con **JUnit** antes de implementar la lógica funcional.  
-- Promover buenas prácticas de diseño orientado a objetos y refactorización continua.  
+### 👤 Perfil Empleado
+- **Consultar datos personales**: Acceso a información laboral propia
+- **Visualizar directorio**: Consulta en modo lectura del listado general de empleados
 
 ---
 
-## 🔁 Metodología: TDD (Test-Driven Development)
+## 📊 Validaciones del Modelo
 
-El desarrollo se guía por el ciclo iterativo de TDD:
+### Worker (Trabajador)
+| Campo | Validaciones |
+|-------|-------------|
+| DNI | Formato 8 dígitos + letra, verificación de letra válida |
+| Estado Civil | Lista cerrada: Soltero, Casado, Divorciado, Viudo |
+| Hijos | Entero >= 0 |
+| Salario | Float > 0 (salario mínimo implícito) |
+| Pagas | 12 o 14 exactamente |
+| Contrato | Indefinido, Temporal, Formación en Alternancia, Formativo |
+| Categoría | Rango [0-10] |
+| CIF Empresa | Formato básico de CIF validado |
 
-1. **🟥 Red – Escribir una prueba que falle:**  
-   Se redacta una prueba unitaria para una funcionalidad aún no implementada.  
-   La prueba debe fallar inicialmente para confirmar que la lógica aún no existe.
+### Company (Empresa)
+| Campo | Validaciones |
+|-------|-------------|
+| CIF | No vacío, formato básico |
+| Email | Expresión regular RFC 5322 simplificada |
+| CNAE | Código de actividad económica válido (lista cerrada) |
 
-2. **🟩 Green – Escribir el código mínimo necesario:**  
-   Se implementa el código más simple que haga pasar la prueba.  
-   No se busca optimización todavía.
-
-3. **🟦 Refactor – Mejorar el código:**  
-   Se refactoriza el código para mejorar su calidad sin cambiar su comportamiento.  
-   Todas las pruebas deben seguir pasando tras la refactorización.
-
-Este ciclo se repite con cada nueva funcionalidad del sistema.  
+### Payroll (Nómina)
+- **IRPF**: Cálculo por tramos progresivos (19%-45%)
+  - Reducción: -1% por hijo (máx. -5%)
+  - Incremento: +3% si contrato temporal
+- **Seguridad Social**: Por categoría profesional (6.35%-6.45%)
+- **Salario Neto**: Bruto anual - (IRPF + SS)
 
 ---
 
-## 🧰 Tecnologías Utilizadas
+## 📝 Uso del Sistema
 
-- **Lenguaje:** Java (versión 17 o superior recomendada)  
-- **Framework de Testing:** JUnit 5  
-- **Control de versiones:** Git y GitHub  
-- **IDE sugerido:** IntelliJ IDEA / Eclipse  
+### Flujo de Autenticación
+1. Al iniciar, seleccionar tipo de usuario:
+   - `1` → Empresa (ingresar CIF)
+   - `2` → Trabajador (ingresar DNI)
 
----
+### Menú Empresa
+```
+1. Agregar nuevo trabajador
+   - Captura datos con validación en tiempo real
+   - Asigna automáticamente el CIF de la empresa
 
-## Flujo TDD aplicado:
+2. Listar plantilla
+   - Tabla formateada con todos los empleados
+   - Filtrado por CIF de empresa
 
-Se crea el test.
-
-Se implementa hasta que la prueba pase.
-
-Luego se refactoriza el código y se mantienen las pruebas verdes.
-
-## 💡 Aprendizajes Esperados
-
-Comprender y aplicar el ciclo completo de TDD en un proyecto Java real.
-
-Diseñar clases orientadas a objetos limpias y fácilmente testeables.
-
-Utilizar JUnit 5 para la automatización de pruebas.
-
-Integrar la ejecución de pruebas con Maven o Gradle.
-
-Promover la refactorización continua y el desarrollo incremental.
-
-## 👨‍💻 Autores / Equipo
-
-Veronica Lozada Perez y Bianca Luna
-
-Proyecto desarrollado con fines educativos como práctica de Test i Qualitat de Software, asignatura de 3ero de Ingenieria Informatica, UAB.
-
-# tqs_project
-
-Este proyecto incluye modelos de `Worker` y `Company`, pruebas unitarias con repositorios mock y ahora una pequeña interfaz de línea de comandos para gestionar workers.
-
-## Interfaz (CLI)
-
-Se añadió `src/App.java` con un menú simple:
-- Agregar worker
-- Listar workers
-- Eliminar worker por DNI
-- Salir
-
-### Ejecutar desde IntelliJ IDEA
-1. Abrir el proyecto.
-2. Asegúrate de que el SDK de Java esté configurado (Project Structure > SDK).
-3. Crea una configuración de ejecución con la clase principal `App`.
-4. Ejecuta y usa el menú interactivo.
-
-### Ejecutar desde terminal (Linux)
-Si tienes `javac` y `java` instalados:
-
-```bash
-# Compilar todas las clases bajo src
-javac $(find src -name "*.java")
-
-# Ejecutar el programa
-java -cp src App
+3. Eliminar trabajador
+   - Solicita confirmación antes de borrar
+   - Validación de existencia del DNI
 ```
 
-Si ves "Command 'javac' not found", instala un JDK:
-
-```bash
-sudo apt update
-sudo apt install default-jdk
+### Menú Trabajador
 ```
+1. Ver mis datos personales
+   - Ficha detallada vertical
+   - Información laboral completa
 
-Luego compila y ejecuta como arriba.
+2. Ver listado general
+   - Solo lectura del directorio completo
+   - Sin permisos de modificación
+```
+---
 
-### Listar/Imprimir todos los workers
-En el menú, elige la opción "Listar workers". Verás los workers precargados más los que hayas agregado impresos usando `Worker.toString()`.
+## 👥 Equipo de Desarrollo
 
-## Pruebas
-Los tests están en el directorio `tests/` y usan repositorios mock para `Company` y `Worker`.
+- **Integrante 1**: [Bianca Luna] - [bianca.luna@autonoma.cat]
+- **Integrante 2**: [Verónica Lozada Pérez] - [veronica.lozada@autonoma.cat]
 
-- Para imprimir workers desde los tests, mira `test/WorkerTest.java` en el método `testSaveAndPrintAllWorkers()`.
+---
 
-## Notas
-- La validación de DNI y otras reglas del dominio está implementada dentro de `model/Worker`.
-- La CLI usa un repositorio en memoria interno y no depende de los repositorios de prueba.
+## 🔧 Tecnologías Utilizadas
+
+- **Lenguaje**: Java 11+
+- **Testing**: JUnit 5, Mockito
+- **Control de Versiones**: Git + GitHub
+- **CI/CD**: GitHub Actions
+- **Calidad de Código**: Checkstyle
+
+---
+
+## 📖 Referencias
+
+- [Documentación JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
+- [Mockito Documentation](https://javadoc.io/doc/org.mockito/mockito-core/latest/)
+- [GitHub Actions for Java](https://docs.github.com/en/actions/guides/building-and-testing-java-with-maven)
+- Apuntes de la asignatura Test i Qualitat (UAB)
+
+---
+
+## 📄 Licencia
+
+Este proyecto es parte de un trabajo académico para la Universitat Autònoma de Barcelona.  
+© 2025 - Todos los derechos reservados.
