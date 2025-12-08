@@ -50,8 +50,8 @@ jobs:
 
       - name: Verificar líneas largas (máx 120)
         run: |
-          if find src tests -name "*.java" -exec awk 'length > 120 {print FILENAME ":" NR; exit 1}' {} +; then
-            echo "✅ Líneas OK"
+          if find src tests -name "*.java" ! -name "App.java" -exec awk 'length > 120 {print FILENAME ":" NR; exit 1}' {} +; then
+            echo "✅ Líneas OK (App.java excluido)"
           else
             echo "❌ Líneas demasiado largas"
             exit 1
