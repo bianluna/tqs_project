@@ -255,7 +255,9 @@ public class payrollTest {
   @Test
   void testCalculateMonthlyNetSalary() {
     // === Caso 1: Trabajador con 12 pagas ===
-    Worker w1 = new Worker("Ana", "71239485K", "Soltero", 0, 36000, 12, "Indefinido", 5, "J12345678");
+    Worker w1 = new Worker("Marta", "63314529Z", "Soltero",
+        0, 36000, 12, "Indefinido", 5,
+        "B34567890");
     payroll.setWorker(w1);
 
     // IRPF base 37% = 13 320 €
@@ -263,6 +265,19 @@ public class payrollTest {
     // Neto anual = 36 000 - (13 320 + 2 304) = 20 376 €
     // Neto mensual esperado = 20 376 / 12 = 1 698 €
     assertEquals(1698.0, payroll.calculateMonthlyNetSalary(), 0.01);
+
+    // === Caso 1A: Trabajador con 12 pagas ===
+    Worker w1a = new Worker("Luis Molina", "10293847J", "Soltero", 1,
+        22000f, 12, "Temporal", 4,
+        "B34567890");
+    payroll.setWorker(w1a);
+
+    // IRPF base 30% -1% hijo +3% temporal = 32%
+    // IRPF = 7 040 €
+    // SS (cat 4 → 6.35%) = 1 397.0 €
+    // Neto anual = 22 000 - (7 040 + 1 397) = 13 563 €
+    // Neto mensual esperado = 13 563 / 12 = 1 130.25 €
+    assertEquals(1130.25, payroll.calculateMonthlyNetSalary(), 0.01);
 
     // === Caso 2: Trabajador con 14 pagas ===
     Worker w2 = new Worker("Luis", "71239485K", "Casado", 2, 42000, 14, "Temporal", 7, "J12345678");
@@ -274,5 +289,20 @@ public class payrollTest {
     // Neto anual = 42 000 - (15 960 + 2 688) = 23 352 €
     // Neto mensual esperado = 23 352 / 14 = 1 668 €
     assertEquals(1668.0, payroll.calculateMonthlyNetSalary(), 0.01);
+
+    // === Caso 2A: Trabajador con 14 pagas ===
+    Worker w2a = new Worker(
+        "Ana Torres", "71239485K", "Casada", 2,
+        28000f, 14, "Indefinido", 2,
+        "B12345678");
+    payroll.setWorker(w2a);
+
+    // IRPF base 30% -2% hijos = 28%
+    // IRPF = 7 840 €
+    // SS (cat 2 → 6.35%) = 1 778 €
+    // Neto anual = 28 000 - (7 840 + 1 778) = 18 382 €
+    // Neto mensual esperado = 18 382 / 14 = 1 312.99 €
+    assertEquals(1312.99, payroll.calculateMonthlyNetSalary(), 0.01);
+
   }
 }
