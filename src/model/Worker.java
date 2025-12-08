@@ -136,19 +136,4 @@ public class Worker {
 
     return letraProporcionada == letraCalculada;
   }
-
-  @Override
-  public String toString() {
-    return "Worker{" +
-        "name='" + name + '\'' +
-        ", dni='" + dni + '\'' +
-        ", civilStatus='" + civilStatus + '\'' +
-        ", children=" + children +
-        ", totalIncome=" + totalIncome +
-        ", payments=" + payments +
-        ", contract='" + contract + '\'' +
-        ", category=" + category +
-        ", cifEmpresa='" + cifEmpresa + '\'' +
-        '}';
-  }
 }
