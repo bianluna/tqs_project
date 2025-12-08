@@ -87,14 +87,13 @@ public class WorkerTest {
 
   /*
    * Test cases for validating total income, which must be a positive value and with
-   * minumum value of 16000 euros, which is the
-   * interprofesional minimum salary within Spain.
+   * minimum value of 16000 euros, which is the
+   * interprofessional minimum salary within Spain.
    *
    * Equivalence Partitions:
    * 1. Valid total income: positive values greater than or equal to 16000 euros (e.g., 16000, 25000.60, 800000)
    * 2. Invalid total income: negative values and zero (e.g., -5000, -0.01, 0, 15999.99)
-   * 3. Boundary case: exactly 16000 euros, zero, negative values close to zero (-0.01), 1, 15 999.99, 16 000.01
-   *
+   * 3. Boundary case: exactly 16000.00 euros, -0.01, 0, 1, 15 999.99, 16 000.01
    * */
   @Test
   void testTotalIncome() {
