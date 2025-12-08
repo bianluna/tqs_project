@@ -96,7 +96,7 @@ El sistema implementa dos tipos de acceso diferenciados (empresa y empleado) con
 ## 🔧 Tecnologías Utilizadas
 
 - **Lenguaje**: Java 11+
-- **Testing**: JUnit 5, Mockito
+- **Testing**: JUnit 5
 - **Control de Versiones**: Git + GitHub
 - **CI/CD**: GitHub Actions
 - **Calidad de Código**: Checkstyle
@@ -106,7 +106,6 @@ El sistema implementa dos tipos de acceso diferenciados (empresa y empleado) con
 ## 📖 Referencias
 
 - [Documentación JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
-- [Mockito Documentation](https://javadoc.io/doc/org.mockito/mockito-core/latest/)
 - [GitHub Actions for Java](https://docs.github.com/en/actions/guides/building-and-testing-java-with-maven)
 - Apuntes de la asignatura Test i Qualitat (UAB)
 
