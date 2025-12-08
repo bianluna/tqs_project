@@ -177,4 +177,23 @@ public class Worker {
 
     return letraProporcionada == letraCalculada;
   }
+
+  // For Loop Testing
+  /**
+   * Cuenta cuántos dígitos tiene una cadena
+   * Se usa para validar que el DNI tenga exactamente 8 dígitos
+   */
+  public int countDigits(String text) {
+    if (text == null || text.isEmpty()) {
+      return 0;
+    }
+
+    int count = 0;
+    for (int i = 0; i < text.length(); i++) {  // BUCLE SIMPLE
+      if (Character.isDigit(text.charAt(i))) {
+        count++;
+      }
+    }
+    return count;
+  }
 }
