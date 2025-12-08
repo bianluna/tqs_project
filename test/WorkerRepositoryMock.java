@@ -17,7 +17,7 @@ public class WorkerRepositoryMock implements WorkerRepository {
     ));
 
     workers.add(new Worker(
-        "Ana Torres", "71239485K", "Casada", 2,
+        "Ana Torres", "71239485K", "Casado", 2,
         28000f, 14, "Indefinido", 2,
         "B12345678"
     ));
@@ -29,14 +29,14 @@ public class WorkerRepositoryMock implements WorkerRepository {
     ));
 
     workers.add(new Worker(
-        "María Varela", "05672193W", "Casada", 3,
+        "María Varela", "05672193W", "Casado", 3,
         35000f, 14, "Indefinido", 1,
         "B34567890"
     ));
 
     workers.add(new Worker(
         "Pedro Gómez", "99221188Q", "Soltero", 0,
-        18000f, 12, "Parcial", 5,
+        18000f, 12, "Temporal", 5,
         "B34567890"
     ));
   }
