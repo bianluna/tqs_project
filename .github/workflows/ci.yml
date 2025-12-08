@@ -32,7 +32,7 @@ jobs:
           javac -d out $(find src -name "*.java")
 
       - name: Compilar tests
-        run: javac -cp "lib/junit-platform-console-standalone.jar:out" -d out $(find tests -name "*.java")
+        run: javac -cp "lib/junit-platform-console-standalone.jar:out" -d out $(find test -name "*.java")
 
       - name: Ejecutar tests
         run: |
@@ -50,7 +50,7 @@ jobs:
 
       - name: Verificar líneas largas (máx 120)
         run: |
-          if find src tests -name "*.java" ! -name "App.java" -exec awk 'length > 120 {print FILENAME ":" NR; exit 1}' {} +; then
+          if find src test -name "*.java" ! -name "App.java" -exec awk 'length > 120 {print FILENAME ":" NR; exit 1}' {} +; then
             echo "✅ Líneas OK (App.java excluido)"
           else
             echo "❌ Líneas demasiado largas"
@@ -59,5 +59,5 @@ jobs:
 
       - name: Verificar estructura MVC
         run: |
-          [ -d "src/model" ] && [ -d "src/controller" ] && [ -d "src/repository" ] && [ -d "tests" ]
+          [ -d "src/model" ] && [ -d "src/controller" ] && [ -d "src/repository" ] && [ -d "test" ]
           echo "✅ Estructura OK"
