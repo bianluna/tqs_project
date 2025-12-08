@@ -38,8 +38,8 @@ public class PayrollTest {
    * Equivalence Partitions:
    * 1. Group 1–4 → 6.35%
    * 2. Group 5–7 → 6.40%
-   * 3. Group 8–11 → 6.45%
-   * 4. Invalid group (<1 or >11) → IllegalArgumentException
+   * 3. Group 8–10 → 6.45%
+   * 4. Invalid group (<1 or >10) → IllegalArgumentException
    * 5. Frontier values: 1, 0, 2, 3, 6, 9, 10, 12
    */
   @Test
@@ -70,7 +70,7 @@ public class PayrollTest {
     payroll.setWorker(cat7Worker);
     assertEquals(640.0, payroll.calculateSocialSecurity());
 
-    // Equivalence Partition 3: grup 8–11
+    // Equivalence Partition 3: grup 8–10
     payroll.setWorker(cat8Worker);
     assertEquals(645.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat9Worker);
