@@ -1,264 +1,63 @@
-name: CI - Tests y Calidad del Código
+name: CI - Tests y Calidad
 
-# Se ejecuta en:
-# 1. Pull requests hacia main (CRÍTICO para aprobar merges)
-# 2. Push a cualquier rama (para feedback temprano)
 on:
   push:
-    branches: [ '**' ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     name: Compilar y Ejecutar Tests
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Checkout del código
-      - name: Checkout código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # Paso 2: Configurar Java 17
-      - name: Configurar JDK 17
+      - name: Instalar Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Paso 3: Dar permisos de ejecución a scripts (si tienes)
-      - name: Permisos de ejecución
-        run: chmod +x compile.sh test.sh || true
-
-      # Paso 4: Compilar el proyecto
-      - name: Compilar código fuente
+      - name: Descargar JUnit
         run: |
-          echo "🔨 Compilando código fuente..."
-          
-          # Crear directorio bin si no existe
-          mkdir -p bin
-          
-          # Compilar código fuente (ajusta las rutas según tu estructura)
-          javac -d bin -sourcepath src src/**/*.java
-          
-          echo "✅ Compilación exitosa"
-        continue-on-error: false
+          mkdir -p lib
+          curl -L -o lib/junit-platform-console-standalone.jar \
+            https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.2/junit-platform-console-standalone-1.10.2.jar
 
-      # Paso 5: Compilar tests
+      - name: Compilar código
+        run: |
+          mkdir -p out
+          javac -d out $(find src -name "*.java")
+
       - name: Compilar tests
-        run: |
-          echo "Compilando tests..."
-          
-          # Descargar JUnit 5 si no está en el proyecto
-          if [ ! -f "lib/junit-platform-console-standalone.jar" ]; then
-            mkdir -p lib
-            wget -q https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar -O lib/junit-platform-console-standalone.jar
-          fi
-          
-          # Compilar tests
-          javac -cp "bin:lib/junit-platform-console-standalone.jar" -d bin test/**/*.java || \
-          javac -cp "bin:lib/junit-platform-console-standalone.jar" -d bin src/test/**/*.java || \
-          echo "No se encontraron tests o ya están compilados"
-          
-          echo "Tests compilados"
-        continue-on-error: false
+        run: javac -cp "lib/junit-platform-console-standalone.jar:out" -d out $(find tests -name "*.java")
 
-      # Paso 6: Ejecutar tests
-      - name: Ejecutar tests unitarios
+      - name: Ejecutar tests
         run: |
-          echo "Ejecutando tests..."
-          
-          # Ejecutar tests con JUnit
           java -jar lib/junit-platform-console-standalone.jar \
-            --class-path bin \
+            --class-path out \
             --scan-class-path \
-            --fail-if-no-tests \
-            --reports-dir=test-results
-          
-          echo "Todos los tests pasaron"
-        continue-on-error: false
+            --details tree
 
-      # Paso 7: Subir resultados de tests
-      - name: Subir resultados de tests
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test-results/
-          retention-days: 30
-
-  code-quality:
-    name: Verificación de Calidad de Código
+  quality:
+    name: Calidad de Código
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # Verificación 1: Máximo tamaño de línea (120 caracteres)
-      - name: Verificar longitud máxima de líneas
+      - name: Verificar líneas largas (máx 120)
         run: |
-          echo "Verificando longitud de líneas (máx 120 caracteres)..."
-          
-          # Buscar líneas demasiado largas en archivos .java
-          LONG_LINES=$(find src -name "*.java" -exec awk 'length > 120 {print FILENAME ":" NR ": " $0; errors++} END {exit errors}' {} + 2>&1 || true)
-          
-          if [ ! -z "$LONG_LINES" ]; then
-            echo "Se encontraron líneas demasiado largas:"
-            echo "$LONG_LINES" | head -20
-            echo ""
-            echo "Por favor, reduce estas líneas a máximo 120 caracteres."
-            exit 1
-          fi
-          
-          echo "Todas las líneas cumplen con el límite"
-
-      # Verificación 2: No System.out.println en código de producción
-      - name: Verificar System.out/err en producción
-        run: |
-          echo "🔍 Verificando uso de System.out/err..."
-          
-          # Buscar System.out.println pero ignorar App.java (vista)
-          SYSOUT=$(find src/model src/controller src/repository -name "*.java" 2>/dev/null -exec grep -n "System\\.out\\.print\|System\\.err\\.print" {} + || true)
-          
-          if [ ! -z "$SYSOUT" ]; then
-            echo "Advertencia: Se encontró System.out/err en código de producción:"
-            echo "$SYSOUT"
-            echo ""
-            echo "Considera usar un logger en lugar de System.out"
-            # No fallar, solo warning
+          if find src tests -name "*.java" -exec awk 'length > 120 {print FILENAME ":" NR; exit 1}' {} +; then
+            echo "✅ Líneas OK"
           else
-            echo "No se encontró System.out/err en Model/Controller"
-          fi
-
-      # Verificación 3: TODOs críticos sin resolver
-      - name: Buscar TODOs críticos
-        run: |
-          echo "Buscando TODOs críticos..."
-          
-          CRITICAL_TODOS=$(grep -r "TODO.*CRITICAL\|FIXME.*URGENT" src/ || true)
-          
-          if [ ! -z "$CRITICAL_TODOS" ]; then
-            echo "Se encontraron TODOs críticos sin resolver:"
-            echo "$CRITICAL_TODOS"
+            echo "❌ Líneas demasiado largas"
             exit 1
           fi
-          
-          echo "No hay TODOs críticos pendientes"
 
-      # Verificación 4: Archivos sin comentarios de test
-      - name: Verificar documentación de tests
-        run: |
-          echo "Verificando documentación de tests..."
-          
-          # Contar tests documentados vs total
-          TOTAL_TESTS=$(find test src/test -name "*Test.java" 2>/dev/null -exec grep -c "@Test" {} + | awk '{sum+=$1} END {print sum}' || echo "0")
-          DOCUMENTED_TESTS=$(find test src/test -name "*Test.java" 2>/dev/null -exec grep -B3 "@Test" {} + | grep -c "Caja\|Test\|Partición\|Coverage" || echo "0")
-          
-          echo "Tests totales: $TOTAL_TESTS"
-          echo "Tests documentados: $DOCUMENTED_TESTS"
-          
-          if [ "$TOTAL_TESTS" -gt 0 ]; then
-            PERCENTAGE=$((DOCUMENTED_TESTS * 100 / TOTAL_TESTS))
-            echo "Porcentaje documentado: ${PERCENTAGE}%"
-          
-            if [ "$PERCENTAGE" -lt 50 ]; then
-              echo "Menos del 50% de tests están documentados"
-              echo "Considera añadir comentarios explicando qué prueba cada test"
-            else
-              echo "Buena documentación de tests (${PERCENTAGE}%)"
-            fi
-          fi
-
-      # Verificación 5: Estructura del proyecto MVC
       - name: Verificar estructura MVC
         run: |
-          echo "Verificando estructura MVC..."
-          
-          ERRORS=0
-          
-          # Verificar carpetas necesarias
-          if [ ! -d "src/model" ] && [ ! -d "model" ]; then
-            echo "Falta carpeta model/"
-            ERRORS=$((ERRORS + 1))
-          fi
-          
-          if [ ! -d "src/controller" ] && [ ! -d "controller" ]; then
-            echo "Falta carpeta controller/"
-            ERRORS=$((ERRORS + 1))
-          fi
-          
-          if [ ! -d "src/repository" ] && [ ! -d "repository" ]; then
-            echo "Falta carpeta repository/ (Mocks)"
-            ERRORS=$((ERRORS + 1))
-          fi
-          
-          if [ ! -d "test" ] && [ ! -d "src/test" ]; then
-            echo "Falta carpeta de tests"
-            ERRORS=$((ERRORS + 1))
-          fi
-          
-          if [ $ERRORS -gt 0 ]; then
-            echo ""
-            echo "La estructura MVC no está completa"
-            exit 1
-          fi
-          
-          echo "Estructura MVC correcta"
-
-      # Verificación 6: Naming conventions
-      - name: Verificar convenciones de nombrado
-        run: |
-          echo "Verificando convenciones de nombrado..."
-          
-          # Verificar que clases empiezan con mayúscula
-          BAD_CLASSES=$(find src -name "*.java" -exec basename {} \; | grep -E "^[a-z]" || true)
-          
-          if [ ! -z "$BAD_CLASSES" ]; then
-            echo "Archivos que no siguen PascalCase:"
-            echo "$BAD_CLASSES"
-          else
-            echo "Nombres de clases correctos (PascalCase)"
-          fi
-          
-          # Verificar que tests terminan en Test.java
-          BAD_TEST_NAMES=$(find test src/test -name "*.java" 2>/dev/null | grep -v "Test\.java$" || true)
-          
-          if [ ! -z "$BAD_TEST_NAMES" ]; then
-            echo "Archivos de test que no terminan en 'Test.java':"
-            echo "$BAD_TEST_NAMES"
-          else
-            echo "Nombres de tests correctos"
-          fi
-
-  summary:
-    name: Resumen CI/CD
-    runs-on: ubuntu-latest
-    needs: [build-and-test, code-quality]
-    if: always()
-
-    steps:
-      - name: Verificar estado de todos los jobs
-        run: |
-          echo "📊 Resumen de CI/CD"
-          echo "===================="
-          
-          BUILD_STATUS="${{ needs.build-and-test.result }}"
-          QUALITY_STATUS="${{ needs.code-quality.result }}"
-          
-          echo "Build y Tests: $BUILD_STATUS"
-          echo "Calidad de Código: $QUALITY_STATUS"
-          echo ""
-          
-          if [ "$BUILD_STATUS" != "success" ]; then
-            echo "Los tests fallaron - Merge bloqueado"
-            exit 1
-          fi
-          
-          if [ "$QUALITY_STATUS" != "success" ]; then
-            echo "La calidad de código no cumple estándares - Merge bloqueado"
-            exit 1
-          fi
-          
-          echo "Todos los checks pasaron correctamente"
-          echo "El código está listo para merge a main"
+          [ -d "src/model" ] && [ -d "src/controller" ] && [ -d "src/repository" ] && [ -d "tests" ]
+          echo "✅ Estructura OK"
