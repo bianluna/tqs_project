@@ -95,29 +95,34 @@ public class WorkerTest {
     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(-5000);
     });
-    assertEquals("El salario neto bruto no puede ser negativo o cero", exception.getMessage());
+    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+        exception.getMessage());
 
     // Attempt to set zero total income should throw exception
     Exception exceptionZero = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(0);
     });
-    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionZero.getMessage());
+    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+        exceptionZero.getMessage());
 
     // Boundary cases
     Exception exceptionBoundaryCloseZeroNegative = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(-0.01f);
     });
-    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionBoundaryCloseZeroNegative.getMessage());
+    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+        exceptionBoundaryCloseZeroNegative.getMessage());
 
     Exception exceptionBoundaryCloseZeroPositive = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(0.01f);
     });
-    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionBoundaryCloseZeroPositive.getMessage());
+    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+        exceptionBoundaryCloseZeroPositive.getMessage());
 
     Exception exceptionBoundaryLow = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(15999.99f);
     });
-    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionBoundaryLow.getMessage());
+    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+        exceptionBoundaryLow.getMessage());
 
     worker.setTotalIncome(16000.01f);
     assertEquals(16000.01f, worker.getTotalIncome());
