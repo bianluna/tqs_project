@@ -74,8 +74,8 @@ public class WorkerTest {
 
 
   /*
-   * Test cases for validating total income, which must be a positive value and with minumum value of 16000 euros, which is the
-   * interprofesional minimum salary within Spain.
+   * Test cases for validating total income, which must be a positive value and with minumum
+   * value of 16000 euros, which is the    * interprofesional minimum salary within Spain.
    *
    * Equivalence Partitions:
    * 1. Valid total income: positive values greater than or equal to 16000 euros (e.g., 16000, 25000.60, 800000)
@@ -135,7 +135,8 @@ public class WorkerTest {
    * Test cases for validating contract type, which must be one of the following strings:
    * “Indefinido”,  “Temporal” “Formacion en Alternancia”, “Formativo para la Obtencion de la Práctica Profesional”
    * Equivalence Partitions:
-   * 1. Valid contract types: “Indefinido”,  “Temporal” “Formacion en Alternancia”, “Formativo para la Obtencion de la Práctica Profesional”
+   * 1. Valid contract types: “Indefinido”,  “Temporal” “Formacion en Alternancia”,
+   * “Formativo para la Obtencion de la Práctica Profesional”
    * 2. Invalid contract types: any other string (e.g., "indefinido-invalid", "permanent", "temporary")
    * */
   @Test

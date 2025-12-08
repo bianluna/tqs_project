@@ -26,7 +26,9 @@ public class Worker {
         this.cifEmpresa = "";
     }
 
-  public Worker(String name, String dni,  String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
+  public Worker(String name, String dni,  String civilStatus, int children,
+                float totalIncome, int payments, String contract,
+                int category, String cifEmpresa) {
       this.name = name;          // Valida no vacío
       setDni(dni);            // Valida formato y letra
       setCivilStatus(civilStatus); // Valida lista cerrada
@@ -62,7 +64,8 @@ public class Worker {
 
   public void setTotalIncome(float totalIncome) {
     if (!isValidIncome(totalIncome)) {
-      throw new IllegalArgumentException("El salario neto bruto no puede ser negativo");
+      throw new IllegalArgumentException(
+          "El salario neto bruto no puede ser negativo");
     }
     this.totalIncome = totalIncome;
   }
@@ -89,7 +92,11 @@ public class Worker {
   }
 
   public boolean isValidContract(String contract) {
-    return contract.equals("Indefinido") || contract.equals("Temporal") || contract.equals("Formacion en Alternancia")|| contract.equals("Formativo para la Obtencion de la Práctica Profesional");
+    return contract.equals("Indefinido")
+        || contract.equals("Temporal")
+        || contract.equals("Formacion en Alternancia")
+        || contract.equals(
+            "Formativo para la Obtencion de la Práctica Profesional");
   }
 
   public void setContract(String contract) {
@@ -99,7 +106,10 @@ public class Worker {
   }
 
   public boolean isCivilStatusValid(String civilStatus) {
-      return civilStatus.equals("Soltero") || civilStatus.equals("Casado") || civilStatus.equals("Divorciado") || civilStatus.equals("Viudo");
+      return civilStatus.equals("Soltero")
+          || civilStatus.equals("Casado")
+          || civilStatus.equals("Divorciado")
+          || civilStatus.equals("Viudo");
   }
   public void setCivilStatus(String civilStatus) {
       if (isCivilStatusValid(civilStatus)) {
@@ -111,7 +121,8 @@ public class Worker {
     if (isValidDni(dni)) {
       this.dni = dni;
     } else {
-      System.err.println("Error: DNI inválido intentando ser asignado: " + dni);
+      System.err.println(
+          "Error: DNI inválido intentando ser asignado: " + dni);
       //throw new IllegalArgumentException("DNI inválido");
     }
   }

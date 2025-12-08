@@ -5,15 +5,18 @@ import java.util.regex.Pattern;
 
 public class CompanyRepositoryMock implements CompanyRepository {
 
-  private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-  private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+  private static final String EMAIL_REGEX =
+      "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+  private static final Pattern EMAIL_PATTERN =
+      Pattern.compile(EMAIL_REGEX);
   public Map<String, Company> database;
   public boolean deleteWasCalled;
   public List<String> methodCallLog;
   public boolean shouldFailOnSave;
 
 
-  private static final Set<String> VALID_CNAE_CODES = new HashSet<>(Arrays.asList(
+  private static final Set<String> VALID_CNAE_CODES =
+      new HashSet<>(Arrays.asList(
       "6201", // Actividades de programación informática
       "6202", // Consultoría de informática
       "4110", // Promoción inmobiliaria
@@ -31,7 +34,8 @@ public class CompanyRepositoryMock implements CompanyRepository {
 
 
   /**
-   * Constructor que inicializa la BD con datos ficticios
+   * Constructor que inicializa la BD
+   * con datos ficticios
    */
   public CompanyRepositoryMock() {
     this.database = new HashMap<>();
@@ -42,7 +46,8 @@ public class CompanyRepositoryMock implements CompanyRepository {
   }
 
   /**
-   * Carga empresas ficticias en la base de datos simulada
+   * Carga empresas ficticias en
+   * la base de datos simulada
    */
   private void loadFakeData() {
 
@@ -107,10 +112,14 @@ public class CompanyRepositoryMock implements CompanyRepository {
     }
 
     if (database.containsKey(company.getCif())) {
-      return false; // Indicates failure because it already exists
+      return false;
+      // Indicates failure because it already exists
     }
 
-    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
+    if (company != null && company.getCif() != null
+        && !company.getCif().isEmpty()
+        && isValidEmail(company.getEmail())
+        && isValidCnae(company.getCnae())) {
       database.put(company.getCif(), company);
       return true;
     }
@@ -129,7 +138,10 @@ public class CompanyRepositoryMock implements CompanyRepository {
       return false; // Indicates failure because it doesn't exist
     }
 
-    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
+    if (company != null && company.getCif() != null
+        && !company.getCif().isEmpty()
+        && isValidEmail(company.getEmail())
+        && isValidCnae(company.getCnae())) {
       database.put(company.getCif(), company);
       return true;
     }
