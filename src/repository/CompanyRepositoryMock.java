@@ -8,29 +8,31 @@ import java.util.regex.Pattern;
 
 public class CompanyRepositoryMock implements CompanyRepository {
 
-  private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-  private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+  private static final String EMAIL_REGEX =
+      "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+  private static final Pattern EMAIL_PATTERN =
+      Pattern.compile(EMAIL_REGEX);
   public Map<String, Company> database;
   public boolean deleteWasCalled;
   public List<String> methodCallLog;
   public boolean shouldFailOnSave;
 
 
-  private static final Set<String> VALID_CNAE_CODES = new HashSet<>(Arrays.asList(
-      "6201", // Actividades de programación informática
-      "6202", // Consultoría de informática
-      "4110", // Promoción inmobiliaria
-      "4121", // Construcción de edificios residenciales
-      "5610", // Restaurantes y puestos de comidas
-      "6920",  // Actividades de contabilidad
-      "J62.01",
-      "J62.02",
-      "J63.11",
-      "F41.20",
-      "F43.32",
-      "A03"
-      // ... many more codes can be added here
-  ));
+  private static final Set<String> VALID_CNAE_CODES =
+      new HashSet<>(Arrays.asList(
+          "6201", // Actividades de programación informática
+          "6202", // Consultoría de informática
+          "4110", // Promoción inmobiliaria
+          "4121", // Construcción de edificios residenciales
+          "5610", // Restaurantes y puestos de comidas
+          "6920", // Actividades de contabilidad
+          "J62.01",
+          "J62.02",
+          "J63.11",
+          "F41.20",
+          "F43.32",
+          "A03"
+      ));
 
 
   /**
@@ -109,10 +111,14 @@ public class CompanyRepositoryMock implements CompanyRepository {
     }
 
     if (database.containsKey(company.getCif())) {
-      return false; // Indicates failure because it already exists
+      return false;
     }
 
-    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
+    if (company != null
+        && company.getCif() != null
+        && !company.getCif().isEmpty()
+        && isValidEmail(company.getEmail())
+        && isValidCnae(company.getCnae())) {
       database.put(company.getCif(), company);
       return true;
     }
@@ -127,10 +133,14 @@ public class CompanyRepositoryMock implements CompanyRepository {
     }
 
     if (findByCif(company.getCif()) == null) {
-      return false; // Indicates failure because it doesn't exist
+      return false;
     }
 
-    if (company != null && company.getCif() != null && !company.getCif().isEmpty() && isValidEmail(company.getEmail()) && isValidCnae(company.getCnae())) {
+    if (company != null
+        && company.getCif() != null
+        && !company.getCif().isEmpty()
+        && isValidEmail(company.getEmail())
+        && isValidCnae(company.getCnae())) {
       database.put(company.getCif(), company);
       return true;
     }
@@ -167,4 +177,3 @@ public class CompanyRepositoryMock implements CompanyRepository {
     return VALID_CNAE_CODES.contains(cnae);
   }
 }
-
