@@ -191,6 +191,12 @@ public class PayrollTest {
     payroll.setWorker(child5);
     assertEquals(32000.0, payroll.calculateIrpf(), 0.01); // 40%
 
+    // Partition 5: 6 children → -5% (still maximum)
+    Worker child6 = new Worker("Test", "71239485K", "Soltero", 6, 30000, 12, "Indefinido", 3, "J12345678");
+    payroll.setWorker(child6);
+    // Base 30% - 5% = 25% → 30000 * 0.25 = 7500
+    assertEquals(7500.0, payroll.calculateIrpf(), 0.01);
+
     // === TEMPORARY CONTRACT CASES (+3%) ===
 
     Worker temp1 = new Worker("T1", "71239485K", "Soltero", 0, 12000, 12, "Temporal", 3, "J12345678");
