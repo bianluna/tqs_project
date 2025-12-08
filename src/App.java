@@ -182,7 +182,9 @@ public class App {
       System.out.print("Categoría (0-10): ");
       int category = Integer.parseInt(scanner.nextLine().trim());
 
-      Worker worker = new Worker(name, dni, civilStatus, children, totalIncome, payments, contract, category, identifier);
+      Worker worker = new Worker(name, dni, civilStatus, children,
+          totalIncome, payments, contract,
+          category, identifier);
 
       if (workerRepository.save(worker)) {
         printSuccess("Trabajador " + name + " dado de alta correctamente.");
