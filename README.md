@@ -125,7 +125,7 @@ En el menú, elige la opción "Listar workers". Verás los workers precargados m
 ## Pruebas
 Los tests están en el directorio `tests/` y usan repositorios mock para `Company` y `Worker`.
 
-- Para imprimir workers desde los tests, mira `tests/WorkerTest.java` en el método `testSaveAndPrintAllWorkers()`.
+- Para imprimir workers desde los tests, mira `test/WorkerTest.java` en el método `testSaveAndPrintAllWorkers()`.
 
 ## Notas
 - La validación de DNI y otras reglas del dominio está implementada dentro de `model/Worker`.
