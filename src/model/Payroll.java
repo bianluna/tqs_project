@@ -43,28 +43,18 @@ public class Payroll {
     return (Math.round((annualGrossSalary / worker.getPayments()) * 100) / 100d);
   }
 
-  public double monthlyGrossSalary(float annualGrossSalary, int paymentsPerYear, float extras) {
-    return paymentsPerMonth() + (extras);
-  }
-
-
   public double calculateSocialSecurity() {
-    float percentage;
+    float percentage = 0;
 
     if (worker.getCategory() >= 1 && worker.getCategory() <= 4) percentage = 6.35f;
     else if (worker.getCategory() >= 5 && worker.getCategory() <= 7) percentage = 6.40f;
     else if (worker.getCategory() >= 8 && worker.getCategory() <= 11) percentage = 6.45f;
-    else percentage = 100; // keep income as it is without deductions
     sgs = Math.round(worker.getTotalIncome() * (percentage / 100));
 
     return sgs;
   }
 
   public double calculateIrpf() {
-    if (worker == null) {
-      throw new IllegalStateException("Payroll: no worker assigned");
-    }
-
     // Obtener salario bruto anual (Worker almacena totalIncome como float)
     double income = worker.getTotalIncome();
 
@@ -98,11 +88,6 @@ public class Payroll {
 
     // Tasa ajustada
     double adjustedRate = baseRate - childrenReduction + contractIncrease;
-
-    // Asegurar que la tasa no sea negativa (protección)
-    if (adjustedRate < 0.0) {
-      adjustedRate = 0.0;
-    }
 
     // Importe IRPF anual
     double irpfAmount = income * adjustedRate;
