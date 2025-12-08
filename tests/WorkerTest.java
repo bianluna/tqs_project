@@ -283,6 +283,10 @@ public class WorkerTest {
     // 4. Intentar asignar un DNI con formato inválido
     worker.setDni("1234ABC"); // Formato inválido
     assertEquals(validDni, worker.getDni(), "El worker no debería aceptar DNIs con formato inválido");
+
+    // 5. Asignar un DNI nulo
+    worker.setDni(null);
+    assertEquals(validDni, worker.getDni(), "El worker no debería aceptar DNIs nulos");
   }
 
 
