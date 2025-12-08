@@ -92,6 +92,9 @@ public class Payroll {
     if (contract != null && contract.equalsIgnoreCase("temporal")) {
       contractIncrease = 0.03;
     }
+    else {
+      contractIncrease = 0.0;
+    }
 
     // Tasa ajustada
     double adjustedRate = baseRate - childrenReduction + contractIncrease;
