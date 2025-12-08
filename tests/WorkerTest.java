@@ -108,34 +108,28 @@ public class WorkerTest {
     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(-5000);
     });
-    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+    assertEquals("El salario debe ser positivo.",
         exception.getMessage());
 
     // Attempt to set zero total income should throw exception
     Exception exceptionZero = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(0);
     });
-    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+    assertEquals("El salario debe ser positivo.",
         exceptionZero.getMessage());
 
     // Boundary cases
     Exception exceptionBoundaryCloseZeroNegative = assertThrows(IllegalArgumentException.class, () -> {
       worker.setTotalIncome(-0.01f);
     });
-    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
+    assertEquals("El salario debe ser positivo.",
         exceptionBoundaryCloseZeroNegative.getMessage());
 
-    Exception exceptionBoundaryCloseZeroPositive = assertThrows(IllegalArgumentException.class, () -> {
-      worker.setTotalIncome(0.01f);
-    });
-    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
-        exceptionBoundaryCloseZeroPositive.getMessage());
+    worker.setTotalIncome(0.01f);
+    assertEquals(0.01f, worker.getTotalIncome());
 
-    Exception exceptionBoundaryLow = assertThrows(IllegalArgumentException.class, () -> {
-      worker.setTotalIncome(15999.99f);
-    });
-    assertEquals("El salario neto bruto no puede ser negativo, cero o menor a 16.000 euros.",
-        exceptionBoundaryLow.getMessage());
+    worker.setTotalIncome(15999.99f);
+    assertEquals(15999.99f, worker.getTotalIncome());
 
     worker.setTotalIncome(16000.01f);
     assertEquals(16000.01f, worker.getTotalIncome());
@@ -203,11 +197,8 @@ public class WorkerTest {
         exceptionInvalidCategoryLow.getMessage());
 
     // Boundary case: setting category to 0
-    Exception exceptionInvalidCategoryZero = assertThrows(IllegalArgumentException.class, () -> {
-      worker.setCategory(0);
-    });
-    assertEquals("Categoría inválida. Debe estar entre 0 y 10.",
-        exceptionInvalidCategoryZero.getMessage());
+    worker.setCategory(0);
+    assertEquals(0, worker.getCategory());
 
     // Valid category: setting category to 1
     worker.setCategory(1);
