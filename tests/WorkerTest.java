@@ -66,10 +66,12 @@ public class WorkerTest {
     worker.setPayments(14);
     assertTrue(worker.getPayments() == 14);
 
-    // Invalid payment should be ignored (value stays unchanged, in this case it stays as default 0)
-    emptyWorker.setPayments(15);
-    assertFalse(emptyWorker.getPayments() == 15);
-    assertTrue(emptyWorker.getPayments() == 0);
+    // Invalid payment should throw an exception
+    Exception exceptionInvalidPayments = assertThrows(IllegalArgumentException.class, () -> {
+      emptyWorker.setPayments(15);
+    });
+    assertEquals("Número de pagas inválido. Debe ser 12 o 14.", exceptionInvalidPayments.getMessage());
+
   }
 
 
