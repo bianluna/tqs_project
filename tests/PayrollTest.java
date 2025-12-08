@@ -50,40 +50,40 @@ public class PayrollTest {
    */
   @Test
   void testSocialSecurityDeduction() {
-    Worker cat1Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 1 , "J12345678");
-    Worker cat2Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 2, "J12345678");
-    Worker cat4Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 4 , "J12345678");
-    Worker cat5Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 5, "J12345678");
-    Worker cat6Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 6 , "J12345678");
-    Worker cat7Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 7 , "J12345678");
-    Worker cat8Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 8 , "J12345678");
-    Worker cat9Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 9 , "J12345678");
-    Worker cat10Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 10 , "J12345678");
+    Worker cat1Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 1 , "J12345678");
+    Worker cat2Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 2, "J12345678");
+    Worker cat4Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 4 , "J12345678");
+    Worker cat5Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 5, "J12345678");
+    Worker cat6Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 6 , "J12345678");
+    Worker cat7Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 7 , "J12345678");
+    Worker cat8Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 8 , "J12345678");
+    Worker cat9Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 9 , "J12345678");
+    Worker cat10Worker = new Worker("Juan", "48392015S", "Soltero", 0, 100000, 12, "Temporal", 10 , "J12345678");
 
 
     // Equivalence Partition 1: grup 1–4
     payroll.setWorker(cat1Worker);
-    assertEquals(635.0, payroll.calculateSocialSecurity());
+    assertEquals(6350.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat2Worker);
-    assertEquals(635.0, payroll.calculateSocialSecurity());
+    assertEquals(6350.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat4Worker);
-    assertEquals(635.0, payroll.calculateSocialSecurity());
+    assertEquals(6350.0, payroll.calculateSocialSecurity());
 
     // Equivalence Partition 2: grup 5–7
     payroll.setWorker(cat5Worker);
-    assertEquals(640.0, payroll.calculateSocialSecurity());
+    assertEquals(6400.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat6Worker);
-    assertEquals(640.0, payroll.calculateSocialSecurity());
+    assertEquals(6400.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat7Worker);
-    assertEquals(640.0, payroll.calculateSocialSecurity());
+    assertEquals(6400.0, payroll.calculateSocialSecurity());
 
     // Equivalence Partition 3: grup 8–10
     payroll.setWorker(cat8Worker);
-    assertEquals(645.0, payroll.calculateSocialSecurity());
+    assertEquals(6450.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat9Worker);
-    assertEquals(645.0, payroll.calculateSocialSecurity());
+    assertEquals(6450.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat10Worker);
-    assertEquals(645.0, payroll.calculateSocialSecurity());
+    assertEquals(6450.0, payroll.calculateSocialSecurity());
   }
 
   /* Equivalence Partitions:
@@ -198,11 +198,13 @@ public class PayrollTest {
     assertEquals(7500.0, payroll.calculateIrpf(), 0.01);
 
     // === TEMPORARY CONTRACT CASES (+3%) ===
-    Worker temp1 = new Worker("T1", "71239485K", "Soltero", 0, 12000, 12, "Temporal", 3, "J12345678");
+    Worker temp1 = new Worker("T1", "71239485K", "Soltero", 0, 12000,
+        12, "temporal", 3, "J12345678");
     payroll.setWorker(temp1);
     assertEquals(2640.0, payroll.calculateIrpf(), 0.01); // 22%
 
-    Worker temp2 = new Worker("T2", "71239485K", "Soltero", 0, 18000, 12, "Temporal", 3, "J12345678");
+    Worker temp2 = new Worker("T2", "71239485K", "Soltero", 0, 18000,
+        12, "Temporal", 3, "J12345678");
     payroll.setWorker(temp2);
     assertEquals(4860.0, payroll.calculateIrpf(), 0.01); // 27%
 
@@ -217,6 +219,12 @@ public class PayrollTest {
     Worker temp5 = new Worker("T5", "71239485K", "Soltero", 0, 80000, 12, "Temporal", 3, "J12345678");
     payroll.setWorker(temp5);
     assertEquals(38400.0, payroll.calculateIrpf(), 0.01); // 48%
+
+    // Null contract type (should be treated as indefinite, no +3%)
+    Worker nullContract = new Worker("NC", "71239485K", "Soltero", 0, 50000,
+        12, null, 3, "J12345678");
+    payroll.setWorker(nullContract);
+    assertEquals(18500.0, payroll.calculateIrpf(), 0.01); // 37%
   }
 
   @Test

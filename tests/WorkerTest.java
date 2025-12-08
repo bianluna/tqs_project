@@ -378,7 +378,13 @@ public class WorkerTest {
 
     // 5. Asignar un DNI nulo
     worker.setDni(null);
-    assertEquals(validDni, worker.getDni(), "El worker no debería aceptar DNIs nulos");
+    assertEquals(validDni, worker.getDni(),
+        "El worker no debería aceptar DNIs nulos");
+
+    // 6. Asignar un DNI no nulo pero vacío
+    worker.setDni("");
+    assertEquals(validDni, worker.getDni(),
+        "El worker no debería aceptar DNIs vacíos");
   }
 
 
