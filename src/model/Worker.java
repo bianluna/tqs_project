@@ -26,7 +26,8 @@ public class Worker {
         this.cifEmpresa = "";
     }
 
-  public Worker(String name, String dni,  String civilStatus, int children, float totalIncome, int payments, String contract, int category, String cifEmpresa) {
+  public Worker(String name, String dni,  String civilStatus, int children, float totalIncome,
+                int payments, String contract, int category, String cifEmpresa) {
       this.name = name;          // Valida no vacío
       setDni(dni);            // Valida formato y letra
       setCivilStatus(civilStatus); // Valida lista cerrada
@@ -87,7 +88,7 @@ public class Worker {
   }
 
   public boolean isValidCategory(int category) {
-      return category>=0 && category<=10;
+      return category>0 && category<=10;
   }
 
   public void setCategory(int category){
@@ -100,7 +101,10 @@ public class Worker {
   }
 
   public boolean isValidContract(String contract) {
-    return contract.equals("Indefinido") || contract.equals("Temporal") || contract.equals("Formacion en Alternancia")|| contract.equals("Formativo para la Obtencion de la Práctica Profesional");
+    return contract.equals("Indefinido")
+        || contract.equals("Temporal")
+        || contract.equals("Formacion en Alternancia")
+        || contract.equals("Formativo para la Obtencion de la Práctica Profesional");
   }
 
   public void setContract(String contract) {
@@ -108,19 +112,24 @@ public class Worker {
       this.contract = contract;
     }
     else {
-      throw new IllegalArgumentException("Tipo de contrato inválido. Debe ser 'Indefinido', 'Temporal', 'Formacion en Alternancia' o 'Formativo para la Obtencion de la Práctica Profesional'.");
+      throw new IllegalArgumentException("Tipo de contrato inválido. Debe ser 'Indefinido', 'Temporal', " +
+          "'Formacion en Alternancia' o 'Formativo para la Obtencion de la Práctica Profesional'.");
     }
   }
 
   public boolean isCivilStatusValid(String civilStatus) {
-      return civilStatus.equals("Soltero") || civilStatus.equals("Casado") || civilStatus.equals("Divorciado") || civilStatus.equals("Viudo");
+      return civilStatus.equals("Soltero")
+          || civilStatus.equals("Casado")
+          || civilStatus.equals("Divorciado")
+          || civilStatus.equals("Viudo");
   }
   public void setCivilStatus(String civilStatus) {
       if (isCivilStatusValid(civilStatus)) {
           this.civilStatus = civilStatus;
       }
       else {
-          throw new IllegalArgumentException("Estado civil inválido. Debe ser 'Soltero', 'Casado', 'Divorciado' o 'Viudo'.");
+          throw new IllegalArgumentException("Estado civil inválido. " +
+              "Debe ser 'Soltero', 'Casado', 'Divorciado' o 'Viudo'.");
       }
   }
 
