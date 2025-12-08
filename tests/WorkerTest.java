@@ -378,6 +378,82 @@ public class WorkerTest {
         "El worker no debería aceptar DNIs vacíos");
   }
 
+  // Additional tests for loop testing coverage
+  // Test 1: Omitir el bucle (n = 0) - String vacío
+  @Test
+  public void testLoopCountDigitsZeroIterations() {
+    Worker worker = new Worker();
+    int result = worker.countDigits("");
+    assertEquals(0, result);
+    // El bucle no se ejecuta ninguna vez
+  }
+
+  // Test 2: Una iteración (n = 1) - Un solo carácter
+  @Test
+  public void testLoopCountDigitsOneIteration() {
+    Worker worker = new Worker();
+    int result = worker.countDigits("5");
+    assertEquals(1, result);
+    // El bucle se ejecuta exactamente una vez
+  }
+
+  // Test 3: Dos iteraciones (n = 2)
+  @Test
+  public void testLoopCountDigitsTwoIterations() {
+    Worker worker = new Worker();
+    int result = worker.countDigits("5A");
+    assertEquals(1, result);
+    // El bucle se ejecuta dos veces, solo uno es dígito
+  }
+
+  // Test 4: Valor típico (n = 8) - DNI normal
+  @Test
+  public void testLoopCountDigitsTypicalValue() {
+    Worker worker = new Worker();
+    int result = worker.countDigits("12345678");
+    assertEquals(8, result);
+    // El bucle se ejecuta 8 veces (valor típico para DNI)
+  }
+
+  // Test 5: Valor típico con letras mezcladas
+  @Test
+  public void testLoopCountDigitsTypicalMixed() {
+    Worker worker = new Worker();
+    int result = worker.countDigits("12345678Z");
+    assertEquals(8, result);
+    // El bucle se ejecuta 9 veces, 8 son dígitos
+  }
+
+  // Test 6: Valor grande (n = max - 1)
+  @Test
+  public void testLoopCountDigitsNearMaximum() {
+    Worker worker = new Worker();
+    String longString = "123456789012345"; // 15 caracteres
+    int result = worker.countDigits(longString);
+    assertEquals(15, result);
+  }
+
+  // Test 7: Valor muy grande (n = max)
+  @Test
+  public void testLoopCountDigitsMaximum() {
+    Worker worker = new Worker();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 100; i++) {
+      sb.append(i % 10);
+    }
+    int result = worker.countDigits(sb.toString());
+    assertEquals(100, result);
+    // El bucle se ejecuta 100 veces
+  }
+
+  // Test 8: String null (caso especial)
+  @Test
+  public void testLoopCountDigitsNull() {
+    Worker worker = new Worker();
+    int result = worker.countDigits(null);
+    assertEquals(0, result);
+    // El bucle no se ejecuta (condición de guarda)
+  }
 
 }
 
