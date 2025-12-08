@@ -35,15 +35,17 @@ public class WorkerTest {
 
   @Test
   void testConstructor() {
-    Worker worker = new Worker("Pepito", "11768496V", "Casado", 3, 35000, 12, "Indefinido", 7, "B12345678");
+    Worker worker = new Worker("Pepito", "11768496V", "Casado", 3,
+        35000, 12, "Indefinido", 7,
+        "B12345678");
 
     assertEquals("Pepito", worker.getName());
-    assertEquals(worker.getCivilStatus(), "Casado");
-    assertTrue(worker.getChildren()==3);
-    assertTrue(worker.getTotalIncome()==35000);
-    assertTrue(worker.getPayments()==12);
-    assertEquals(worker.getContract(), "Indefinido");
-    assertEquals(worker.getCategory(), 7);
+    assertEquals("Casado", worker.getCivilStatus());
+    assertEquals(3, worker.getChildren());
+    assertEquals(35000, worker.getTotalIncome());
+    assertEquals(12, worker.getPayments());
+    assertEquals("Indefinido", worker.getContract());
+    assertEquals(7, worker.getCategory());
     assertNotSame("Julio", worker.getName());
   }
 
@@ -59,11 +61,11 @@ public class WorkerTest {
   @Test
   void testValidPayments() {
     // Valid payment 12
-    assertTrue(worker.getPayments() == 12);
+    assertEquals(12, worker.getPayments());
 
     // Valid payment 14
     worker.setPayments(14);
-    assertTrue(worker.getPayments() == 14);
+    assertEquals(14, worker.getPayments());
 
     // Invalid payment should throw an exception
     Exception exceptionInvalidPayments11 = assertThrows(IllegalArgumentException.class, () -> {
@@ -228,7 +230,8 @@ public class WorkerTest {
    * Test cases for validating contract type, which must be one of the following strings:
    * “Indefinido”,  “Temporal” “Formacion en Alternancia”, “Formativo para la Obtencion de la Práctica Profesional”
    * Equivalence Partitions:
-   * 1. Valid contract types: “Indefinido”,  “Temporal” “Formacion en Alternancia”, “Formativo para la Obtencion de la Práctica Profesional”
+   * 1. Valid contract types: “Indefinido”,  “Temporal” “Formacion en Alternancia”,
+   * “Formativo para la Obtencion de la Práctica Profesional”
    * 2. Invalid contract types: any other string (e.g., "indefinido-invalid", "permanent", "temporary")
    * */
   @Test
@@ -249,7 +252,8 @@ public class WorkerTest {
     Exception exceptionInvalidContract = assertThrows(IllegalArgumentException.class, () -> {
       worker.setContract("permanent");
     });
-    assertEquals("Tipo de contrato inválido. Debe ser 'Indefinido', 'Temporal', 'Formacion en Alternancia' o 'Formativo para la Obtencion de la Práctica Profesional'.", exceptionInvalidContract.getMessage());
+    assertEquals("Tipo de contrato inválido. Debe ser 'Indefinido', 'Temporal', 'Formacion en Alternancia' o " +
+        "'Formativo para la Obtencion de la Práctica Profesional'.", exceptionInvalidContract.getMessage());
   }
 
   /*
@@ -267,7 +271,8 @@ public class WorkerTest {
     Exception exceptionInvalidCivilStatus = assertThrows(IllegalArgumentException.class, () -> {
       worker.setCivilStatus("Hijo");
     });
-    assertEquals("Estado civil inválido. Debe ser 'Soltero', 'Casado', 'Divorciado' o 'Viudo'.", exceptionInvalidCivilStatus.getMessage());
+    assertEquals("Estado civil inválido. Debe ser 'Soltero', 'Casado', 'Divorciado' o 'Viudo'.",
+        exceptionInvalidCivilStatus.getMessage());
   }
 
   @Test
