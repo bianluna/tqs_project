@@ -117,6 +117,9 @@ public class Worker {
       if (isCivilStatusValid(civilStatus)) {
           this.civilStatus = civilStatus;
       }
+      else {
+          throw new IllegalArgumentException("Estado civil inválido. Debe ser 'Soltero', 'Casado', 'Divorciado' o 'Viudo'.");
+      }
   }
 
   public void setDni(String dni) {
