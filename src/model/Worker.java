@@ -62,7 +62,7 @@ public class Worker {
 
   public void setTotalIncome(float totalIncome) {
     if (!isValidIncome(totalIncome)) {
-      throw new IllegalArgumentException("El salario neto bruto no puede ser negativo");
+      throw new IllegalArgumentException("El salario neto bruto no puede ser negativo o cero");
     }
     this.totalIncome = totalIncome;
   }
