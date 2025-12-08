@@ -68,7 +68,9 @@ public class Worker {
     if (!isValidIncome(totalIncome)) {
       throw new IllegalArgumentException("El salario neto bruto no puede ser negativo o cero");
     }
-    this.totalIncome = totalIncome;
+    else {
+      this.totalIncome = totalIncome;
+    }
   }
 
   public boolean isValidChildren(int children){
@@ -78,6 +80,9 @@ public class Worker {
   public void setChildren(int children) {
       if (isValidChildren(children)) {
         this.children = children;
+      }
+      else {
+        throw new IllegalArgumentException("Número de hijos inválido. No puede ser negativo.");
       }
   }
 
