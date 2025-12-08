@@ -11,7 +11,7 @@ public class Payroll {
 
   public Payroll() {
     this.payrollCode = "";
-    this.worker = new Worker();
+    this.worker = null;
     this.annualGrossSalary = 0;
     this.netSalary = 0;
     this.irpf = 0;
