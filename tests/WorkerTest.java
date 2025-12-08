@@ -81,14 +81,15 @@ public class WorkerTest {
    * Equivalence Partitions:
    * 1. Valid total income: positive values greater than or equal to 16000 euros (e.g., 16000, 25000.60, 800000)
    * 2. Invalid total income: negative values and zero (e.g., -5000, -0.01, 0, 15999.99)
+   * 3. Boundary case: exactly 16000 euros, zero, negative values close to zero (-0.01), 1, 15 999.99, 16 000.01
    *
    * */
   @Test
   void testTotalIncome() {
     // Valid total income
-    assertTrue(worker.getTotalIncome() == 35000);
+    assertEquals(35000, worker.getTotalIncome());
     worker.setTotalIncome(16000);
-    assertTrue(worker.getTotalIncome() == 16000);
+    assertEquals(16000, worker.getTotalIncome());
 
     // Attempt to set negative total income should throw exception
     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -101,6 +102,28 @@ public class WorkerTest {
       worker.setTotalIncome(0);
     });
     assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionZero.getMessage());
+
+    // Boundary cases
+    Exception exceptionBoundaryCloseZeroNegative = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(-0.01f);
+    });
+    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionBoundaryCloseZeroNegative.getMessage());
+
+    Exception exceptionBoundaryCloseZeroPositive = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(0.01f);
+    });
+    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionBoundaryCloseZeroPositive.getMessage());
+
+    Exception exceptionBoundaryLow = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setTotalIncome(15999.99f);
+    });
+    assertEquals("El salario neto bruto no puede ser negativo o cero", exceptionBoundaryLow.getMessage());
+
+    worker.setTotalIncome(16000.01f);
+    assertEquals(16000.01f, worker.getTotalIncome());
+
+
+
 
   }
 
