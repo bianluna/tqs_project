@@ -1,5 +1,6 @@
 import model.Worker;
 import model.Company;
+import model.Payroll;
 import repository.WorkerRepositoryMock;
 import repository.CompanyRepositoryMock;
 import java.util.List;
@@ -9,8 +10,6 @@ public class App {
   private static final Scanner scanner = new Scanner(System.in);
 
   // --- COLORES Y ESTILOS PARA CONSOLA ---
-  // Nota: Funcionan en la mayoría de terminales modernas (VS Code, IntelliJ, Linux, Mac).
-  // En Windows CMD antiguo podrían no verses, pero no rompen el código.
   private static final String RESET = "\u001B[0m";
   private static final String RED = "\u001B[31m";
   private static final String GREEN = "\u001B[32m";
@@ -54,7 +53,10 @@ public class App {
           if (isEmpresa()) listCompanyWorkers(); else listWorkersReadOnly();
           break;
         case "3":
-          if (isEmpresa()) deleteWorkerFlow();
+          if (isEmpresa()) deleteWorkerFlow(); else calculateMyPayroll();
+          break;
+        case "4":
+          if (isEmpresa()) calculateWorkerPayroll();
           else printError("Opción no disponible para perfil Trabajador.");
           break;
         case "0":
@@ -137,11 +139,13 @@ public class App {
       System.out.println("│ " + CYAN + "1." + RESET + " Agregar nuevo trabajador                   │");
       System.out.println("│ " + CYAN + "2." + RESET + " Listar plantilla (Ver Tabla)               │");
       System.out.println("│ " + CYAN + "3." + RESET + " Eliminar trabajador (Despido)              │");
+      System.out.println("│ " + CYAN + "4." + RESET + " Calcular nómina de un trabajador          │");
     } else {
       System.out.printf(BLUE + "│ %-44s │%n" + RESET, "Usuario: Trabajador (DNI: " + identifier + ")");
       System.out.println(BLUE + "├──────────────────────────────────────────────┤" + RESET);
       System.out.println("│ " + CYAN + "1." + RESET + " Ver mis datos personales                   │");
       System.out.println("│ " + CYAN + "2." + RESET + " Ver listado general (Solo lectura)         │");
+      System.out.println("│ " + CYAN + "3." + RESET + " Calcular mi nómina                         │");
     }
     System.out.println(BLUE + "├──────────────────────────────────────────────┤" + RESET);
     System.out.println("│ " + RED + "0. Salir" + RESET + "                                     │");
@@ -160,7 +164,7 @@ public class App {
       System.out.print("DNI: ");
       String dni = scanner.nextLine().trim();
 
-      System.out.print("Estado Civil: ");
+      System.out.print("Estado Civil (Soltero/Casado/Divorciado/Viudo): ");
       String civilStatus = scanner.nextLine().trim();
 
       System.out.print("Hijos: ");
@@ -172,7 +176,7 @@ public class App {
       System.out.print("Pagas (12/14): ");
       int payments = Integer.parseInt(scanner.nextLine().trim());
 
-      System.out.print("Tipo de Contrato: ");
+      System.out.print("Tipo de Contrato (Indefinido/Temporal/Formacion en Alternancia): ");
       String contract = scanner.nextLine().trim();
 
       System.out.print("Categoría (0-10): ");
@@ -214,9 +218,12 @@ public class App {
       System.out.println(YELLOW + "┌──────────────────────────────────────────────┐" + RESET);
       System.out.printf("│ %-15s : %s%n", "Nombre", BOLD + me.getName() + RESET);
       System.out.printf("│ %-15s : %s%n", "DNI", me.getDni());
-      System.out.printf("│ %-15s : %s%n", "Contrato", me.getContract());
-      System.out.printf("│ %-15s : %.2f €%n", "Salario", me.getTotalIncome());
+      System.out.printf("│ %-15s : %s%n", "Estado Civil", me.getCivilStatus());
       System.out.printf("│ %-15s : %d%n", "Hijos", me.getChildren());
+      System.out.printf("│ %-15s : %s%n", "Contrato", me.getContract());
+      System.out.printf("│ %-15s : %.2f €%n", "Salario Bruto", me.getTotalIncome());
+      System.out.printf("│ %-15s : %d pagas%n", "Pagas", me.getPayments());
+      System.out.printf("│ %-15s : %d%n", "Categoría", me.getCategory());
       System.out.println(YELLOW + "└──────────────────────────────────────────────┘" + RESET);
     }
   }
@@ -242,6 +249,93 @@ public class App {
     }
   }
 
+  // --- NUEVAS FUNCIONALIDADES DE NÓMINA ---
+
+  /**
+   * Calcula y muestra la nómina del trabajador actual (perfil trabajador)
+   */
+  private void calculateMyPayroll() {
+    printSubHeader("Cálculo de Mi Nómina");
+    Worker me = workerRepository.findByDni(identifier);
+
+    if (me == null) {
+      printError("No se encontraron datos para el DNI " + identifier);
+      return;
+    }
+
+    displayPayrollDetails(me);
+  }
+
+  /**
+   * Permite a la empresa calcular la nómina de cualquier trabajador
+   */
+  private void calculateWorkerPayroll() {
+    printSubHeader("Cálculo de Nómina de Trabajador");
+    System.out.print("Ingrese el DNI del trabajador: ");
+    String dni = scanner.nextLine().trim();
+
+    Worker worker = workerRepository.findByDni(dni);
+
+    if (worker == null) {
+      printError("No se encontró ningún trabajador con ese DNI.");
+      return;
+    }
+
+    // Verificar que el trabajador pertenece a esta empresa
+    if (!worker.getCifEmpresa().equals(identifier)) {
+      printError("Este trabajador no pertenece a su empresa.");
+      return;
+    }
+
+    displayPayrollDetails(worker);
+  }
+
+  /**
+   * Muestra los detalles completos de la nómina de un trabajador
+   */
+  private void displayPayrollDetails(Worker worker) {
+    // Generar código de nómina (puede ser más sofisticado)
+    String payrollCode = "NOM-" + worker.getDni() + "-" + System.currentTimeMillis();
+
+    // Crear objeto Payroll y calcular
+    Payroll payroll = new Payroll(payrollCode, worker);
+
+    double irpf = payroll.calculateIrpf();
+    double sgs = payroll.calculateSocialSecurity();
+    double netSalary = payroll.calculateNetSalary();
+    double monthlyNet = payroll.calculateMonthlyNetSalary();
+    double monthlyGross = payroll.paymentsPerMonth();
+
+    // Mostrar información detallada
+    System.out.println(GREEN + "┌────────────────────────────────────────────────────────┐" + RESET);
+    System.out.println(GREEN + "│" + BOLD + "              DETALLE DE NÓMINA                       " + RESET + GREEN + "│" + RESET);
+    System.out.println(GREEN + "├────────────────────────────────────────────────────────┤" + RESET);
+    System.out.printf("│ %-30s : %-20s │%n", "Código Nómina", payrollCode);
+    System.out.printf("│ %-30s : %-20s │%n", "Trabajador", worker.getName());
+    System.out.printf("│ %-30s : %-20s │%n", "DNI", worker.getDni());
+    System.out.println(GREEN + "├────────────────────────────────────────────────────────┤" + RESET);
+    System.out.printf("│ %-30s : %19.2f € │%n", "Salario Bruto Anual", worker.getTotalIncome());
+    System.out.printf("│ %-30s : %19.2f € │%n", "Salario Bruto Mensual", monthlyGross);
+    System.out.printf("│ %-30s : %20d │%n", "Número de Pagas", worker.getPayments());
+    System.out.println(GREEN + "├────────────────────────────────────────────────────────┤" + RESET);
+    System.out.println(GREEN + "│" + BOLD + "              DEDUCCIONES                             " + RESET + GREEN + "│" + RESET);
+    System.out.printf("│ %-30s : %19.2f € │%n", "IRPF (anual)", irpf);
+    System.out.printf("│ %-30s : %19.2f € │%n", "Seguridad Social (anual)", sgs);
+    System.out.printf("│ %-30s : %19.2f € │%n", "Total Deducciones", (irpf + sgs));
+    System.out.println(GREEN + "├────────────────────────────────────────────────────────┤" + RESET);
+    System.out.println(GREEN + "│" + BOLD + "              SALARIO NETO                            " + RESET + GREEN + "│" + RESET);
+    System.out.printf("│ %-30s : " + BOLD + "%19.2f € " + RESET + "│%n", "Salario Neto Anual", netSalary);
+    System.out.printf("│ %-30s : " + BOLD + "%19.2f € " + RESET + "│%n", "Salario Neto Mensual", monthlyNet);
+    System.out.println(GREEN + "└────────────────────────────────────────────────────────┘" + RESET);
+
+    // Información adicional del trabajador
+    System.out.println("\n" + CYAN + "Información adicional:" + RESET);
+    System.out.println("  • Estado Civil: " + worker.getCivilStatus());
+    System.out.println("  • Número de Hijos: " + worker.getChildren());
+    System.out.println("  • Tipo de Contrato: " + worker.getContract());
+    System.out.println("  • Categoría: " + worker.getCategory());
+  }
+
   // --- MÉTODO PARA IMPRIMIR TABLA BONITA ---
   private void printWorkerTable(List<Worker> workers) {
     if (workers.isEmpty()) {
@@ -259,7 +353,6 @@ public class App {
 
     // Filas
     for (Worker w : workers) {
-      // Asumimos que Worker tiene estos getters. Si no, ajústalos.
       System.out.printf(format,
           truncate(w.getName(), 20),
           w.getDni(),
