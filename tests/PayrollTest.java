@@ -5,7 +5,7 @@ import model.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class payrollTest {
+public class PayrollTest {
 
   Payroll payroll;
 
@@ -28,15 +28,8 @@ public class payrollTest {
   void testMonthlySalary() {
     Worker basicWorker = new Worker("Juan", "48392015S", "Casado", 2, 20000, 12, "Indefinido", 5 , "J12345678");
     payroll = new Payroll("112025", basicWorker);
-    assertTrue(payroll.paymentsPerMonth() == 1666.67);
-    assertFalse(payroll.paymentsPerMonth() == 1666);
-  }
-
-  @Test
-  void testSalaryExtras(){
-    //payroll = new Payroll(basicWorker);
-    //assertTrue(payroll.monthlyGrossSalary(payroll.annualGrossSalary, payroll.paymentsPerYear, payroll.extras) == 3666.67);
-    //assertFalse(payroll.monthlyGrossSalary(payroll.annualGrossSalary, payroll.paymentsPerYear, payroll.extras) == 1800);
+    assertEquals(1666.67, payroll.paymentsPerMonth());
+    assertNotEquals(1666, payroll.paymentsPerMonth(), 0.0);
   }
 
   /*
@@ -84,12 +77,6 @@ public class payrollTest {
     assertEquals(645.0, payroll.calculateSocialSecurity());
     payroll.setWorker(cat10Worker);
     assertEquals(645.0, payroll.calculateSocialSecurity());
-
-    // Invalid case -> out of range group
-    /*assertEquals(0.0, p.calculateSocialSecurity(10000, -1));
-    assertEquals(0.0, p.calculateSocialSecurity(10000, 0));
-    assertEquals(0.0, p.calculateSocialSecurity(10000, 12));
-    assertEquals(0.0, p.calculateSocialSecurity(10000, 13));*/
   }
 
   /* Equivalence Partitions:
