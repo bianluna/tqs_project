@@ -71,7 +71,6 @@ public class WorkerTest {
       emptyWorker.setPayments(15);
     });
     assertEquals("Número de pagas inválido. Debe ser 12 o 14.", exceptionInvalidPayments.getMessage());
-
   }
 
 
@@ -119,14 +118,19 @@ public class WorkerTest {
     // Valid number of children
     assertEquals(3, worker.getChildren());
 
-    // Attempt to set negative children should not change value
-    worker.setChildren(-3);
-    assertFalse(worker.getChildren() == -3);
-    assertEquals(3, worker.getChildren());
+    // Attempt to set negative children should throw an exception
+    Exception exceptionNegativeChildren = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setChildren(-3);
+    });
+    assertEquals("Número de hijos inválido. No puede ser negativo.", exceptionNegativeChildren.getMessage());
 
-    // Setting zero children
+    // Setting zero children should be valid
     worker.setChildren(0);
     assertEquals(0, worker.getChildren());
+
+    // Setting children number higher than 5 should be valid
+    worker.setChildren(6);
+    assertEquals(6, worker.getChildren());
   }
 
   /*
