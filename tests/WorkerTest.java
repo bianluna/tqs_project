@@ -145,8 +145,7 @@ public class WorkerTest {
    * Equivalence Partitions:
    * 1. Valid number of children: non-negative integers (e.g., 0, 1, 2, 3, ...)
    * 2. Invalid number of children: negative integers (e.g., -1, -2, -3, ...)
-   *
-   *
+   * 3. Boundary case: -1, 0, 1
    * */
   @Test
   void testChildren() {
@@ -157,13 +156,27 @@ public class WorkerTest {
     Exception exceptionNegativeChildren = assertThrows(IllegalArgumentException.class, () -> {
       worker.setChildren(-3);
     });
-    assertEquals("Número de hijos inválido. No puede ser negativo.", exceptionNegativeChildren.getMessage());
+    assertEquals("Número de hijos inválido. No puede ser negativo.",
+        exceptionNegativeChildren.getMessage());
+
+    // Boundary case: setting -1 child
+    // Setting negative children should throw an exception
+    Exception exceptionBoundaryNegative = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setChildren(-1);
+    });
+    assertEquals("Número de hijos inválido. No puede ser negativo.",
+        exceptionBoundaryNegative.getMessage());
 
     // Setting zero children should be valid
     worker.setChildren(0);
     assertEquals(0, worker.getChildren());
 
-    // Setting children number higher than 5 should be valid
+    // Boundary case: setting 1 child
+    // Setting one child should be valid
+    worker.setChildren(1);
+    assertEquals(1, worker.getChildren());
+
+    // Setting a high number of children should be valid
     worker.setChildren(6);
     assertEquals(6, worker.getChildren());
   }
