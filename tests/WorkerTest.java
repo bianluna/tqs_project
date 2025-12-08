@@ -51,10 +51,9 @@ public class WorkerTest {
    * Test cases for validating number of payments within a year, which can only be 12 or 14.
    *
    * Equivalence Partitions:
-   * 1. Valid payments: 12
-   * 2. Valid payments: 14
-   * 3. Invalid payments: any other number (-1, 0, 15, 60) (numbers outside the valid range)
-   *
+   * 1. Valid payments: 12, 14
+   * 2. Invalid payments: any other number (-1, 0, 15, 60) (numbers outside the valid range)
+   * 3. Boundary cases: 11, 12, 13, 14, 15
    * */
 
   @Test
@@ -67,6 +66,18 @@ public class WorkerTest {
     assertTrue(worker.getPayments() == 14);
 
     // Invalid payment should throw an exception
+    Exception exceptionInvalidPayments11 = assertThrows(IllegalArgumentException.class, () -> {
+      emptyWorker.setPayments(11);
+    });
+    assertEquals("Número de pagas inválido. Debe ser 12 o 14.", exceptionInvalidPayments11.getMessage());
+
+    // Invalid payment should throw an exception
+    Exception exceptionInvalidPayments13 = assertThrows(IllegalArgumentException.class, () -> {
+      emptyWorker.setPayments(13);
+    });
+    assertEquals("Número de pagas inválido. Debe ser 12 o 14.", exceptionInvalidPayments13.getMessage());
+
+    // Invalid payment should throw an exception
     Exception exceptionInvalidPayments = assertThrows(IllegalArgumentException.class, () -> {
       emptyWorker.setPayments(15);
     });
@@ -75,7 +86,8 @@ public class WorkerTest {
 
 
   /*
-   * Test cases for validating total income, which must be a positive value and with minumum value of 16000 euros, which is the
+   * Test cases for validating total income, which must be a positive value and with
+   * minumum value of 16000 euros, which is the
    * interprofesional minimum salary within Spain.
    *
    * Equivalence Partitions:
@@ -126,10 +138,6 @@ public class WorkerTest {
 
     worker.setTotalIncome(16000.01f);
     assertEquals(16000.01f, worker.getTotalIncome());
-
-
-
-
   }
 
   /*
