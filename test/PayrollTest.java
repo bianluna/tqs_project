@@ -197,6 +197,54 @@ public class PayrollTest {
         80000, 12, "Temporal", 3, "J12345678");
     payroll.setWorker(temp5);
     assertEquals(38400.0, payroll.calculateIrpf(), 0.01);
+
+
+    // === PAIRWISE TESTING (tabla del informe) ===
+    Object[][] pw = {
+        {"Soltero", 0, 1200f, 12, "Indefinido", 1},
+        {"Soltero", 1, 1800f, 14, "Temporal", 3},
+        {"Soltero", 3, 2500f, 12, "Formacion en Alternancia", 5},
+        {"Casado", 0, 1800f, 12, "Temporal", 1},
+        {"Casado", 1, 2500f, 14, "Indefinido", 3},
+        {"Casado", 3, 1200f, 14, "Formacion en Alternancia", 1},
+        {"Soltero", 0, 2500f, 14, "Temporal", 5},
+        {"Casado", 0, 1200f, 12, "Formacion en Alternancia", 3},
+        {"Soltero", 1, 1200f, 14, "Indefinido", 5},
+        {"Casado", 1, 1800f, 12, "Formacion en Alternancia", 1},
+        {"Soltero", 3, 1800f, 14, "Indefinido", 3},
+        {"Casado", 3, 2500f, 12, "Temporal", 5}
+    };
+
+    for (int i = 0; i < pw.length; i++) {
+
+      String civil = (String) pw[i][0];
+      int children = (int) pw[i][1];
+      float income = (float) pw[i][2];
+      int payments = (int) pw[i][3];
+      String contract = (String) pw[i][4];
+      int category = (int) pw[i][5];
+
+      Worker w = new Worker(
+          "Pair" + i,
+          "1111111" + i + "A",
+          civil,
+          children,
+          income,
+          payments,
+          contract,
+          category,
+          "J12345678"
+      );
+
+      payroll.setWorker(w);
+
+      double irpf = payroll.calculateIrpf();
+
+      // No comprobamos resultado exacto porque la tabla es combinatoria,
+      // solo aseguramos que el cálculo es válido y no negativo.
+      assertTrue(irpf >= 0, "IRPF inválido en caso pairwise " + i);
+    }
+
   }
 
   @Test
