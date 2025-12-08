@@ -197,7 +197,12 @@ public class WorkerTest {
   @Test
   void testCivilStatus() {
     assertEquals("Casado", worker.getCivilStatus());
-    assertNotSame("Hijo", worker.getCivilStatus());
+
+    // Set civil status to Hijo (invalid) should throw an exception
+    Exception exceptionInvalidCivilStatus = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setCivilStatus("Hijo");
+    });
+    assertEquals("Estado civil inválido. Debe ser 'Soltero', 'Casado', 'Divorciado' o 'Viudo'.", exceptionInvalidCivilStatus.getMessage());
   }
 
   @Test
