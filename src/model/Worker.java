@@ -54,6 +54,10 @@ public class Worker {
     if (payments == 12 || payments == 14) {
       this.payments = payments;
     }
+    else
+    {
+      throw new IllegalArgumentException("Número de pagas inválido. Debe ser 12 o 14.");
+    }
   }
 
   public boolean isValidIncome(float income) {
@@ -112,7 +116,6 @@ public class Worker {
       this.dni = dni;
     } else {
       System.err.println("Error: DNI inválido intentando ser asignado: " + dni);
-      //throw new IllegalArgumentException("DNI inválido");
     }
   }
 
