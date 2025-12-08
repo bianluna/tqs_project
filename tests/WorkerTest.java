@@ -180,12 +180,13 @@ public class WorkerTest {
     worker.setContract("Formacion en Alternancia");
     assertEquals("Formacion en Alternancia", worker.getContract());
 
-    // Attempt to set invalid contract type
-    worker.setContract("Permanente");
-    assertFalse(worker.getContract().equals("Permanente"));
-    assertEquals("Formacion en Alternancia", worker.getContract());
-
+    // Attempt to set invalid contract type should throw an exception
+    Exception exceptionInvalidContract = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setContract("permanent");
+    });
+    assertEquals("Tipo de contrato inválido. Debe ser 'Indefinido', 'Temporal', 'Formacion en Alternancia' o 'Formativo para la Obtencion de la Práctica Profesional'.", exceptionInvalidContract.getMessage());
   }
+
   /*
    * Test cases for validating civil status, which must be one of the following strings:
    * “Soltero”, “Casado”, “Viudo”, “Divorciado”
