@@ -186,24 +186,41 @@ public class WorkerTest {
    * Equivalence Partitions:
    * 1. Valid category: integers between 1 and 10 (e.g.,1, 5, 11)
    * 2. Invalid category: integers less than 1 or greater than 10 (e.g., -1, 0, 12, 20)
-   *
-   *
+   * 3. Boundary cases: -1, 0, 1, 10, 11
    * */
   @Test
   void testValidCategory() {
-    assertTrue(worker.getCategory()==7);
+    assertEquals(7, worker.getCategory());
 
+    // Boundary case: setting category to -1
     // Attempt to set invalid category less than 0 should throw an exception
     Exception exceptionInvalidCategoryLow = assertThrows(IllegalArgumentException.class, () -> {
       worker.setCategory(-1);
     });
-    assertEquals("Categoría inválida. Debe estar entre 0 y 10.", exceptionInvalidCategoryLow.getMessage());
+    assertEquals("Categoría inválida. Debe estar entre 0 y 10.",
+        exceptionInvalidCategoryLow.getMessage());
 
-    // Attempt to set invalid category greater than 10 should throw an exception
+    // Boundary case: setting category to 0
+    Exception exceptionInvalidCategoryZero = assertThrows(IllegalArgumentException.class, () -> {
+      worker.setCategory(0);
+    });
+    assertEquals("Categoría inválida. Debe estar entre 0 y 10.",
+        exceptionInvalidCategoryZero.getMessage());
+
+    // Valid category: setting category to 1
+    worker.setCategory(1);
+    assertEquals(1, worker.getCategory());
+
+    // Valid category: setting category to 10
+    worker.setCategory(10);
+    assertEquals(10, worker.getCategory());
+
+    // Boundary case: setting category to 11
     Exception exceptionInvalidCategoryHigh = assertThrows(IllegalArgumentException.class, () -> {
       worker.setCategory(11);
     });
-    assertEquals("Categoría inválida. Debe estar entre 0 y 10.", exceptionInvalidCategoryHigh.getMessage());
+    assertEquals("Categoría inválida. Debe estar entre 0 y 10.",
+        exceptionInvalidCategoryHigh.getMessage());
   }
 
 
