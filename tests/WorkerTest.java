@@ -145,17 +145,17 @@ public class WorkerTest {
   void testValidCategory() {
     assertTrue(worker.getCategory()==7);
 
-    // Attempt to set invalid category less than 1 should throw an exception
+    // Attempt to set invalid category less than 0 should throw an exception
     Exception exceptionInvalidCategoryLow = assertThrows(IllegalArgumentException.class, () -> {
-      worker.setCategory(0);
+      worker.setCategory(-1);
     });
-    assertEquals("Categoría inválida. Debe estar entre 1 y 10.", exceptionInvalidCategoryLow.getMessage());
+    assertEquals("Categoría inválida. Debe estar entre 0 y 10.", exceptionInvalidCategoryLow.getMessage());
 
     // Attempt to set invalid category greater than 10 should throw an exception
     Exception exceptionInvalidCategoryHigh = assertThrows(IllegalArgumentException.class, () -> {
       worker.setCategory(11);
     });
-    assertEquals("Categoría inválida. Debe estar entre 1 y 10.", exceptionInvalidCategoryHigh.getMessage());
+    assertEquals("Categoría inválida. Debe estar entre 0 y 10.", exceptionInvalidCategoryHigh.getMessage());
   }
 
 
