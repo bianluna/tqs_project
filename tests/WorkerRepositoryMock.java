@@ -36,7 +36,7 @@ public class WorkerRepositoryMock implements WorkerRepository {
 
     workers.add(new Worker(
         "Pedro Gómez", "99221188Q", "Soltero", 0,
-        18000f, 12, "Parcial", 5,
+        18000f, 12, "Temporal", 5,
         "B34567890"
     ));
   }

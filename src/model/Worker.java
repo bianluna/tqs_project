@@ -105,6 +105,9 @@ public class Worker {
     if (isValidContract(contract)) {
       this.contract = contract;
     }
+    else {
+      throw new IllegalArgumentException("Tipo de contrato inválido. Debe ser 'Indefinido', 'Temporal', 'Formacion en Alternancia' o 'Formativo para la Obtencion de la Práctica Profesional'.");
+    }
   }
 
   public boolean isCivilStatusValid(String civilStatus) {
