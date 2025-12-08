@@ -46,7 +46,7 @@ public class PayrollTest {
    * 2. Group 5–7 → 6.40%
    * 3. Group 8–10 → 6.45%
    * 4. Invalid group (<1 or >10) → IllegalArgumentException
-   * 5. Frontier values: 1, 0, 2, 3, 6, 9, 10, 12
+   * 5. Boundary cases: 1, 0, 2, 3, 6, 9, 10, 11
    */
   @Test
   void testSocialSecurityDeduction() {
@@ -99,7 +99,7 @@ public class PayrollTest {
     *
     * 3. Temporary contract cases:
     *    - Add 3% to the base IRPF rate
-    * 4. Frontier values:
+    * 4. Boundary cases:
     *   income: negative income, 0 income, 12449, 12451, 20199, 20201, 35199, 35201, 59999, 60001
     *   children: 0, 4, 6
     *   contract type: "Indefinido", "Temporal", invalid types
@@ -198,7 +198,6 @@ public class PayrollTest {
     assertEquals(7500.0, payroll.calculateIrpf(), 0.01);
 
     // === TEMPORARY CONTRACT CASES (+3%) ===
-
     Worker temp1 = new Worker("T1", "71239485K", "Soltero", 0, 12000, 12, "Temporal", 3, "J12345678");
     payroll.setWorker(temp1);
     assertEquals(2640.0, payroll.calculateIrpf(), 0.01); // 22%
