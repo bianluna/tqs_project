@@ -92,7 +92,7 @@ public class Worker {
 
   public void setCategory(int category){
       if (!isValidCategory(category)) {
-          category=0;
+          throw new IllegalArgumentException("Categoría inválida. Debe estar entre 0 y 10.");
       }
       this.category = category;
   }
