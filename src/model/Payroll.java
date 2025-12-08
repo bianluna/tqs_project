@@ -24,7 +24,15 @@ public class Payroll {
     this.annualGrossSalary = worker.getTotalIncome();
   }
 
-  public void setWorker(Worker worker) { this.worker = worker; this.annualGrossSalary = worker.getTotalIncome(); }
+  public void setWorker(Worker worker) {
+    if (worker != null) {
+      this.worker = worker;
+      this.annualGrossSalary = worker.getTotalIncome();
+    }
+    else {
+      throw new IllegalArgumentException("Payroll: worker cannot be null");
+    }
+  }
   public String getPayrollCode() { return payrollCode; }
   public Worker getWorker() { return worker;}
   public float getTotalIncome() { return annualGrossSalary;}
