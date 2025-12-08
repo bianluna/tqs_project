@@ -54,6 +54,7 @@ public class PayrollTest {
     Worker cat9Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 9 , "J12345678");
     Worker cat10Worker = new Worker("Juan", "48392015S", "Soltero", 0, 10000, 12, "Temporal", 10 , "J12345678");
 
+
     // Equivalence Partition 1: grup 1–4
     payroll.setWorker(cat1Worker);
     assertEquals(635.0, payroll.calculateSocialSecurity());
