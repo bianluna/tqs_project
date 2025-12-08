@@ -22,6 +22,12 @@ public class PayrollTest {
     assertEquals("112025", payroll.getPayrollCode()); // to identify each payroll
     assertNotNull(payroll.getWorker()); // asegura que se ha asociado un trabajador a la nómina
     assertEquals(35000,payroll.getTotalIncome()); // obtiene el salario bruto anual del trabajador
+
+    // Assigned null worker should throw exception
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      payroll.setWorker(null);
+    });
+    assertEquals("Payroll: worker cannot be null", exception.getMessage());
   }
 
   @Test
