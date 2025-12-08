@@ -279,7 +279,7 @@ public class PayrollTest {
 
     // === Caso 2A: Trabajador con 14 pagas ===
     Worker w2a = new Worker(
-        "Ana Torres", "71239485K", "Casada", 2,
+        "Ana Torres", "71239485K", "Casado", 2,
         28000f, 14, "Indefinido", 2,
         "B12345678");
     payroll.setWorker(w2a);

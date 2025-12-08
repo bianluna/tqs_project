@@ -94,7 +94,9 @@ public class Worker {
       if (!isValidCategory(category)) {
           throw new IllegalArgumentException("Categoría inválida. Debe estar entre 0 y 10.");
       }
-      this.category = category;
+      else {
+        this.category = category;
+      }
   }
 
   public boolean isValidContract(String contract) {
